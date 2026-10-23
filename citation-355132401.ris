@@ -1,0 +1,12 @@
+TY  - JOUR
+AU  - Um, Minji
+AU  - Han, Jaehyeok
+AU  - Lee, Sangjin
+PY  - 2021/12/01
+SP  - 301271
+N2  - While the overall structure of ZIP files is defined, their detailed structure differs depending on the operating system and application creating the file. These characteristics are also affected by the environment in which the file was first created or later modified. Conversely, analyzing the structure of ZIP files allows the determination of the environment it was created in, and this can be the basis for determining where the file was created through analyzing and comparing the user's PC. In addition, the creation, modification, and access time values of decompressed files are set differently according to the application used for decompression and the structure of the ZIP file. ZIP files reflect not only the environment in which they are created but also the one in which they were decompressed. Thus, the ZIP files' detailed structures and characteristics should be analyzed forensically. In this paper, it is suggested that the environment of file creation and modification can be inferred by analyzing the detailed structure of a single file by file fingerprints, and the characteristics of decompression can be compared with the applications installed on the system.
+T1  - File fingerprinting of the ZIP format for identifying and tracking provenance
+VL  - 39
+DO  - 10.1016/j.fsidi.2021.301271
+JO  - Forensic Science International: Digital Investigation
+ER  - 
