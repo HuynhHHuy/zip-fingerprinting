@@ -80,9 +80,9 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ---
 
-### Giai đoạn 1: Thiết kế Cấu trúc Dữ liệu & Bộ Phân tích Nhị phân Cốt lõi (Binary Parsing Engine)
+### Giai đoạn 1: Thiết kế Cấu trúc Dữ liệu & Bộ Phân tích Nhị phân Cốt lõi (Binary Parsing Engine) [HOÀN THÀNH]
 
-#### `PH1-CORE-001`: Triển khai Cấu trúc Dữ liệu và Hằng số Pháp y Định dạng ZIP
+#### `PH1-CORE-001`: Triển khai Cấu trúc Dữ liệu và Hằng số Pháp y Định dạng ZIP [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH0-DOC-001`
 - **Mục tiêu:** Định nghĩa toàn bộ hằng số đặc tả PKWARE và các dataclass có kiểu dữ liệu chặt chẽ biểu diễn các khối nhị phân.
@@ -95,7 +95,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Các module models, constants, exceptions hoàn chỉnh.
 - **Tiêu chí nghiệm thu (DoD):** `mypy src/zip_fingerprint/models.py` không có lỗi cảnh báo kiểu dữ liệu.
 
-#### `PH1-CORE-002`: Xây dựng Trình Phân tích Luồng Nhị phân Nguyên thủy (Binary Stream Parser)
+#### `PH1-CORE-002`: Xây dựng Trình Phân tích Luồng Nhị phân Nguyên thủy (Binary Stream Parser) [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH1-CORE-001`
 - **Mục tiêu:** Đọc trực tiếp byte thô của tệp ZIP, định vị EOCD từ cuối file, đọc toàn bộ CDH và ánh xạ tới từng LFH tương ứng.
@@ -112,7 +112,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Đối tượng `ZipArchiveRecord` chứa cấu trúc nhị phân đầy đủ.
 - **Tiêu chí nghiệm thu (DoD):** Đọc thành công kho lưu trữ trong RAM fixture, trích xuất đúng tên file, CRC32, và kích thước; ném `CorruptZipError` khi tệp bị cắt cụt.
 
-#### `PH1-CORE-003`: Xây dựng Bộ Giải mã Chuyên sâu Trường Mở rộng (Extra Fields Decoder)
+#### `PH1-CORE-003`: Xây dựng Bộ Giải mã Chuyên sâu Trường Mở rộng (Extra Fields Decoder) [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH1-CORE-002`
 - **Mục tiêu:** Phân tách chuỗi byte thô của Extra Field thành danh sách các khối `ExtraFieldBlock` và giải mã chi tiết dữ liệu ngữ nghĩa.
@@ -133,9 +133,9 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ---
 
-### Giai đoạn 2: Trích xuất Đặc trưng & Lược đồ Dấu vân tay Chuẩn tắc (Extraction & Fingerprinting)
+### Giai đoạn 2: Trích xuất Đặc trưng & Lược đồ Dấu vân tay Chuẩn tắc (Extraction & Fingerprinting) [HIỆN TẠI]
 
-#### `PH2-FEAT-001`: Xây dựng Bộ Trích xuất Vector Đặc trưng Phân tầng (Structural Feature Extractor)
+#### `PH2-FEAT-001`: Xây dựng Bộ Trích xuất Vector Đặc trưng Phân tầng (Structural Feature Extractor) [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH1-CORE-003`
 - **Mục tiêu:** Tổng hợp toàn bộ các đặc trưng cấu trúc từ `ZipArchiveRecord` thành vector đặc trưng phân cấp theo đúng Mục 3 của bài báo.
