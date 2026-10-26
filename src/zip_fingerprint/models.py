@@ -80,6 +80,10 @@ class ZipArchiveRecord:
     central_directory_headers: List[CentralDirectoryHeaderRecord] = field(default_factory=list)
     local_file_headers: List[LocalFileHeaderRecord] = field(default_factory=list)
 
+    def has_data_descriptor(self) -> bool:
+        """Check if any local file header has a data descriptor (Um et al. 2021 Section 3.3.2)."""
+        return any(lfh.has_data_descriptor for lfh in self.local_file_headers)
+
 
 @dataclass
 class CandidateEnvironment:

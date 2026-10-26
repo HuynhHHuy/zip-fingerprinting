@@ -11,6 +11,9 @@ from zip_fingerprint.constants import (
     EXTRA_HEADER_UNIX_UID_GID,
     EXTRA_HEADER_UNIX_5855,
     EXTRA_HEADER_UNICODE_PATH,
+    NANO_PATTERN_WINZIP,
+    NANO_PATTERN_FULL,
+    NANO_PATTERN_ZERO,
 )
 from zip_fingerprint.models import ExtraFieldBlock
 
@@ -39,6 +42,19 @@ def get_filetime_nanoseconds_fraction(filetime: int) -> int:
     return fraction_100ns * 100
 
 
+def get_filetime_nano_pattern(filetime: int) -> str:
+    """Classify nanosecond fraction pattern as 'fff0000', 'fffffff', or '0000000' (Um et al. Section 3.1.1)."""
+    if filetime <= 0:
+        return NANO_PATTERN_ZERO
+    fraction_ticks = filetime % WINDOWS_TICK
+    if fraction_ticks == 0:
+        return NANO_PATTERN_ZERO
+    # WinZip truncates 100ns precision to milliseconds (10,000 ticks), resulting in 4 trailing decimal zeros (.fff0000)
+    if fraction_ticks % 10_000 == 0:
+        return NANO_PATTERN_WINZIP
+    return NANO_PATTERN_FULL
+
+
 @dataclass
 class DecodedNTFS:
     """Decoded 0x000A NTFS extra field (Table 1)."""
@@ -50,6 +66,7 @@ class DecodedNTFS:
     ctime: Optional[datetime]
     mtime_nano_hex: str  # Last 7 hex digits representing nanoseconds precision
     is_winzip_nano_pattern: bool  # True if ends with '0000' (fff0000)
+    nano_pattern: str = NANO_PATTERN_FULL  # "fff0000", "fffffff", or "0000000"
 
 
 @dataclass
@@ -139,17 +156,10 @@ class ExtraFieldParser:
         mtime_ft, atime_ft, ctime_ft = struct.unpack_from("<QQQ", raw_data, 8)
 
         # In Paper Table 6 & Section 3.1.1:
-        # WinZip zero-pads the last 4 hex characters of nanoseconds fraction ('fff0000')
-        # We check if low 16 bits of FILETIME are 0, or formatted nano hex ends in '0000'
-        # In FILETIME, each tick is 100ns. 10,000 ticks = 1 millisecond.
-        # WinZip often truncates precision to milliseconds, making the lowest digits 0.
+        # WinZip zero-pads the last 4 characters of fractional nanoseconds ('fff0000')
         mtime_hex = f"{mtime_ft:016x}"
-        # Extract fractional nanoseconds pattern
-        nano_val = get_filetime_nanoseconds_fraction(mtime_ft)
-        nano_str = f"{nano_val:09d}"
-
-        # WinZip signature: lower part has four trailing zeros in hex representation of nanoseconds
-        is_winzip = mtime_hex.endswith("0000") or (mtime_ft % 10000 == 0 and mtime_ft != 0)
+        pattern = get_filetime_nano_pattern(mtime_ft)
+        is_winzip = (pattern == NANO_PATTERN_WINZIP) or (mtime_hex.endswith("0000") and mtime_ft != 0)
 
         return DecodedNTFS(
             mtime_filetime=mtime_ft,
@@ -160,6 +170,7 @@ class ExtraFieldParser:
             ctime=filetime_to_datetime(ctime_ft),
             mtime_nano_hex=mtime_hex[-7:],
             is_winzip_nano_pattern=is_winzip,
+            nano_pattern=pattern,
         )
 
     @staticmethod

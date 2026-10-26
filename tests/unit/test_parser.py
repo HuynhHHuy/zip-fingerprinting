@@ -9,6 +9,7 @@ from zip_fingerprint.constants import (
     SIG_LOCAL_FILE_HEADER,
     SIG_CENTRAL_DIRECTORY_HEADER,
     SIG_END_OF_CENTRAL_DIRECTORY,
+    SIG_DATA_DESCRIPTOR,
 )
 
 
@@ -36,6 +37,92 @@ def test_parser_with_minimal_valid_zip(minimal_zip_bytes: bytes) -> None:
     assert lfh.file_name == "test.txt"
     assert lfh.crc32 == 0x12345678
     assert not lfh.has_data_descriptor
+    assert not archive.has_data_descriptor()
+
+
+def test_parser_context_manager(minimal_zip_bytes: bytes) -> None:
+    """Test ZipBinaryParser used as context manager."""
+    with ZipBinaryParser(minimal_zip_bytes) as parser:
+        archive = parser.parse()
+        assert archive.eocd.total_entries == 1
+
+
+def test_parser_with_data_descriptor() -> None:
+    """Test parsing a ZIP with Data Descriptor (bit 3 set and signature after payload)."""
+    buf = io.BytesIO()
+    filename = b"streamed.txt"
+    data = b"Streaming Deflate Content"
+    crc = 0x55667788
+
+    # LFH: crc32, compressed_size, uncompressed_size set to 0, Bit 3 (0x0008) set
+    lfh_offset = buf.tell()
+    buf.write(
+        struct.pack(
+            "<IHHHHHIIIHH",
+            SIG_LOCAL_FILE_HEADER,
+            20,
+            0x0008,  # GP bit flag 3 (Data Descriptor present)
+            0,
+            0x5000,
+            0x5000,
+            0,  # zeroed in LFH
+            0,  # zeroed in LFH
+            0,  # zeroed in LFH
+            len(filename),
+            0,
+        )
+    )
+    buf.write(filename)
+    buf.write(data)
+
+    # Data Descriptor: 16 bytes (SIG 4 + CRC 4 + CompSize 4 + UncompSize 4)
+    buf.write(struct.pack("<IIII", SIG_DATA_DESCRIPTOR, crc, len(data), len(data)))
+
+    # CDH: contains actual CRC and sizes
+    cd_offset = buf.tell()
+    buf.write(
+        struct.pack(
+            "<IHHHHHHIIIHHHHHII",
+            SIG_CENTRAL_DIRECTORY_HEADER,
+            0x0314,  # HostOS = Unix
+            20,
+            0x0008,  # GP bit flag 3
+            0,
+            0x5000,
+            0x5000,
+            crc,
+            len(data),
+            len(data),
+            len(filename),
+            0,
+            0,
+            0,
+            0,
+            0,
+            lfh_offset,
+        )
+    )
+    buf.write(filename)
+    cd_size = buf.tell() - cd_offset
+
+    # EOCD
+    buf.write(
+        struct.pack(
+            "<IHHHHIIH",
+            SIG_END_OF_CENTRAL_DIRECTORY,
+            0,
+            0,
+            1,
+            1,
+            cd_size,
+            cd_offset,
+            0,
+        )
+    )
+
+    archive = ZipBinaryParser(buf.getvalue()).parse()
+    assert archive.local_file_headers[0].has_data_descriptor is True
+    assert archive.has_data_descriptor() is True
 
 
 def test_parser_with_extra_fields() -> None:
