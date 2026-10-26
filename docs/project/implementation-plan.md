@@ -72,9 +72,9 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Nội dung công việc:**
   1. Kiểm tra cấu trúc repo tác giả: các tệp mẫu ZIP, cấu trúc code/parser (nếu có).
   2. Trích xuất các mẫu ZIP đối chứng do tác giả chuẩn bị (nếu có trên repo) để đưa vào kiểm thử chéo.
-  3. Ghi nhận nhật ký đối chiếu vào `docs/research/source-audit.md`.
+  3. Ghi nhận nhật ký đối chiếu vào `docs/research/paper-mapping.md`.
 - **Đầu vào:** URL `https://github.com/um2inji/PKZIP`.
-- **Tệp tạo/chỉnh sửa:** `docs/research/source-audit.md`.
+- **Tệp tạo/chỉnh sửa:** `docs/research/paper-mapping.md`.
 - **Đầu ra:** Báo cáo kiểm kê mã nguồn tác giả và danh mục mẫu đối chứng.
 - **Tiêu chí nghiệm thu (DoD):** Làm rõ được những gì repo tác giả đã công bố và tích hợp mẫu đối chứng vào bộ test.
 

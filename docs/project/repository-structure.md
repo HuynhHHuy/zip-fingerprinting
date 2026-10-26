@@ -13,9 +13,7 @@ zip-fingerprinting/
 ├── .gitignore                          # Cấu hình loại trừ cache, môi trường ảo, dữ liệu nhị phân lớn
 ├── README.md                           # Giới thiệu dự án, hướng dẫn cài đặt và sử dụng
 ├── pyproject.toml                      # Cấu hình gói Python, dependencies (pydantic), pytest, mypy, black
-├── citation-355132401.ris              # Bản ghi trích dẫn RIS chính thức
-├── docs.txt                            # Liên kết DOI bài báo
-├── File fingerprinting of the ZIP format for identifying and tracking provenance.pdf  # Bản PDF toàn văn
+├── File fingerprinting of the ZIP format for identifying and tracking provenance.pdf  # Bản PDF toàn văn bài báo gốc
 │
 ├── src/                                # Gói mã nguồn chính (Production Source Code)
 │   └── zip_fingerprint/                # Package `zip_fingerprint`
@@ -87,7 +85,8 @@ zip-fingerprinting/
     │   ├── repository-structure.md     # Bản giải trình cấu trúc kho lưu trữ này
     │   └── open-questions.md           # Nhật ký quyết định kiến trúc và giải quyết vấn đề
     └── research/
-        ├── source-audit.md             # Báo cáo kiểm kê nguồn tài liệu
+        ├── citation-355132401.ris      # Bản ghi trích dẫn chuẩn RIS
+        ├── comprehensive-paper-guide.md# Cẩm nang phân tích bài báo & hướng dẫn kỹ thuật toàn diện
         ├── paper-mapping.md            # Ánh xạ toàn diện nội dung bài báo sang kỹ thuật
         ├── reproduction-methodology.md # Phương pháp luận tái hiện từng bước
         ├── experimental-design.md      # Thiết kế dữ liệu và kiểm soát biến thực nghiệm
