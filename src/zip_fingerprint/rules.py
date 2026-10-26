@@ -6,7 +6,6 @@ Encodes Table 6 (Windows), Table 7 (macOS and Ubuntu), and Flowchart/Algorithms 
 from typing import List, Dict, Any
 
 # Ground truth fingerprint rules table
-RULES_TABLE_WINDOWS = {}
-RULES_TABLE_MACOS = {}
-RULES_TABLE_UBUNTU = {}
-
+RULES_TABLE_WINDOWS: Dict[str, Any] = {}
+RULES_TABLE_MACOS: Dict[str, Any] = {}
+RULES_TABLE_UBUNTU: Dict[str, Any] = {}

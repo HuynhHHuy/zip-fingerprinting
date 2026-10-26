@@ -3,7 +3,8 @@
 import io
 import struct
 from pathlib import Path
-from typing import BinaryIO, List, Union
+from types import TracebackType
+from typing import BinaryIO, List, Optional, Type, Union
 
 from zip_fingerprint.constants import (
     SIG_LOCAL_FILE_HEADER,
@@ -20,43 +21,40 @@ from zip_fingerprint.models import (
     EndOfCentralDirectoryRecord,
     ZipArchiveRecord,
 )
+from zip_fingerprint.extra_fields import ExtraFieldParser
 from zip_fingerprint.exceptions import CorruptZipError
 
 
 def parse_raw_extra_field_blocks(raw_bytes: bytes) -> List[ExtraFieldBlock]:
-    """Parse raw extra field buffer into individual ExtraFieldBlock entries.
-    
-    Each block consists of:
-    - 2 bytes Header ID
-    - 2 bytes Data Size
-    - Data Size bytes of payload
-    """
-    blocks: List[ExtraFieldBlock] = []
-    idx = 0
-    total_len = len(raw_bytes)
-
-    while idx + 4 <= total_len:
-        header_id, data_size = struct.unpack_from("<HH", raw_bytes, idx)
-        idx += 4
-        payload = raw_bytes[idx : idx + data_size]
-        if len(payload) < data_size:
-            # Truncated extra field block, take whatever remains
-            blocks.append(ExtraFieldBlock(header_id=header_id, data_size=len(payload), raw_data=payload))
-            break
-        blocks.append(ExtraFieldBlock(header_id=header_id, data_size=data_size, raw_data=payload))
-        idx += data_size
-
-    return blocks
+    """Parse raw extra field buffer into individual ExtraFieldBlock entries."""
+    return ExtraFieldParser.parse_blocks(raw_bytes)
 
 
 class ZipBinaryParser:
-    """Parses raw ZIP file binary structures (EOCD, CDH, LFH) deterministically."""
+    """Zero-extraction binary parser reading only headers, metadata, and extra fields.
+    
+    Adheres strictly to Minji Um et al. (2021) Section 3:
+    - Traverses from EOCD -> Central Directory -> Local File Headers
+    - Does NOT decompress payload (preserving payload integrity and forensic soundness)
+    - Detects Data Descriptor signatures and bit flags
+    """
 
-    def __init__(self, file_path_or_bytes: Union[str, Path, bytes]):
+    def __init__(self, file_path_or_bytes: Union[str, Path, bytes, BinaryIO]):
+        self.stream: BinaryIO
+        self.file_size: int
+        self._should_close = False
+        self.file_path = "<memory>"
+
         if isinstance(file_path_or_bytes, bytes):
-            self.stream: BinaryIO = io.BytesIO(file_path_or_bytes)
-            self.file_path = "<memory>"
+            self.stream = io.BytesIO(file_path_or_bytes)
             self.file_size = len(file_path_or_bytes)
+        elif hasattr(file_path_or_bytes, "read") and hasattr(file_path_or_bytes, "seek"):
+            self.stream = file_path_or_bytes  # type: ignore[assignment]
+            current_pos = self.stream.tell()
+            self.stream.seek(0, io.SEEK_END)
+            self.file_size = self.stream.tell()
+            self.stream.seek(current_pos)
+            self.file_path = getattr(file_path_or_bytes, "name", "<stream>")
             self._should_close = False
         else:
             self.file_path = str(file_path_or_bytes)
@@ -70,7 +68,12 @@ class ZipBinaryParser:
     def __enter__(self) -> "ZipBinaryParser":
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
         self.close()
 
     def close(self) -> None:
@@ -273,6 +276,16 @@ class ZipBinaryParser:
             # Bit 3 of general purpose bit flag indicates CRC and sizes are zero in LFH
             # and placed in data descriptor following compressed data.
             has_data_desc = bool(gp_bit_flag & 0x0008)
+
+            # Also scan for Data Descriptor signature (0x08074B50) immediately following compressed data
+            data_end_offset = (
+                current_offset + 30 + file_name_length + extra_field_length + cdh.compressed_size
+            )
+            if data_end_offset + 4 <= self.file_size:
+                self.stream.seek(data_end_offset)
+                sig_candidate = self.stream.read(4)
+                if sig_candidate == struct.pack("<I", SIG_DATA_DESCRIPTOR):
+                    has_data_desc = True
 
             local_headers.append(
                 LocalFileHeaderRecord(

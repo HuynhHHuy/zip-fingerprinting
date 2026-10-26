@@ -4,6 +4,11 @@ import struct
 from datetime import datetime, timezone
 import pytest
 
+from zip_fingerprint.constants import (
+    NANO_PATTERN_WINZIP,
+    NANO_PATTERN_FULL,
+    NANO_PATTERN_ZERO,
+)
 from zip_fingerprint.extra_fields import (
     ExtraFieldParser,
     DecodedNTFS,
@@ -12,6 +17,7 @@ from zip_fingerprint.extra_fields import (
     DecodedUnix5855,
     DecodedUnicodePath,
     filetime_to_datetime,
+    get_filetime_nano_pattern,
 )
 from zip_fingerprint.models import ExtraFieldBlock
 
@@ -35,23 +41,39 @@ def test_split_blocks() -> None:
 
 def test_decode_ntfs_normal() -> None:
     """Test decoding 0x000A NTFS field with realistic Windows FILETIME."""
-    # 2021-01-01 00:00:00 UTC corresponds to FILETIME: 132539328000000000
-    ft = 132539328000000000
-    raw = struct.pack("<IHHQQQ", 0, 0x0001, 24, ft, ft, ft)
+    # 2021-01-01 00:00:00 UTC corresponds to FILETIME: 132539328000000000 (zero fractional part)
+    ft_zero = 132539328000000000
+    raw_zero = struct.pack("<IHHQQQ", 0, 0x0001, 24, ft_zero, ft_zero, ft_zero)
+    decoded_zero = ExtraFieldParser.decode_ntfs(raw_zero)
+    assert decoded_zero is not None
+    assert decoded_zero.mtime_filetime == ft_zero
+    assert decoded_zero.mtime == datetime(2021, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+    assert decoded_zero.nano_pattern == NANO_PATTERN_ZERO
 
-    decoded = ExtraFieldParser.decode_ntfs(raw)
-    assert decoded is not None
-    assert decoded.mtime_filetime == ft
-    assert decoded.mtime == datetime(2021, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-    # Ends with multiple zeros -> is_winzip
-    assert decoded.is_winzip_nano_pattern is True
+    # WinZip pattern: rounded to milliseconds (last 4 decimal digits are 0000: .1470000)
+    # 1 tick = 100ns, 10,000 ticks = 1ms. 147ms = 1,470,000 ticks.
+    ft_winzip = 132539328000000000 + 1_470_000
+    raw_winzip = struct.pack("<IHHQQQ", 0, 0x0001, 24, ft_winzip, ft_winzip, ft_winzip)
+    decoded_winzip = ExtraFieldParser.decode_ntfs(raw_winzip)
+    assert decoded_winzip is not None
+    assert decoded_winzip.is_winzip_nano_pattern is True
+    assert decoded_winzip.nano_pattern == NANO_PATTERN_WINZIP
 
-    # Test realistic high precision non-zero nanoseconds
+    # High precision non-zero nanoseconds (WinRAR / 7-zip / Bandizip)
     ft_precise = 132539328001234567
     raw_precise = struct.pack("<IHHQQQ", 0, 0x0001, 24, ft_precise, ft_precise, ft_precise)
     decoded_precise = ExtraFieldParser.decode_ntfs(raw_precise)
     assert decoded_precise is not None
     assert decoded_precise.is_winzip_nano_pattern is False
+    assert decoded_precise.nano_pattern == NANO_PATTERN_FULL
+
+
+def test_get_filetime_nano_pattern() -> None:
+    """Test nanosecond pattern classification helper."""
+    assert get_filetime_nano_pattern(0) == NANO_PATTERN_ZERO
+    assert get_filetime_nano_pattern(132539328000000000) == NANO_PATTERN_ZERO
+    assert get_filetime_nano_pattern(132539328001470000) == NANO_PATTERN_WINZIP
+    assert get_filetime_nano_pattern(132539328001234567) == NANO_PATTERN_FULL
 
 
 def test_decode_extended_timestamp_lengths() -> None:
