@@ -79,7 +79,7 @@ python -m pytest
 Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-plan.md`](docs/project/implementation-plan.md).
 - **Giai đoạn 0:** Thiết lập dự án & Khởi tạo cấu trúc thư mục `[HOÀN THÀNH]`
 - **Giai đoạn 1:** Triển khai Bộ phân tích nhị phân cốt lõi (Parser & Extra fields) `[HOÀN THÀNH]`
-- **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định
+- **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3)
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2)
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
