@@ -133,7 +133,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ---
 
-### Giai đoạn 2: Trích xuất Đặc trưng & Lược đồ Dấu vân tay Chuẩn tắc (Extraction & Fingerprinting) [HIỆN TẠI]
+### Giai đoạn 2: Trích xuất Đặc trưng & Lược đồ Dấu vân tay Chuẩn tắc (Extraction & Fingerprinting) [HOÀN THÀNH]
 
 #### `PH2-FEAT-001`: Xây dựng Bộ Trích xuất Vector Đặc trưng Phân tầng (Structural Feature Extractor) [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
@@ -163,7 +163,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Dictionary đặc trưng cấu trúc đầy đủ.
 - **Tiêu chí nghiệm thu (DoD):** Trích xuất đúng tất cả các trường dữ liệu theo Bảng 6 và Bảng 7 của bài báo.
 
-#### `PH2-FEAT-002`: Xây dựng Lược đồ JSON Fingerprint & Băm Cấu trúc Xác định (Canonical Hasher)
+#### `PH2-FEAT-002`: Xây dựng Lược đồ JSON Fingerprint & Băm Cấu trúc Xác định (Canonical Hasher) [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH2-FEAT-001`
 - **Mục tiêu:** Định nghĩa lược đồ JSON tiêu chuẩn `zip_fingerprint_v1.0` và thuật toán sinh mã băm cấu trúc xác định SHA-256.
