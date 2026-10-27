@@ -187,7 +187,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ### Giai đoạn 3: Động cơ Phân loại Nguồn gốc Tự động (Automated Classifier Engine)
 
-#### `PH3-RULE-001`: Xây dựng Cơ sở Tri thức & Ma trận Luật Bảng 6 & Bảng 7
+#### `PH3-RULE-001`: Xây dựng Cơ sở Tri thức & Ma trận Luật Bảng 6 & Bảng 7 [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH2-FEAT-001`
 - **Mục tiêu:** Chuyển hóa toàn bộ dữ liệu thực nghiệm trong Bảng 6 (Windows) và Bảng 7 (macOS & Ubuntu) thành cơ sở luật có thể tra cứu và so khớp tự động.
