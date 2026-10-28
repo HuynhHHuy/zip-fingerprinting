@@ -185,7 +185,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ---
 
-### Giai đoạn 3: Động cơ Phân loại Nguồn gốc Tự động (Automated Classifier Engine)
+### Giai đoạn 3: Động cơ Phân loại Nguồn gốc Tự động (Automated Classifier Engine) [HOÀN THÀNH TRIỂN KHAI]
 
 #### `PH3-RULE-001`: Xây dựng Cơ sở Tri thức & Ma trận Luật Bảng 6 & Bảng 7 [HOÀN THÀNH]
 - **Mức độ ưu tiên:** P0
@@ -213,7 +213,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Bảng luật Python có cấu trúc rõ ràng.
 - **Tiêu chí nghiệm thu (DoD):** Phản ánh đúng 100% từng ô dữ liệu của Bảng 6 và Bảng 7.
 
-#### `PH3-CLF-002`: Triển khai Bộ Phân loại Tự động 2 Tầng (Lưu đồ Hình 7 & 3 Thuật toán Hình 8)
+#### `PH3-CLF-002`: Triển khai Bộ Phân loại Tự động 2 Tầng (Lưu đồ Hình 7 & 3 Thuật toán Hình 8) [HOÀN THÀNH TRIỂN KHAI]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH3-RULE-001`
 - **Mục tiêu:** Tái hiện chính xác lưu đồ Hình 7 và 3 thuật toán trong Hình 8 của bài báo.
@@ -239,6 +239,12 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/classifier.py`, `tests/integration/test_classifier_algorithms.py`.
 - **Đầu ra:** Danh sách các môi trường ứng viên có xếp hạng điểm số tin cậy và danh sách luật đã khớp.
 - **Tiêu chí nghiệm thu (DoD):** Phân loại chính xác 100% các mẫu mô phỏng lý thuyết tương ứng với 12 cấu hình trong Bảng 6 & 7.
+- **Kết quả kiểm chứng 28/10/2026:** Đã thay test placeholder bằng các test cho ba
+  thuật toán và cả 12 profile lý thuyết, kèm pipeline parser → extractor → classifier.
+  Giữ các ứng viên đồng hạng khi đặc trưng trùng nhau (ví dụ Windows 7-Zip/Bandizip
+  với tên ASCII); không diễn giải DoD là luôn xác định duy nhất nguồn gốc.
+  Điểm phụ trợ là chính sách heuristic của dự án vì bài báo không định nghĩa công
+  thức số. Đánh giá accuracy trên corpus ZIP thực tế vẫn thuộc `PH7-EVAL-002`.
 
 ---
 
