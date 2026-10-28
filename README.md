@@ -95,9 +95,10 @@ Trong **Actions → chọn lần chạy → Artifacts**, tải
 Báo cáo được giữ trong 7 ngày và vẫn được tải lên khi test thất bại nếu đã
 được sinh; lần chạy bị hủy có thể không có artifact.
 
-Coverage hiện chỉ để theo dõi, chưa đặt ngưỡng bắt buộc. Hai test integration
-cho provenance và security hiện còn là placeholder. Classifier đã có test cho
-12 profile lý thuyết, nhưng CI xanh chưa chứng minh độ chính xác trên bộ ZIP
+Coverage hiện chỉ để theo dõi, chưa đặt ngưỡng bắt buộc. Test integration cho security
+hiện còn là placeholder. Classifier đã có test cho 12 profile lý thuyết và provenance
+tracker đã có test tích hợp trên ZIP dựng từ byte, nhưng CI xanh chưa chứng minh độ
+chính xác trên bộ ZIP thực tế hoặc kết quả tái hiện toàn bộ bài báo.
 thực tế hoặc kết quả tái hiện toàn bộ bài báo.
 
 ### 3.5 Bộ phân loại nguồn gốc
@@ -117,6 +118,25 @@ không đồng nhất sẽ trả `[]`. Giá trị không quan sát được khô
 chứng phủ định. Profile ASCII của Windows 7-Zip và Bandizip có thể đồng hạng;
 cần thêm bằng chứng để phân biệt. CLI chưa được nối với classifier trong bước này.
 
+### 3.6 Bộ truy vết đa nguồn gốc
+
+`ProvenanceTracker(archive).analyze()` nhận `ZipArchiveRecord` và trả `ProvenanceReport`
+(`analyze_modifications()` trả dictionary JSON tương ứng), không cần giải nén:
+
+- Mỗi cặp CDH/LFH được lấy vân tay và phân loại độc lập bằng `AutomatedClassifier`.
+  Các entry được gom nhóm khi còn ít nhất một môi trường tương thích chung; biến thể
+  `0x7075` do tên non-ASCII của cùng một công cụ không bị coi là nguồn thứ hai.
+- **Case 1** (vân tay hỗn hợp): nhiều nhóm không tương thích, host OS lẫn lộn hoặc cấu
+  trúc ngoài catalog khác các entry còn lại.
+- **Case 2** (ghi đè dây chuyền): LFH của một entry khớp profile này còn CDH khớp profile
+  khác (ví dụ Extra Field bị xóa khỏi CDH sau thao tác Delete bằng SW2).
+- Chỉ bằng chứng trọng số cao bật `is_multi_provenance`; mẫu nanosecond lẫn lộn chỉ là
+  chỉ báo `SUBSIDIARY` (`requires_further_analysis`). Vai trò SW1/SW2 là suy luận heuristic
+  theo offset LFH nhỏ nhất.
+
+Không phát hiện được khi SW2 ghi lại toàn bộ LFH và CDH, hoặc khi hai profile trùng đặc
+trưng (ví dụ Windows 7-Zip và Bandizip với tên ASCII). CLI chưa được nối trong bước này.
+
 ---
 
 ## 4. Lộ trình Thực hiện và Tiến độ
@@ -126,7 +146,7 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 1:** Triển khai Bộ phân tích nhị phân cốt lõi (Parser & Extra fields) `[HOÀN THÀNH]`
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
-- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2)
+- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH — kiểm thử trên mẫu dựng từ byte; PH4-PROV-002 chưa thực hiện]`
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
