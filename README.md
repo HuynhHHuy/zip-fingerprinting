@@ -72,6 +72,33 @@ pip install -e ".[dev]"
 python -m pytest
 ```
 
+### 3.4 Continuous Integration (CI)
+
+GitHub Actions chạy workflow `CI` khi push vào `main`, khi mở hoặc cập nhật
+pull request vào `main`, và khi chạy thủ công bằng **Actions → CI → Run workflow**
+(sau khi workflow có trên nhánh mặc định).
+
+Workflow kiểm tra bốn tổ hợp: Ubuntu và Windows, mỗi hệ điều hành với Python
+3.10 và 3.11. Mỗi job cài package, kiểm tra phụ thuộc và CLI, rồi chạy toàn bộ
+bộ test. Có thể chạy các lệnh tương đương trong môi trường Python riêng tại máy:
+
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+python -m pip check
+zip-fingerprint --help
+python -m pytest --cov=zip_fingerprint --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=junit.xml
+```
+
+Trong **Actions → chọn lần chạy → Artifacts**, tải
+`test-reports-<os>-py<python>` để xem `coverage.xml` và `junit.xml`.
+Báo cáo được giữ trong 7 ngày và vẫn được tải lên khi test thất bại nếu đã
+được sinh; lần chạy bị hủy có thể không có artifact.
+
+Coverage hiện chỉ để theo dõi, chưa đặt ngưỡng bắt buộc. Bốn test integration
+và benchmark hiện là placeholder, nên CI xanh chưa chứng minh các chức năng
+classifier, provenance, security hoặc kết quả tái hiện bài báo đã được xác thực.
+
 ---
 
 ## 4. Lộ trình Thực hiện và Tiến độ
