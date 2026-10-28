@@ -95,9 +95,27 @@ Trong **Actions → chọn lần chạy → Artifacts**, tải
 Báo cáo được giữ trong 7 ngày và vẫn được tải lên khi test thất bại nếu đã
 được sinh; lần chạy bị hủy có thể không có artifact.
 
-Coverage hiện chỉ để theo dõi, chưa đặt ngưỡng bắt buộc. Bốn test integration
-và benchmark hiện là placeholder, nên CI xanh chưa chứng minh các chức năng
-classifier, provenance, security hoặc kết quả tái hiện bài báo đã được xác thực.
+Coverage hiện chỉ để theo dõi, chưa đặt ngưỡng bắt buộc. Hai test integration
+cho provenance và security hiện còn là placeholder. Classifier đã có test cho
+12 profile lý thuyết, nhưng CI xanh chưa chứng minh độ chính xác trên bộ ZIP
+thực tế hoặc kết quả tái hiện toàn bộ bài báo.
+
+### 3.5 Bộ phân loại nguồn gốc
+
+`AutomatedClassifier.classify(features)` nhận dictionary từ
+`StructuralFeatureExtractor.extract()` và trả danh sách `CandidateEnvironment`:
+
+- Algorithm 1 lọc theo Data descriptor, cặp Extra Fields LFH/CDH và độ dài `0x5455`.
+- Algorithm 2 lọc theo host OS. Nếu còn duy nhất một profile, trả `HIGH`, điểm `1.0`
+  trong phạm vi bộ luật được hỗ trợ.
+- Algorithm 3 xếp hạng các profile còn lại bằng bằng chứng phụ trợ; giữ các ứng
+  viên đồng hạng và ghi lại bằng chứng khớp/mâu thuẫn. Điểm `SUBSIDIARY` là điểm
+  heuristic, không phải xác suất được hiệu chuẩn.
+
+Không đủ bằng chứng cấu trúc, OS không được hỗ trợ, archive rỗng hoặc host OS
+không đồng nhất sẽ trả `[]`. Giá trị không quan sát được không được tính là bằng
+chứng phủ định. Profile ASCII của Windows 7-Zip và Bandizip có thể đồng hạng;
+cần thêm bằng chứng để phân biệt. CLI chưa được nối với classifier trong bước này.
 
 ---
 
@@ -107,7 +125,7 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 0:** Thiết lập dự án & Khởi tạo cấu trúc thư mục `[HOÀN THÀNH]`
 - **Giai đoạn 1:** Triển khai Bộ phân tích nhị phân cốt lõi (Parser & Extra fields) `[HOÀN THÀNH]`
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
-- **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3)
+- **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2)
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
