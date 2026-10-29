@@ -150,3 +150,4 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
+- **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]
