@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Tiến Độ Nghiên Cứu: ZIP Fingerprinting & Provenance Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-card: rgba(18, 26, 43, 0.85);
+      --bg-card-hover: rgba(26, 38, 64, 0.9);
+      --border-color: rgba(64, 120, 255, 0.2);
+      --border-active: #3b82f6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-accent: #38bdf8;
+      --accent-blue: #2563eb;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-rose: #f43f5e;
+      --glow-blue: 0 0 25px rgba(56, 189, 248, 0.25);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* TOP PROGRESS BAR */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      box-shadow: 0 0 12px var(--accent-cyan);
+      transition: width 0.4s ease;
+    }
+
+    /* HEADER */
+    header {
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 14, 23, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      padding: 4px 10px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .slide-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .slide-indicator span {
+      color: var(--text-accent);
+      font-weight: 700;
+    }
+
+    /* SLIDE STAGE */
+    main.presentation-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 40px;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      width: min(1200px, 92vw);
+      height: min(650px, 78vh);
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 44px 50px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* SLIDE HEADER & TYPOGRAPHY */
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .tag-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+    }
+
+    .slide-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    /* SCROLLBAR */
+    .slide-content::-webkit-scrollbar {
+      width: 5px;
+    }
+    .slide-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    /* GRID & CARDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title .icon {
+      font-size: 16px;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-done {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-progress {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-planned {
+      background: rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    /* CODE & CODEBLOCK */
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .code-badge {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* TABLES */
+    .table-container {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-accent);
+      padding: 12px 14px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    /* STAT CARD */
+    .stat-box {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.05));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* TIMELINE & PHASE LIST */
+    .phase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .phase-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .phase-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .phase-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .phase-badge-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-accent);
+      min-width: 65px;
+    }
+
+    .phase-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .phase-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* FOOTER & NAVIGATION CONTROLS */
+    footer {
+      padding: 16px 40px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      z-index: 50;
+    }
+
+    .keyboard-hint {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-main);
+    }
+
+    /* NAV BUTTONS (2 NÚT TRÁI PHẢI TĂNG LÙI TRANG THEO YÊU CẦU) */
+    .nav-buttons-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 26px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(6, 182, 212, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 30px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.6), rgba(6, 182, 212, 0.4));
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-nav:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-nav .arrow {
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    #btn-prev:hover:not(:disabled) .arrow {
+      transform: translateX(-4px);
+    }
+
+    #btn-next:hover:not(:disabled) .arrow {
+      transform: translateX(4px);
+    }
+
+    /* SPECIAL SLIDE 1 COVER */
+    .cover-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      padding: 20px 40px;
+    }
+
+    .cover-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 30px;
+      color: var(--accent-cyan);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 24px;
+    }
+
+    .cover-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      max-width: 900px;
+    }
+
+    .cover-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 32px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px 32px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .cover-meta strong {
+      color: var(--text-main);
+    }
+
+    /* HIGHLIGHT BOXES */
+    .highlight-box {
+      background: rgba(37, 99, 235, 0.08);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .highlight-box strong {
+      color: var(--accent-cyan);
+    }
+
+    /* PILL LIST */
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="top-progress-bar"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-badge">UIT FORENSIC LAB</div>
+      <div class="brand-title">Báo Cáo Tiến Độ Nghiên Cứu Khoa Học & Triển Khai</div>
+    </div>
+    <div class="slide-indicator">
+      Trang <span id="current-slide-num">1</span> / <span id="total-slides-num">9</span>
+    </div>
+  </header>
+
+  <!-- SLIDES STAGE -->
+  <main class="presentation-stage">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active" data-slide="1">
+      <div class="cover-content">
+        <div class="cover-tag">🔬 Nghiên Cứu Tái Hiện Độc Lập — Forensic Science International (2021)</div>
+        <h1 class="cover-title">Tái Hiện & Phát Triển Kỹ Thuật ZIP Fingerprinting Để Nhận Diện & Truy Vết Nguồn Gốc Tệp</h1>
+        <p class="cover-subtitle">
+          Báo cáo tiến độ chi tiết quá trình giải mã nhị phân, trích xuất đặc trưng vân tay, thuật toán phân loại tự động 2 tầng và cơ chế phát hiện can thiệp đa nguồn gốc (Multi-provenance).
+        </p>
+        <div class="cover-meta">
+          <div>📄 Bài báo: <strong>Minji Um et al. (FSIDI 2021)</strong></div>
+          <div>💻 Trạng thái: <strong>Phase 0-3 Hoàn Thành (92/92 Tests Pass)</strong></div>
+          <div>🌿 Nhánh Git: <strong>main (Đã đồng bộ mới nhất)</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: BÀI TOÁN & Ý NGHĨA PHÁP Y SỐ -->
+    <div class="slide" data-slide="2">
+      <div class="slide-meta">
+        <span class="tag-category">Bối Cảnh Khoa Học</span>
+      </div>
+      <div class="slide-title">
+        <span>1. Bài Toán & Ý Nghĩa Trong Điều Tra Pháp Y Số</span>
+        <span class="badge badge-done">Khảo Sát Toàn Văn</span>
+      </div>
+      <div class="slide-subtitle">
+        Tệp nén ZIP là vỏ bọc phổ biến trong phát tán mã độc và trích xuất dữ liệu trái phép (Data Exfiltration).
+      </div>
+      <div class="slide-content">
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🎯</span> 4 Câu Hỏi Pháp Lý Trọng Tâm</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Nguồn gốc môi trường tạo:</strong> Tệp được nén từ HĐH nào (Windows, macOS, Ubuntu)? Dùng phần mềm gì (7-Zip, WinRAR, WinZip, Bandizip, native)?</li>
+                <li><strong>Cục bộ hay Ngoại lai:</strong> Tệp ZIP được tạo trên chính máy trạm hay tải về từ Internet / USB bên ngoài?</li>
+                <li><strong>Lịch sử can thiệp (Tampering):</strong> Tệp có bị chèn thêm mã độc, sửa đổi nội dung hay xóa file bởi phần mềm thứ hai (SW2)?</li>
+                <li><strong>Dấu vết giải nén (Decompression):</strong> Xác định phần mềm giải nén dựa trên mốc thời gian BMAC của thư mục trên đĩa NTFS.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">🔍</span> Bản Chất "Dấu Vân Tay Nhị Phân"</div>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">
+                Đặc tả PKWARE (<code class="code-badge">APPNOTE.TXT</code>) để ngỏ nhiều chi tiết cài đặt, dẫn đến việc các phần mềm nén tự do quyết định:
+              </p>
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Có sinh các trường mở rộng (Extra Fields) hay không?</li>
+                <li>Lưu Extra Field ở LFH (đầu file) hay CDH (mục lục cuối)?</li>
+                <li>Thứ tự các Header ID: <code class="code-badge">0x000A</code> đứng trước hay sau <code class="code-badge">0x7075</code>?</li>
+                <li>Độ phân giải Nanosecond: Giữ nguyên 100ns hay làm tròn về <code class="code-badge">fff0000</code> như WinZip?</li>
+                <li>Chuẩn hóa Unicode: NFD (macOS) vs NFC (Windows/Linux).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>💡 Mục tiêu đồ án:</strong> Xây dựng công cụ độc lập phân tích trực tiếp luồng nhị phân (Binary Stream Parser), trích xuất vector đặc trưng vân tay, phân loại tự động và truy vết lịch sử can thiệp tệp theo đúng công trình công bố.
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: CƠ SỞ KHOA HỌC & CẤU TRÚC EXTRA FIELDS -->
+    <div class="slide" data-slide="3">
+      <div class="slide-meta">
+        <span class="tag-category">Kiến Trúc Nhị Phân</span>
+      </div>
+      <div class="slide-title">
+        <span>2. Cơ Sở Cấu Trúc Nhị Phân & Các Trường Mở Rộng</span>
+        <span class="badge badge-done">Đã Mã Hóa</span>
+      </div>
+      <div class="slide-subtitle">
+        Phân tích cấp byte trực tiếp từ luồng nhị phân nguyên thủy (không dùng thư viện <code class="code-badge">zipfile</code> có sẵn).
+      </div>
+      <div class="slide-content">
+        <div class="table-container" style="margin-bottom: 18px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Header ID</th>
+                <th>Tên Trường Mở Rộng</th>
+                <th>Kích Thước</th>
+                <th>Đặc Trưng Pháp Y & Phần Mềm Đi Kèm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="code-badge">0x000A</code></td>
+                <td>NTFS Extra Field</td>
+                <td>32 bytes</td>
+                <td>Lưu Windows FILETIME (Mtime, Atime, Ctime) 100ns. WinZip làm tròn <code class="code-badge">fff0000</code>. WinRAR/7z/Bandizip giữ <code class="code-badge">fffffff</code>.</td>
+              </tr>
+              <tr>
+                <td><code class="code-badge">0x5455</code></td>
+                <td>Extended Timestamp</td>
+                <td>13b / 9b / 5b</td>
+                <td>Chứa 32-bit Unix timestamp. macOS/Ubuntu Compress sinh 13b (cả LFH & CDH); native <code class="code-badge">zip</code> sinh 9b (LFH) và 5b (CDH).</td>
+              </tr>
+              <tr>
+                <td><code class="code-badge">0x7875</code></td>
+                <td>Info-ZIP Unix UID/GID</td>
+                <td>Biến thiên</td>
+                <td>Lưu UID/GID của người tạo. macOS mặc định <code class="code-badge">501/20</code>, Ubuntu mặc định <code class="code-badge">1000/1000</code>.</td>
+              </tr>
+              <tr>
+                <td><code class="code-badge">0x5855</code></td>
+                <td>Bandizip Unix Field</td>
+                <td>16 bytes</td>
+                <td>Đặc thù duy nhất xuất hiện khi Bandizip nén trên hệ điều hành macOS (Bảng 4 bài báo).</td>
+              </tr>
+              <tr>
+                <td><code class="code-badge">0x7075</code></td>
+                <td>Info-ZIP Unicode Path</td>
+                <td>Biến thiên</td>
+                <td>Lưu CRC32 tên gốc + đường dẫn UTF-8 khi tên tệp có ký tự Unicode (tiếng Hàn CP949 / tiếng Việt).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">📖 Nguyên Tắc Đọc Ngược</div>
+            <div class="card-body">Quét 64KB cuối tìm <code class="code-badge">EOCD</code> ➔ Đọc offset Central Directory ➔ Duyệt từng <code class="code-badge">CDH</code> ➔ Trỏ về <code class="code-badge">LFH</code>.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">⚡ Data Descriptor</div>
+            <div class="card-body">Chữ ký <code class="code-badge">0x08074B50</code>: Mặc định bật trên macOS/Ubuntu Compress; tắt hoàn toàn khi dùng tiện ích dòng lệnh <code class="code-badge">zip</code>.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🔄 Chuẩn Hóa Ký Tự</div>
+            <div class="card-body">macOS dùng chuẩn <code class="code-badge">NFD</code> phân rã ký tự có dấu; Windows và Ubuntu duy trì chuẩn <code class="code-badge">NFC</code> nguyên khối.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: TỔNG QUAN TIẾN ĐỘ 8 GIAI ĐOẠN -->
+    <div class="slide" data-slide="4">
+      <div class="slide-meta">
+        <span class="tag-category">Kế Hoạch & Tiến Độ</span>
+      </div>
+      <div class="slide-title">
+        <span>3. Toàn Cảnh Tiến Độ Triển Khai (Lộ Trình 8 Giai Đoạn)</span>
+        <span class="badge badge-progress">Đạt 65% Khối Lượng</span>
+      </div>
+      <div class="slide-subtitle">
+        Dự án được phân rã thành 8 giai đoạn nghiêm ngặt bám sát tài liệu đặc tả <code class="code-badge">implementation-plan.md</code>.
+      </div>
+      <div class="slide-content">
+        <div class="phase-list">
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 0</span>
+              <div>
+                <div class="phase-name">Khởi Tạo Baseline, Cấu Hình Tooling & Kiểm Toán Repo Tác Giả</div>
+                <div class="phase-desc">Môi trường Python 3.10+, Pytest, Flake8, Mypy, đối chiếu kho tham khảo um2inji/PKZIP.</div>
+              </div>
+            </div>
+            <span class="badge badge-done">Hoàn thành</span>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 1</span>
+              <div>
+                <div class="phase-name">Bộ Phân Tích Nhị Phân Cốt Lõi (Binary Parser & Extra Fields)</div>
+                <div class="phase-desc">Xử lý byte-level EOCD, CDH, LFH; giải mã chuyên sâu 5 loại Extra Fields (0x000A, 0x5455, 0x7875, 0x5855, 0x7075).</div>
+              </div>
+            </div>
+            <span class="badge badge-done">Hoàn thành</span>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 2</span>
+              <div>
+                <div class="phase-name">Trích Xuất Đặc Trưng Phân Tầng & Băm Chuẩn Tắc (Canonical Hasher)</div>
+                <div class="phase-desc">Vector đặc trưng High-weight & Subsidiary; định dạng lược đồ JSON v1.0 và tính SHA-256 xác định.</div>
+              </div>
+            </div>
+            <span class="badge badge-done">Hoàn thành</span>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 3</span>
+              <div>
+                <div class="phase-name">Động Cơ Phân Loại Nguồn Gốc Tự Động (Automated Classifier 2 Tầng)</div>
+                <div class="phase-desc">Mã hóa luật Bảng 6 & 7; hiện thực Algorithm 1, 2, 3 phân cấp độ tin cậy HIGH vs SUBSIDIARY.</div>
+              </div>
+            </div>
+            <span class="badge badge-done">Hoàn thành</span>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 4</span>
+              <div>
+                <div class="phase-name">Phân Tích Đa Nguồn Gốc & Lịch Sử Can Thiệp Tệp (Multi-Provenance)</div>
+                <div class="phase-desc">Nhận diện Case 1 (Mixed fingerprints) & Case 2 (Cascading deletion). PH4-001 hoàn thành.</div>
+              </div>
+            </div>
+            <span class="badge badge-progress">Core Xong (80%)</span>
+          </div>
+
+          <div class="phase-item">
+            <div class="phase-info">
+              <span class="phase-badge-id">PHASE 5-7</span>
+              <div>
+                <div class="phase-name">Dấu Vết Giải Nén (BMAC), Dataset Thực Nghiệm & Giao Diện CLI</div>
+                <div class="phase-desc">Thẩm định hiện tượng đảo ngược thời gian, sinh mẫu cây thư mục Hình 5, ma trận nhầm lẫn và CLI.</div>
+              </div>
+            </div>
+            <span class="badge badge-planned">Kế Hoạch Tiếp Theo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: CHI TIẾT PHASE 1 & 2 -->
+    <div class="slide" data-slide="5">
+      <div class="slide-meta">
+        <span class="tag-category">Module Đã Hoàn Thành</span>
+      </div>
+      <div class="slide-title">
+        <span>4. Thành Quả: Binary Parser & Feature Extraction Engine</span>
+        <span class="badge badge-done">Phase 1 & 2 Pass</span>
+      </div>
+      <div class="slide-subtitle">
+        Triển khai trong <code class="code-badge">parser.py</code>, <code class="code-badge">extra_fields.py</code>, <code class="code-badge">extractor.py</code> và <code class="code-badge">hasher.py</code>.
+      </div>
+      <div class="slide-content">
+        <div class="grid-2" style="margin-bottom: 18px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">⚙️</span> Bộ Phân Tích Nhị Phân (Binary Parser)</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Quét EOCD an toàn:</strong> Xử lý biến thiên độ dài comment cuối tệp, chống tấn công tệp nhị phân giả mạo.</li>
+                <li><strong>Ánh xạ chính xác:</strong> Ghép cặp từng <code class="code-badge">CDH</code> với đúng <code class="code-badge">LFH</code> qua trường <code class="code-badge">relative_offset_of_local_header</code>.</li>
+                <li><strong>Phát hiện Data Descriptor:</strong> Kiểm tra Bit 3 General Purpose Flag và đọc khối chữ ký <code class="code-badge">0x08074B50</code>.</li>
+                <li><strong>Bảo toàn thứ tự Header ID:</strong> Giữ nguyên vị trí xuất hiện ban đầu của các trường mở rộng trong Central Directory.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">🧬</span> Băm Cấu Trúc Xác Định (Canonical Hasher)</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Vector đặc trưng phân tầng:</strong> Phân tách rõ ràng giữa nhóm High-weight (quyết định) và Subsidiary (hỗ trợ).</li>
+                <li><strong>Lược đồ JSON chuẩn hóa:</strong> Tuân thủ mô hình Pydantic nghiêm ngặt, tự động loại trừ các trường biến thiên (timestamps).</li>
+                <li><strong>Thuật toán băm xác định:</strong> Sắp xếp key từ điển, serialize UTF-8 và tính băm SHA-256 (cho kết quả trùng khớp 100/100 lần thử).</li>
+                <li><strong>Tính toán múi giờ:</strong> Tự động suy luận múi giờ (Timezone offset) từ độ lệch giữa MS-DOS time và UTC extra timestamp.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>✅ Kết quả kiểm nghiệm:</strong> Đã kiểm thử với các mẫu ZIP giả lập cấu trúc phức tạp. Toàn bộ 29 unit tests của parser, extra fields và hasher chạy mượt mà, không gặp lỗi rò rỉ bộ nhớ hay lỗi unpack binary.
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: CHI TIẾT PHASE 3 - BỘ PHÂN LOẠI 2 TẦNG -->
+    <div class="slide" data-slide="6">
+      <div class="slide-meta">
+        <span class="tag-category">Động Cơ Phân Loại</span>
+      </div>
+      <div class="slide-title">
+        <span>5. Thành Quả: Bộ Phân Loại Tự Động 2 Tầng (Hình 7 & 8)</span>
+        <span class="badge badge-done">Phase 3 Pass</span>
+      </div>
+      <div class="slide-subtitle">
+        Triển khai trong <code class="code-badge">rules.py</code> và <code class="code-badge">classifier.py</code> theo đúng 3 thuật toán bài báo.
+      </div>
+      <div class="slide-content">
+        <div class="grid-3" style="margin-bottom: 20px;">
+          <div class="card">
+            <div class="card-title">🥇 Tầng 1: Algorithm 1 & 2</div>
+            <div class="card-body">
+              <p><strong>Trọng số cao (High-weight):</strong></p>
+              <ul style="padding-left: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                <li>Alg 1: Lọc theo Data descriptor + tổ hợp Extra Fields LFH/CDH + độ dài <code class="code-badge">0x5455</code>.</li>
+                <li>Alg 2: Lọc theo Host OS (<code class="code-badge">version_made_by</code>: 0x00 vs 0x03).</li>
+                <li>Nếu chỉ còn 1 ứng viên ➔ Trả kết quả với <strong>Confidence = 1.0 (HIGH)</strong>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🥈 Tầng 2: Algorithm 3</div>
+            <div class="card-body">
+              <p><strong>Phụ trợ (Subsidiary low-weight):</strong></p>
+              <ul style="padding-left: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                <li>Kích hoạt khi Tầng 1 có nhiều ứng viên đồng hạng.</li>
+                <li>So khớp mẫu nanosecond: WinZip (<code class="code-badge">fff0000</code>).</li>
+                <li>Kiểm tra Double zipping, thư mục <code class="code-badge">__MACOSX</code>, Unicode NFD/NFC, UID/GID.</li>
+                <li>Xếp hạng điểm tin cậy heuristic (giữ ứng viên đồng hạng minh bạch).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📊 Bao Phủ 12 Cấu Hình</div>
+            <div class="card-body">
+              <p><strong>Đầy đủ Bảng 6 & Bảng 7:</strong></p>
+              <div class="pill-list">
+                <span class="pill">WinRAR (EN/KR)</span>
+                <span class="pill">WinZip (EN/KR)</span>
+                <span class="pill">7-Zip (Windows)</span>
+                <span class="pill">Bandizip (Win/Mac)</span>
+                <span class="pill">Compressed folder</span>
+                <span class="pill">macOS Compress</span>
+                <span class="pill">macOS zip</span>
+                <span class="pill">Ubuntu 7-zip</span>
+                <span class="pill">Ubuntu Compress</span>
+                <span class="pill">Ubuntu zip</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>🎯 Thẩm định kiểm thử:</strong> Đã triển khai bộ test tích hợp <code class="code-badge">test_classifier_algorithms.py</code> gồm 41 kịch bản kiểm tra toàn diện cả 12 profile lý thuyết và chuỗi pipeline từ parser ➔ extractor ➔ classifier.
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: CHI TIẾT PHASE 4 - MULTI-PROVENANCE TRACKING -->
+    <div class="slide" data-slide="7">
+      <div class="slide-meta">
+        <span class="tag-category">Tính Năng Nâng Cao</span>
+      </div>
+      <div class="slide-title">
+        <span>6. Thành Quả: Truy Vết Đa Nguồn Gốc & Can Thiệp Tệp</span>
+        <span class="badge badge-done">Phase 4 (PH4-001)</span>
+      </div>
+      <div class="slide-subtitle">
+        Triển khai trong <code class="code-badge">provenance.py</code> dựa trên phát hiện Mục 4.2 và Hình 10 của bài báo.
+      </div>
+      <div class="slide-content">
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">⚠️</span> Case 1: Vân Tay Hỗn Hợp (Mixed Fingerprints)</div>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">
+                Khi một tệp ZIP tạo bởi <strong>SW1</strong> bị người dùng dùng <strong>SW2</strong> để <strong>Thêm mới (Add)</strong> hoặc <strong>Sửa đổi (Modify)</strong>:
+              </p>
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Header của entry bị tác động sẽ mang vân tay cấu trúc của SW2.</li>
+                <li>Các entry cũ vẫn bảo lưu nguyên vẹn vân tay của SW1.</li>
+                <li>Bộ truy vết phát hiện sự bất đồng nhất (Heterogeneity) về Host OS, loại Extra Field hoặc thứ tự trường giữa các entry trong cùng archive.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">💥</span> Case 2: Thay Đổi Dây Chuyền (Cascading)</div>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">
+                Khi người dùng dùng <strong>SW2</strong> để thực hiện thao tác <strong>Xóa tệp (Delete)</strong>:
+              </p>
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Nhiều công cụ nén (như Windows Explorer) sẽ ghi lại toàn bộ Central Directory.</li>
+                <li>Dẫn đến hiện tượng các trường mở rộng ở CDH của các file còn lại bị xóa sạch hoặc định dạng lại theo cấu trúc của SW2, trong khi LFH vẫn mang dấu vết SW1.</li>
+                <li>Phát hiện xung đột chéo giữa LFH và CDH của cùng một file entry.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>🛡️ Điểm nổi bật:</strong> Báo cáo <code class="code-badge">ProvenanceReport</code> xác định cờ <code class="code-badge">is_multi_provenance</code>, nhận diện vai trò nghi vấn SW1 (phần mềm tạo ban đầu) vs SW2 (phần mềm can thiệp) mà <strong>hoàn toàn không cần giải nén tệp</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: CHỈ SỐ KIỂM THỬ & CHẤT LƯỢNG CI/CD -->
+    <div class="slide" data-slide="8">
+      <div class="slide-meta">
+        <span class="tag-category">Chất Lượng Kỹ Thuật</span>
+      </div>
+      <div class="slide-title">
+        <span>7. Chất Lượng Kỹ Thuật & Tự Động Hóa CI/CD</span>
+        <span class="badge badge-done">92/92 Tests Pass</span>
+      </div>
+      <div class="slide-subtitle">
+        Quy trình kiểm chuẩn liên tục được tích hợp thông qua GitHub Actions trên đa hệ điều hành.
+      </div>
+      <div class="slide-content">
+        <div class="grid-4" style="margin-bottom: 22px;">
+          <div class="stat-box">
+            <div class="stat-number">92</div>
+            <div class="stat-label">Tests Đạt 100%</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">0.48s</div>
+            <div class="stat-label">Thời Gian Chạy Test</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">4 Jobs</div>
+            <div class="stat-label">CI Test Matrix</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Lỗ Hổng Bảo Mật</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🧪 Phân Bố Bộ Test Hiện Hữu</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <li><code class="code-badge">test_classifier_algorithms.py</code>: <strong>41 tests</strong> kiểm chứng logic 3 thuật toán.</li>
+                <li><code class="code-badge">test_provenance_tracking.py</code>: <strong>17 tests</strong> kiểm thử đa nguồn gốc & can thiệp tệp.</li>
+                <li><code class="code-badge">test_parser.py</code> & <code class="code-badge">test_extra_fields.py</code>: <strong>14 tests</strong> phân giải byte nhị phân.</li>
+                <li><code class="code-badge">test_extractor.py</code> & <code class="code-badge">test_hasher.py</code>: <strong>15 tests</strong> trích xuất & băm SHA-256.</li>
+                <li><code class="code-badge">test_paper_matrices.py</code> & security: <strong>5 tests</strong> ma trận chuẩn & zip-bomb check.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🚀 Pipeline CI/CD GitHub Actions</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 6px;">
+                <li><strong>Ma trận kiểm thử:</strong> Tự động build và test trên Ubuntu và Windows, kết hợp Python 3.10 và Python 3.11.</li>
+                <li><strong>Code Quality Gate:</strong> Kiểm tra style và cú pháp nghiêm ngặt với <code class="code-badge">flake8</code>.</li>
+                <li><strong>Security Audit:</strong> Quét lỗ hổng phụ thuộc độc hại với <code class="code-badge">pip-audit</code>.</li>
+                <li><strong>Artifact Publishing:</strong> Tự động xuất và lưu trữ báo cáo JUnit XML và Coverage Report.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: KẾ HOẠCH BƯỚC TIẾP THEO & KẾT LUẬN -->
+    <div class="slide" data-slide="9">
+      <div class="slide-meta">
+        <span class="tag-category">Lộ Trình Tương Lai</span>
+      </div>
+      <div class="slide-title">
+        <span>8. Kế Hoạch Tiếp Theo & Kết Luận Đồ Án</span>
+        <span class="badge badge-progress">Sẵn Sàng Triển Khai</span>
+      </div>
+      <div class="slide-subtitle">
+        Các nhiệm vụ trọng tâm nhằm hoàn thiện trọn vẹn mục tiêu tái hiện bài báo khoa học.
+      </div>
+      <div class="slide-content">
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">📌</span> Các Mục Tiêu Sắp Tới (Next Sprints)</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li>
+                  <strong>Phase 5 — Dấu vết giải nén (BMAC):</strong> Hiện thực <code class="code-badge">decompression.py</code> mã hóa Bảng 8; phân tích hiện tượng đảo ngược thời gian (Time-reversal) trên hệ thống tệp NTFS.
+                </li>
+                <li>
+                  <strong>Phase 6 — Pipeline sinh mẫu thực nghiệm:</strong> Tự động tạo cây thư mục mẫu chuẩn Hình 5 (<code class="code-badge">prepare_corpus.py</code>) và kích hoạt nén tự động trên các công cụ máy trạm.
+                </li>
+                <li>
+                  <strong>Phase 7 — Giao diện CLI & Đo lường định lượng:</strong> Hoàn thiện lệnh <code class="code-badge">zip-fingerprint</code> với các cờ dòng lệnh, tính toán Confusion Matrix, Precision, Recall đối chiếu Hình 9 bài báo.
+                </li>
+                <li>
+                  <strong>Nghiên cứu mở rộng OOXML:</strong> Mở rộng định danh tài liệu Office (<code class="code-badge">.docx</code>, <code class="code-badge">.xlsx</code>) vốn là các package ZIP.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">✨</span> Tóm Tắt Giá Trị Đạt Được</div>
+            <div class="card-body">
+              <ul style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+                <li>Xây dựng thành công <strong>nền tảng phân tích nhị phân nguyên thủy độc lập</strong>, không phụ thuộc thư viện cấp cao.</li>
+                <li>Tái hiện đầy đủ <strong>bộ tri thức Bảng 6 & 7</strong> và <strong>lưu đồ phân tầng 3 thuật toán</strong> của nghiên cứu gốc.</li>
+                <li>Triển khai thành công <strong>bộ phát hiện can thiệp đa nguồn gốc</strong> (Case 1 & Case 2), đem lại giá trị ứng dụng cao cho giám định viên pháp y số.</li>
+                <li>Codebase đạt chuẩn công nghiệp: 100% test pass, CI matrix đa nền tảng, tài liệu học thuật chi tiết.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box" style="text-align: center;">
+          🎉 <strong>Dự án đã sẵn sàng cho giai đoạn đo lường thực nghiệm và báo cáo chuyên đề! Cảm ơn Thầy Cô và các bạn đã theo dõi.</strong>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER & NAV CONTROLS -->
+  <footer>
+    <div class="keyboard-hint">
+      Điều khiển bằng phím: <span class="kbd">◀ Phím Trái</span> <span class="kbd">▶ Phím Phải</span> <span class="kbd">Space</span>
+    </div>
+
+    <!-- 2 NÚT TRÁI PHẢI TĂNG LÙI TRANG THEO YÊU CẦU -->
+    <div class="nav-buttons-container">
+      <button class="btn-nav" id="btn-prev" title="Lùi lại trang trước (Phím mũi tên trái)">
+        <span class="arrow">◀</span> Trang Trước
+      </button>
+      <button class="btn-nav" id="btn-next" title="Tiến tới trang sau (Phím mũi tên phải hoặc Space)">
+        Trang Sau <span class="arrow">▶</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- SLIDE SCRIPT -->
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+      let currentSlide = 1;
+
+      const currentSlideNumEl = document.getElementById('current-slide-num');
+      const totalSlidesNumEl = document.getElementById('total-slides-num');
+      const topProgressBarEl = document.getElementById('top-progress-bar');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+
+      totalSlidesNumEl.textContent = totalSlides;
+
+      function updateSlideUI() {
+        slides.forEach((slide) => {
+          const slideIndex = parseInt(slide.getAttribute('data-slide'), 10);
+          if (slideIndex === currentSlide) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        });
+
+        // Cập nhật số trang
+        currentSlideNumEl.textContent = currentSlide;
+
+        // Cập nhật thanh tiến trình đầu trang
+        const progressPct = ((currentSlide) / totalSlides) * 100;
+        topProgressBarEl.style.width = progressPct + '%';
+
+        // Cập nhật trạng thái disable của nút
+        btnPrev.disabled = (currentSlide === 1);
+        btnNext.disabled = (currentSlide === totalSlides);
+      }
+
+      function goToPrevSlide() {
+        if (currentSlide > 1) {
+          currentSlide--;
+          updateSlideUI();
+        }
+      }
+
+      function goToNextSlide() {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          updateSlideUI();
+        }
+      }
+
+      // Gắn sự kiện 2 nút bấm trái phải
+      btnPrev.addEventListener('click', goToPrevSlide);
+      btnNext.addEventListener('click', goToNextSlide);
+
+      // Hỗ trợ điều khiển bằng bàn phím
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+          goToPrevSlide();
+        } else if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+          event.preventDefault();
+          goToNextSlide();
+        } else if (event.key === 'Home') {
+          currentSlide = 1;
+          updateSlideUI();
+        } else if (event.key === 'End') {
+          currentSlide = totalSlides;
+          updateSlideUI();
+        }
+      });
+
+      // Khởi tạo trạng thái ban đầu
+      updateSlideUI();
+    })();
+  </script>
+</body>
+</html>
