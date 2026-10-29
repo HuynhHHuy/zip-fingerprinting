@@ -405,6 +405,49 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ---
 
+### Giai đoạn 8: Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive (Extension: OOXML & JAR Provenance Tracking)
+
+*Cơ sở khoa học:* Hiện thực hóa trực tiếp hướng nghiên cứu tương lai được đề xuất tại Mục 5 của bài báo gốc (*"OOXML and JAR formats are typical examples of sharing the same structure with a ZIP file format... Therefore, a further study will proceed to analyze a method of investigating the source of document files"*). Xem tài liệu thiết kế chi tiết tại [`docs/research/ooxml-provenance-extension.md`](../research/ooxml-provenance-extension.md).
+
+#### `PH8-OOXML-001`: Khảo sát & Xây dựng Bộ mẫu Thực nghiệm Tài liệu Đa Ứng dụng
+- **Mức độ ưu tiên:** P2 (Extension)
+- **Phụ thuộc:** `PH6-DATA-002`
+- **Mục tiêu:** Tạo bộ mẫu đối chứng gồm tối thiểu 25 tài liệu (`.docx`, `.xlsx`) được sinh từ 5 phần mềm khác nhau (MS Word, LibreOffice Writer, Google Docs, WPS Office, python-docx) với cùng một văn bản mẫu.
+- **Nội dung công việc:**
+  1. Soạn thảo văn bản chuẩn và xuất/lưu trên các bộ phần mềm văn phòng khác nhau.
+  2. Lưu trữ tệp mẫu kèm metadata về môi trường tạo vào `data/ooxml_corpus/` và `data/ooxml_metadata.json`.
+- **Đầu vào:** Văn bản và bảng tính chuẩn.
+- **Tệp tạo/chỉnh sửa:** `data/ooxml_corpus/`, `data/ooxml_metadata.json`.
+- **Đầu ra:** Tập dữ liệu đối chứng tài liệu OOXML chuẩn hóa.
+- **Tiêu chí nghiệm thu (DoD):** Đủ 25 mẫu bao phủ 5 phần mềm văn phòng chính.
+
+#### `PH8-OOXML-002`: Thiết kế Module Bóc tách Cấu trúc Gói OPC & Dấu vân tay Tài liệu (`ooxml.py`)
+- **Mức độ ưu tiên:** P2 (Extension)
+- **Phụ thuộc:** `PH8-OOXML-001`, `PH1-CORE-002`
+- **Mục tiêu:** Xây dựng `OOXMLFeatureExtractor` trích xuất các đặc trưng gói OPC (vị trí `[Content_Types].xml`, độ phân tán thời gian sub-entry, Data descriptor, Extra fields).
+- **Nội dung công việc:**
+  1. Viết `OOXMLFeatureExtractor` trong `src/zip_fingerprint/ooxml.py`.
+  2. Bổ sung các bài kiểm thử đơn vị trong `tests/unit/test_ooxml.py`.
+- **Đầu vào:** `ZipArchiveRecord` từ `ZipBinaryParser`.
+- **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/ooxml.py`, `tests/unit/test_ooxml.py`.
+- **Đầu ra:** Vector đặc trưng nhận diện phần mềm soạn thảo tài liệu.
+- **Tiêu chí nghiệm thu (DoD):** Unit test pass 100%, trích xuất chính xác thứ tự entry và tính đồng nhất timestamp.
+
+#### `PH8-OOXML-003`: Xây dựng Ma trận Luật Phân loại Phần mềm Soạn thảo & Tích hợp CLI
+- **Mức độ ưu tiên:** P2 (Extension)
+- **Phụ thuộc:** `PH8-OOXML-002`, `PH3-RULE-001`
+- **Mục tiêu:** Triển khai `OOXMLClassifier` phân loại chính xác phần mềm tạo tài liệu và tích hợp cờ lệnh `--ooxml` vào CLI.
+- **Nội dung công việc:**
+  1. Xây dựng luật phân loại tài liệu trong `src/zip_fingerprint/ooxml.py`.
+  2. Tích hợp cờ `--ooxml` trong `src/zip_fingerprint/cli.py`.
+  3. Viết kiểm thử tích hợp trong `tests/integration/test_ooxml_classifier.py`.
+- **Đầu vào:** Vector đặc trưng tài liệu OOXML.
+- **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/ooxml.py`, `src/zip_fingerprint/cli.py`, `tests/integration/test_ooxml_classifier.py`.
+- **Đầu ra:** Báo cáo nhận diện phần mềm tạo tài liệu (`MS Office`, `LibreOffice`, `Google Docs`, `WPS Office`).
+- **Tiêu chí nghiệm thu (DoD):** Độ chính xác nhận diện phần mềm soạn thảo đạt ≥ 95% trên tập mẫu đối chứng.
+
+---
+
 ## 4. Sơ đồ Phụ thuộc Nhiệm vụ và Đường dẫn Tới hạn (Critical Path)
 
 ```mermaid
