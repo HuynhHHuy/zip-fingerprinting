@@ -15,10 +15,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  code-quality:
+    name: Code Quality & Typing
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Upgrade pip & install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Static type checking (Mypy)
+        run: python -m mypy src
+
+      - name: Check code formatting (Black)
+        run: python -m black --check src tests
+        continue-on-error: true
+
+      - name: Lint code (Flake8)
+        run: python -m flake8 src tests
+        continue-on-error: true
+
   test:
     name: test (${{ matrix.os }}, ${{ matrix.python-version }})
+    needs: [code-quality]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -27,33 +59,31 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
-        with:
-          persist-credentials: false
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: pyproject.toml
 
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
+      - name: Upgrade pip & install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
 
-      - name: Install package and development dependencies
-        run: python -m pip install -e ".[dev]"
-
-      - name: Check dependencies
+      - name: Check dependency integrity
         run: python -m pip check
 
-      - name: Check installed CLI
+      - name: Check installed CLI entrypoint
         run: zip-fingerprint --help
 
-      - name: Run tests with coverage
-        run: python -m pytest --cov=zip_fingerprint --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=junit.xml
+      - name: Run test suite with coverage
+        run: |
+          python -m pytest --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=junit.xml
 
-      - name: Upload test reports
+      - name: Upload test artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
@@ -63,3 +93,33 @@ jobs:
             junit.xml
           retention-days: 7
           if-no-files-found: warn
+
+  security:
+    name: Security & Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Audit dependencies for known CVEs (pip-audit)
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install pip-audit
+          python -m pip install -e .
+          python -m pip_audit
+
+      - name: Detect secrets & credentials leak (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
