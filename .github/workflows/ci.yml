@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
 
   test:
-    name: Test (${{ matrix.os }}, Py${{ matrix.python-version }})
+    name: test (${{ matrix.os }}, ${{ matrix.python-version }})
     needs: [code-quality]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
