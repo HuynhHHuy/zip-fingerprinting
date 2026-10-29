@@ -116,7 +116,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pip-audit
           python -m pip install -e .
-          python -m pip-audit
+          python -m pip_audit
 
       - name: Detect secrets & credentials leak (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
