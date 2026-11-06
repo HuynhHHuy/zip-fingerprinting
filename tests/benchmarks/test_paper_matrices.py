@@ -1,6 +1,8 @@
-"""Benchmark tests validating implementation against Table 6 and Table 7 in Um et al. (2021)."""
+"""Benchmarks against Tables 6, 7 and 8 in Um et al. (2021)."""
 
 import pytest
+
+from zip_fingerprint.decompression import DecompressionAnalyzer
 
 from zip_fingerprint.constants import (
     EXTRA_HEADER_NTFS,
@@ -207,3 +209,31 @@ def test_rule_helpers() -> None:
     # Non-existent rule or OS
     assert get_rule("Windows", "NonExistentApp") is None
     assert get_rule("FreeBSD", "App") is None
+
+
+# Independently transcribed from the local PDF, page 9, Table 8 (13 rows).
+# Columns: WinRAR, WinZip, 7-Zip, Bandizip, Compressed folder. B-M-A-C order.
+TABLE_8_EXPECTED = [
+    ("file", None, ("RHRR", "HHHR", "RHRR", "RHRR", "HHHR")),
+    ("file", 0x000A, ("RERR", "EEER", "EEER", "EEER", "HHHR")),
+    ("file", 0x5455, ("RERR", "HHHR", "RERR", "RHRR", "HHHR")),
+    ("file", 0x5855, ("RHRR", "HHHR", "REER", "RHRR", "HHHR")),
+    ("folder_no_header", None, ("RRRR", "RRRR", "RRRR", "RRRR", "RRRR")),
+    ("folder_with_files", None, ("RHRR", "HRRR", "RHRR", "RRRR", "RRRR")),
+    ("folder_with_files", 0x000A, ("RERR", "ERRR", "EEER", "ERRR", "RRRR")),
+    ("folder_with_files", 0x5455, ("RERR", "HRRR", "RERR", "RRRR", "RRRR")),
+    ("folder_with_files", 0x5855, ("RHRR", "HRRR", "REER", "RRRR", "RRRR")),
+    ("empty_folder", None, ("RHRR", "HHHR", "RHRR", "RHRR", "RHRR")),
+    ("empty_folder", 0x000A, ("RERR", "EEER", "EEER", "EEER", "RHRR")),
+    ("empty_folder", 0x5455, ("RERR", "HHHR", "RERR", "RHRR", "RHRR")),
+    ("empty_folder", 0x5855, ("RHRR", "HHHR", "REER", "RHRR", "RHRR")),
+]
+
+
+@pytest.mark.parametrize("entry_type,header,patterns", TABLE_8_EXPECTED)
+def test_table_8_all_decompressor_candidates(entry_type, header, patterns):
+    tools = ("WinRAR", "WinZip", "7-Zip", "Bandizip", "Compressed folder")
+    analyzer = DecompressionAnalyzer()
+    for observed in patterns:
+        expected = [tool for tool, pattern in zip(tools, patterns) if pattern == observed]
+        assert analyzer.identify_decompressor(observed, entry_type, header) == expected

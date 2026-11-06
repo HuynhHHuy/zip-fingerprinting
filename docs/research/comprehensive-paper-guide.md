@@ -610,6 +610,7 @@ Thứ tự các mốc thời gian được biểu diễn theo chuẩn **B - M - 
 | | Có NTFS `0x000A` | **R E R R** | **E E E R** | **E E E R** | **E E E R** | **H H H R** |
 | | Có Extended `0x5455` | **R E R R** | **H H H R** | **R E R R** | **R H R R** | **H H H R** |
 | | Có Unix `0x5855` | **R H R R** | **H H H R** | **R E E R** | **R H R R** | **H H H R** |
+| **Thư mục không có header riêng** | N/A | **R R R R** | **R R R R** | **R R R R** | **R R R R** | **R R R R** |
 | **Thư mục có chứa file**| Không có Extra Field | **R H R R** | **H R R R** | **R H R R** | **R R R R** | **R R R R** |
 | | Có NTFS `0x000A` | **R E R R** | **E R R R** | **E E E R** | **E R R R** | **R R R R** |
 | | Có Extended `0x5455` | **R E R R** | **H R R R** | **R E R R** | **R R R R** | **R R R R** |
@@ -633,7 +634,12 @@ Thứ tự các mốc thời gian được biểu diễn theo chuẩn **B - M - 
    * Nhưng do một số công cụ cập nhật lại Modification Time của thư mục sau khi toàn bộ tệp con đã được ghi xong, dẫn đến thời gian ghi nhận của thư mục con lại sớm hơn thư mục cha.
 
 > [!TIP]
-> **Ý nghĩa thực tế:** Khi điều tra một chiếc máy tính nghi phạm, chỉ cần chạy một script kiểm tra các mẫu thời gian BMAC trên thư mục, giám định viên có thể xác định chính xác phần mềm giải nén đã được sử dụng mà không cần tìm file nhật ký hay prefetch!
+> **Giới hạn suy luận:** Mẫu BMAC có thể khớp nhiều công cụ. Bảng 8 có 13 dòng,
+> bao gồm Folder/No header; không đồng nhất trường hợp này với thư mục có header
+> nhưng không có extra field. Cần xác định nguồn thời gian R/H/E và đối chiếu phiên
+> bản/cấu hình thực tế trước khi suy luận. Nghịch đảo thời gian cũng có thể là kết
+> quả giải nén bình thường, không tự chứng minh can thiệp. Module PH5-DEC-001 chỉ
+> tra cứu profile lịch sử, chưa thay thế thí nghiệm filesystem PH5-DEC-002.
 
 ---
 

@@ -164,6 +164,41 @@ WinZip CLI chưa có trên máy. **Chưa đạt đầy đủ DoD của PH4-PROV-
 
 ---
 
+### 3.8 Phân tích dấu thời gian giải nén (PH5-DEC-001)
+
+`DecompressionAnalyzer.identify_decompressor(observed_bmac, entry_type, extra_field)`
+tra Bảng 8 và trả **mọi ứng viên** phù hợp, theo thứ tự WinRAR, WinZip, 7-Zip,
+Bandizip, Compressed folder. Mẫu gồm 4 ký hiệu theo B-M-A-C: `R` (giải nén thực
+tế), `H` (mtime trong header DOS), `E` (timestamp trong extra field).
+
+```python
+from zip_fingerprint.decompression import DecompressionAnalyzer
+
+analyzer = DecompressionAnalyzer()
+analyzer.identify_decompressor("REER", "file", "0x5855")  # ["7-Zip"]
+analyzer.identify_decompressor("ERRR", "folder_with_files", 0x000A)
+# ["WinZip", "Bandizip"]
+```
+
+`entry_type` nhận `file`, `folder_with_files`, `empty_folder`, `folder_no_header`.
+`extra_field` nhận ID nguyên, chuỗi hex có tiền tố `0x`, hoặc `None`/`"None"`;
+`"N/A"` chỉ dành cho thư mục không header. BMAC bỏ qua hoa/thường và khoảng trắng.
+Đầu vào sai báo `ValueError`; mẫu/ID hợp lệ ngoài catalog trả `[]`. API cũ
+`evaluate_bmac_pattern(pattern, state, header_id)` vẫn dùng được với các nhãn
+trạng thái trong bảng (`File`, `Contains file(s)`, `Empty`, `No header`).
+
+`check_time_reversal(parent_folder_time, subfolder_time, creation_time, mod_time)`
+nhận các `datetime` tùy chọn, trả mã `CREATION_AFTER_MODIFICATION` và/hoặc
+`SUBFOLDER_BEFORE_PARENT`. Chỉ so sánh từng cặp đủ dữ liệu; timestamp thư mục cha/con
+phải cùng loại thuộc tính. Datetime có múi giờ được so theo UTC; không trộn naive
+và aware trong một cặp. Kết quả rỗng có thể do thiếu dữ liệu, không chứng minh
+không có nghịch đảo. Các cảnh báo này không tự chứng minh can thiệp hoặc phần mềm
+đã được sử dụng.
+
+Đã đối chiếu **13 dòng × 5 công cụ** với PDF trang 9; đây là profile thực nghiệm
+lịch sử, chưa xác thực trên phần mềm hiện hành. Đo filesystem thuộc PH5-DEC-002;
+nối CLI thuộc PH7-CLI-001.
+
 ## 4. Lộ trình Thực hiện và Tiến độ
 
 Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-plan.md`](docs/project/implementation-plan.md).
@@ -172,7 +207,7 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
-- **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
+- **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 HOÀN THÀNH — đối chiếu Bảng 8; PH5-DEC-002 chưa đo thực tế]`
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
 - **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]

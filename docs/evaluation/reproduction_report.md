@@ -25,7 +25,17 @@ Xác minh độc lập các phát hiện khoa học của nhóm tác giả:
 *(Sẽ được cập nhật tự động sau khi chạy `tests/benchmarks/test_paper_matrices.py`)*
 
 ### 2.3 Bảng 8: Ma trận Dấu thời gian Giải nén BMAC (Decompression Matrix)
-*(Sẽ được cập nhật sau khi chạy `experiments/trace_decompression.py`)*
+Ngày 06/11/2026: `DecompressionAnalyzer` đã mã hóa **13 dòng × 5 công cụ** của
+Bảng 8, PDF trang 9, gồm cả Folder/No header. Benchmark
+`tests/benchmarks/test_paper_matrices.py::test_table_8_all_decompressor_candidates`
+đối chiếu toàn bộ 65 ô với dữ liệu kỳ vọng chép độc lập từ PDF và kiểm tra danh
+sách ứng viên đầy đủ khi nhiều công cụ có chung mẫu. Đây là kiểm chứng việc mã
+hóa bảng, **không phải độ chính xác trên bộ dữ liệu thực tế**.
+
+Kiểm thử đơn vị bao phủ hai điều kiện nghịch đảo (B > M và thời gian thư mục con
+sớm hơn cha), trường hợp bằng nhau, thiếu dữ liệu và múi giờ. Việc đo timestamp
+filesystem trên các phiên bản công cụ hiện hành vẫn chưa thực hiện; thuộc
+`experiments/trace_decompression.py` / PH5-DEC-002.
 
 ---
 
