@@ -137,6 +137,31 @@ cần thêm bằng chứng để phân biệt. CLI chưa được nối với cl
 Không phát hiện được khi SW2 ghi lại toàn bộ LFH và CDH, hoặc khi hai profile trùng đặc
 trưng (ví dụ Windows 7-Zip và Bandizip với tên ASCII). CLI chưa được nối trong bước này.
 
+### 3.7 Sinh mẫu can thiệp bằng công cụ thực tế (PH4-PROV-002)
+
+```powershell
+python scripts/simulate_modifications.py
+# Nghiệm thu nghiêm ngặt: exit 2 nếu chưa bao phủ cả Case 1 và Case 2
+python scripts/simulate_modifications.py --require-cases
+```
+
+Script dò 7-Zip, WinRAR, Bandizip console (`bz.exe`/`bc.exe`), WinZip Command Line
+Add-On (`wzzip.exe`) và Windows compressed-folder handler. Có thể chỉ định đường
+dẫn bằng `--7zip`, `--winrar`, `--bandizip`, `--winzip`, chọn kịch bản bằng
+`--scenario A` (lặp lại để chọn nhiều kịch bản), hoặc đổi nơi lưu bằng `--output`.
+Xem chi tiết tại [hướng dẫn thí nghiệm](docs/research/modification-simulator.md).
+
+Mỗi lần chạy tạo thư mục riêng `data/modified_samples/run-*/` chứa ZIP trước/sau,
+nguồn mẫu và `metadata.json`: công cụ/phiên bản, lệnh, checksum, kiểm tra payload,
+phân tích provenance và thay đổi extra fields của các entry không bị thao tác.
+Các artifact được Git bỏ qua; script không ghi đè mẫu cũ. Công cụ thiếu được ghi
+`skipped`, lỗi được ghi `failed`; mã thoát lần lượt là 0 khi có mẫu hợp lệ, 1 khi
+có lỗi, 2 khi không có mẫu hoặc không đạt điều kiện `--require-cases`.
+
+Đã chạy trên Windows với 7-Zip 26.04 và WinRAR 6.23.0: sinh 4 cặp mẫu, tái hiện
+Case 1 qua biến thể tắt lưu timestamp của 7-Zip; chưa tái hiện Case 2. Bandizip và
+WinZip CLI chưa có trên máy. **Chưa đạt đầy đủ DoD của PH4-PROV-002.**
+
 ---
 
 ## 4. Lộ trình Thực hiện và Tiến độ
@@ -146,7 +171,7 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 1:** Triển khai Bộ phân tích nhị phân cốt lõi (Parser & Extra fields) `[HOÀN THÀNH]`
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
-- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH — kiểm thử trên mẫu dựng từ byte; PH4-PROV-002 chưa thực hiện]`
+- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian (Bảng 8)
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
