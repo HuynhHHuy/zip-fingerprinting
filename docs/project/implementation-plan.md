@@ -269,7 +269,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Báo cáo kiểm định đa nguồn gốc và tính toàn vẹn của archive.
 - **Tiêu chí nghiệm thu (DoD):** Phát hiện chính xác kho lưu trữ nhân tạo có chứa 2 entry mang 2 vân tay khác nhau (Case 1).
 
-#### `PH4-PROV-002`: Xây dựng Kịch bản Mô phỏng Can thiệp Tệp Tự động
+#### `PH4-PROV-002`: Xây dựng Kịch bản Mô phỏng Can thiệp Tệp Tự động [ĐÃ TRIỂN KHAI — CHƯA ĐẠT ĐỦ DoD]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH4-PROV-001`
 - **Mục tiêu:** Tự động tạo ra các mẫu ZIP bị can thiệp theo đúng kịch bản thí nghiệm Hình 10 để kiểm chứng bộ truy vết.
@@ -283,6 +283,14 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Tệp tạo/chỉnh sửa:** `scripts/simulate_modifications.py`, `data/modified_samples/`.
 - **Đầu ra:** Bộ mẫu ZIP can thiệp thực tế có nhãn chi tiết.
 - **Tiêu chí nghiệm thu (DoD):** Sinh ra tối thiểu 2 mẫu kiểm thử mô phỏng Case 1 và Case 2.
+- **Kết quả kiểm chứng 06/11/2026:** Script sinh cặp ZIP trước/sau bằng công cụ
+  thật, ghi phiên bản/lệnh/SHA-256, xác minh payload và xuất báo cáo tracker.
+  Máy có 7-Zip 26.04 và WinRAR 6.23.0: sinh 4 cặp mẫu (A và 3 biến thể kiểm soát),
+  tái hiện Case 1 nhưng chưa có Case 2; B/C bỏ qua do thiếu Bandizip/WinZip CLI.
+  B dùng Windows shell MoveHere để loại entry, khác thao tác Delete trong giao diện
+  Explorer; C dùng 7-Zip làm SW2. Cần đối chứng B trên môi trường thích hợp để
+  nghiệm thu, không coi nhãn kịch bản là bằng chứng phát hiện Case 2.
+  Xem [hướng dẫn và giới hạn](../research/modification-simulator.md).
 
 ---
 
