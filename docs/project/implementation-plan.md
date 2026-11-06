@@ -296,7 +296,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ### Giai đoạn 5: Phân tích Dấu vết Thời gian Giải nén & Nghịch đảo Thời gian (Decompression Artifacts)
 
-#### `PH5-DEC-001`: Triển khai Bộ Thẩm định Dấu vết BMAC & Nghịch đảo Thời gian
+#### `PH5-DEC-001`: Triển khai Bộ Thẩm định Dấu vết BMAC & Nghịch đảo Thời gian [HOÀN THÀNH TRIỂN KHAI]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH1-CORE-001`
 - **Mục tiêu:** Mã hóa toàn bộ dữ liệu thực nghiệm trong Bảng 8 của bài báo về dấu vết thời gian khi giải nén trên Windows.
@@ -313,7 +313,14 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu vào:** Bảng 8 bài báo.
 - **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/decompression.py`, `tests/benchmarks/test_paper_matrices.py`.
 - **Đầu ra:** Module phân tích dấu vết giải nén hoàn chỉnh.
-- **Tiêu chí nghiệm thu (DoD):** Khớp 100% với toàn bộ 15 dòng dữ liệu của Bảng 8.
+- **Tiêu chí nghiệm thu (DoD):** Khớp 100% với toàn bộ **13 dòng × 5 công cụ**
+  của Bảng 8. Đính chính ngày 06/11/2026: PDF trang 9 có 4 dòng File, 1 dòng
+  Folder/No header, 4 dòng Contains file(s), 4 dòng Empty; con số 15 trước đó sai.
+- **Kết quả triển khai:** Có `identify_decompressor`, wrapper tương thích
+  `evaluate_bmac_pattern` và `check_time_reversal`. Benchmark dùng bảng kỳ vọng
+  chép độc lập từ PDF; có kiểm thử đồng hạng, đầu vào không hợp lệ, timestamp
+  bằng nhau, dữ liệu thiếu và chuyển đổi múi giờ. Chưa đo timestamp thực tế trên
+  filesystem (PH5-DEC-002) hoặc nối CLI (PH7-CLI-001).
 
 #### `PH5-DEC-002`: Kịch bản Thực nghiệm Đo lường Dấu vết Giải nén trên Hệ thống Tệp Windows
 - **Mức độ ưu tiên:** P2
