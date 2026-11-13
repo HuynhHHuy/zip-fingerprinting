@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "description": "Synthetic Figure 5 replacements plus separate auxiliary cases; not paper ground truth.",
+  "timestamp_utc": "2021-01-11T11:30:59Z",
+  "timestamp_fields": [
+    "atime",
+    "mtime"
+  ],
+  "timestamp_exclusions": [
+    "creation_time",
+    "change_time"
+  ],
+  "zip_timestamp": "2021-01-11T11:30:58 (DOS, no timezone)",
+  "entries": [
+    {
+      "path": "auxiliary",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/double_zip",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/double_zip/inner.zip",
+      "type": "file",
+      "size": 138,
+      "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+    },
+    {
+      "path": "auxiliary/encodings",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/encodings/korean-cp949.txt",
+      "type": "file",
+      "size": 7,
+      "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+    },
+    {
+      "path": "auxiliary/korean_nfc",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/korean_nfc/가나다.txt",
+      "type": "file",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "auxiliary/korean_nfd",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/korean_nfd/가나다.txt",
+      "type": "file",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "auxiliary/vietnamese",
+      "type": "directory"
+    },
+    {
+      "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+      "type": "file",
+      "size": 15,
+      "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+    },
+    {
+      "path": "set1",
+      "type": "directory"
+    },
+    {
+      "path": "set1/2021.JPG",
+      "type": "file",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "set1/Study",
+      "type": "directory"
+    },
+    {
+      "path": "set1/Study/Sample.docx",
+      "type": "file",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "set1/Study/capture.JPG",
+      "type": "file",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "set1/Study/textsm.txt",
+      "type": "file",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "set1/emptyFolder",
+      "type": "directory"
+    }
+  ]
+}
