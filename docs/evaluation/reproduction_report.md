@@ -59,10 +59,73 @@ tra tại `2021-01-11 11:30:59 UTC`; creation/change time không được cố �
 
 Đây là **corpus thay thế tự tạo**, không phải payload gốc của tác giả, không xác
 nhận encoding filename ZIP do archiver tạo và không phải kết quả accuracy/BMAC.
-PH6-DATA-002, PH5-DEC-002 và PH7-EVAL-002 vẫn chưa hoàn thành. Chưa xác thực corpus
+Tại thời điểm nghiệm thu DATA-001, PH6-DATA-002 vẫn chưa hoàn thành (kết quả mới ở
+Mục 2.5); PH5-DEC-002 và PH7-EVAL-002 còn thiếu. Chưa xác thực corpus
 trên macOS/Linux. Chi tiết tại `data/README.md`.
 
 ---
+
+### 2.5 Ground-truth Windows CLI — PH6-DATA-002
+
+Ngày 13/11/2026: chạy `python scripts/generate_ground_truth.py` sinh **9 mẫu hợp
+lệ, 3 mẫu Bandizip skipped, 0 failed** mỗi run. Công cụ: 7-Zip 26.04, WinRAR
+6.23.0, Windows PowerShell 5.1.26100.9818 / Archive module 1.2.7. Phiên bản/path
+module lấy từ process thực sự tạo mẫu, không suy ra từ shell khác.
+
+Mỗi công cụ sinh ba biến thể `root`, `contents`, `auxiliary`; nguồn mới riêng từng
+mẫu được đối chiếu với manifest DATA-001, atime/mtime khôi phục trước lệnh nén.
+Catalogue `data/metadata.json` và báo cáo trong `ground_truth/run-*/metadata.json`
+giữ invocation provenance, môi trường, checksum và kết quả validation độc lập
+classifier. Đã kiểm kê báo cáo khớp catalogue và xác minh SHA-256 của chín archive.
+
+Quan sát header không bị sửa để ép khớp lý thuyết: 7-Zip/WinRAR giữ đầy đủ directory
+header trong các mẫu này; PowerShell bỏ một số header (chẳng hạn `Study/` và
+`emptyFolder/` ở biến thể contents), trong khi payload file vẫn đầy đủ. Không gán
+những mẫu PowerShell này thành Explorer/Compressed folder.
+
+20 test mới kiểm tra lỗi/timeout, catalogue/history, CRC/payload, tên Unicode và
+path, CLI và ba adapter native. Review độc lập phát hiện thiếu bắt `zlib.error`;
+regression tái hiện stream DEFLATE hỏng đã RED rồi GREEN sau khi bổ sung xử lý,
+để ghi mẫu failed và tiếp tục lưu run. Helper dùng chung giữ stdout/stderr timeout.
+
+Kiểm tra cuối: `python -B -m pytest -p no:cacheprovider` đạt **161 passed, không
+skip** trên Windows/Python 3.11.9. Mypy `src scripts/generate_ground_truth.py`
+không lỗi trong 16 source files; Black/Flake8 trên ba file Python thay đổi,
+`pip check` và `git diff --check` đều đạt. Reviewer xác nhận regression đã được sửa.
+
+Đây là ground truth về **công cụ CLI tạo mẫu hiện hành**, không chứng minh tái
+hiện GUI năm 2021, accuracy của classifier hoặc BMAC. Bandizip native, macOS/Linux,
+GUI, creation/change time và byte-identical ZIP chưa được nghiệm thu.
+
+#### Giới hạn nghiệm thu hiện tại (13/11/2026)
+
+**Kết luận: PH6-DATA-002 đạt DoD cục bộ cho pipeline Windows CLI.** Kết luận này
+chỉ xác nhận provenance của công cụ đã gọi, tính hợp lệ của payload/ZIP và metadata
+trên môi trường đã đo; chưa xác nhận tái hiện đầy đủ thực nghiệm bài báo.
+
+| Nội dung | Phạm vi bằng chứng hiện có | Chưa được nghiệm thu |
+| --- | --- | --- |
+| Môi trường | Windows build 10.0.26200, Python 3.11.9, UTC+07:00, ANSI CP1252 | Windows build khác, Python khác, macOS/Linux |
+| Công cụ | 7-Zip 26.04, WinRAR 6.23.0, Windows PowerShell 5.1.26100.9818 / Archive 1.2.7 | Bandizip native (chỉ có adapter và skip), WinZip, phiên bản khác |
+| Cách tương tác | CLI, ba biến thể root/contents/auxiliary | GUI, kéo thả/menu ngữ cảnh, Explorer; PowerShell không đại diện Compressed folder |
+| Dữ liệu | 9 mẫu hợp lệ mỗi run từ corpus thay thế PH6-DATA-001 | Payload gốc tác giả, corpus đa dạng hoặc tập đánh giá mù/đại diện thống kê |
+| Encoding | Giải mã và đối chiếu tên entry thực tế, có test tổng hợp CP949/Unicode Path | Ép hoặc chứng minh một archiver đã tạo profile CP949 như thí nghiệm tiếng Hàn |
+| Thời gian | atime/mtime nguồn được khôi phục trước process, có snapshot trong metadata | Cố định creation/change time; phân biệt nanosecond từ nguồn nguyên giây; byte-identical ZIP |
+| Độ chính xác khoa học | CRC, inventory, SHA-256 và tính nhất quán report/catalogue | Accuracy/confusion matrix, đo BMAC/filesystem, Case 2 thực tế, toàn bộ kết quả bài báo |
+
+`161 passed` là bằng chứng kiểm thử phần mềm, không phải tỷ lệ phân loại đúng hoặc
+độ chính xác tái hiện thực nghiệm. Mẫu PowerShell vẫn có nhãn riêng dù cấu trúc có
+thể giống một profile trong bộ luật. Không sửa luật hoặc archive để ép khớp bảng.
+
+Catalogue giữ hai run cục bộ; lần kiểm tra gần nhất đối chiếu lại CRC/payload,
+checksum manifest, SHA-256 của 9 ZIP và báo cáo của `run-49gonnjf`. ZIP/source/run
+report bị Git bỏ qua: checkout repository chỉ có metadata không đủ để kiểm chứng
+bytes các run này. Cần chuyển cả run artifacts hoặc sinh một run mới; run mới có
+provenance riêng, không được tuyên bố có cùng bytes với run đã lưu.
+
+PH5-DEC-002 (đo giải nén), PH7-EVAL-002 (accuracy) và phần Case 2 của PH4-PROV-002
+vẫn chưa đạt nghiệm thu tương ứng. Không mở rộng trạng thái của các task này từ
+kết quả PH6-DATA-002.
 
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix)
 *(Sẽ đối chiếu với phân bố thực nghiệm 3 máy trạm PC1, PC2, PC3 từ Hình 9)*

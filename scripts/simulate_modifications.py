@@ -98,7 +98,7 @@ def tool_version(path: Path) -> str:
 
 def run_command(args: list[str], cwd: Path, commands: list[dict]) -> None:
     """Keep command evidence even on nonzero exit or timeout."""
-    record = {"argv": [str(arg) for arg in args], "cwd": str(cwd), "returncode": None}
+    record: dict = {"argv": [str(arg) for arg in args], "cwd": str(cwd), "returncode": None}
     commands.append(record)
     try:
         result = subprocess.run(
@@ -111,6 +111,14 @@ def run_command(args: list[str], cwd: Path, commands: list[dict]) -> None:
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
+
+        def output_text(value: object) -> str:
+            if isinstance(value, bytes):
+                return value.decode("utf-8", errors="replace")
+            return value if isinstance(value, str) else ""
+
+        record["stdout"] = output_text(getattr(exc, "stdout", None))
+        record["stderr"] = output_text(getattr(exc, "stderr", None))
         record["error"] = str(exc)
         raise RuntimeError(str(exc)) from exc
     record.update(returncode=result.returncode, stdout=result.stdout, stderr=result.stderr)
@@ -180,7 +188,7 @@ def analyze_sample(path: Path, run_dir: Path) -> dict:
 def header_changes(before: Path, after: Path) -> list[str]:
     """Compare untouched entries' raw extra fields, independently of case predictions."""
 
-    def signatures(path):
+    def signatures(path: Path) -> dict:
         archive = ZipBinaryParser(path).parse()
         local = {header.offset: header for header in archive.local_file_headers}
         return {
@@ -208,7 +216,7 @@ def simulate(output: Path, tools: dict[str, Path], selected: list[str]) -> dict:
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     run_dir = Path(tempfile.mkdtemp(prefix="run-", dir=output))
-    report = {
+    report: dict = {
         "schema_version": 1,
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "platform": platform.platform(),
@@ -225,7 +233,7 @@ def simulate(output: Path, tools: dict[str, Path], selected: list[str]) -> dict:
             report["tools"][name] = {"path": str(path), "version_error": str(exc)}
     for scenario in selected:
         creator, modifier, operation, no_times, expected = SCENARIOS[scenario]
-        record = {
+        record: dict = {
             "id": scenario,
             "creator": creator,
             "modifier": modifier,

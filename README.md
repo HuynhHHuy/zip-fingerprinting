@@ -216,6 +216,21 @@ từ chối dữ liệu lạ hoặc đường dẫn liên kết, không xóa fil
 time không được cố định; đọc hoặc liệt kê thư mục có thể đổi atime. Xem cách chạy,
 encoding và giới hạn timestamp tại [data/README.md](data/README.md).
 
+### 3.10 Sinh ZIP ground truth Windows CLI (PH6-DATA-002)
+
+```powershell
+python scripts/generate_ground_truth.py
+```
+
+Tự dò công cụ và nén ba biến thể `root`, `contents`, `auxiliary`; kiểm tra CRC,
+inventory/checksum và ghi catalogue `data/metadata.json` cùng báo cáo từng run.
+Mỗi mẫu có nguồn riêng với timestamp được khôi phục trước khi nén; không ghi đè
+run cũ. Đã xác minh 9 ZIP từ 7-Zip/WinRAR/PowerShell, Bandizip thiếu được ghi skip.
+PowerShell có nhãn riêng, chưa đối chứng Explorer/GUI; xem [hướng dẫn](data/README.md).
+Nghiệm thu chỉ áp dụng cho Windows/Python và các phiên bản công cụ đã đo; chưa
+xác thực Bandizip native, profile CP949 do archiver tạo, accuracy hoặc BMAC. Xem
+[giới hạn nghiệm thu hiện tại](docs/evaluation/reproduction_report.md#giới-hạn-nghiệm-thu-hiện-tại-13112026).
+
 ## 4. Lộ trình Thực hiện và Tiến độ
 
 Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-plan.md`](docs/project/implementation-plan.md).
@@ -225,6 +240,6 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 HOÀN THÀNH — đối chiếu Bảng 8; PH5-DEC-002 chưa đo thực tế]`
-- **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5) `[PH6-DATA-001 hoàn thành — xác minh cục bộ Windows/Python 3.11; PH6-DATA-002 còn placeholder]`
+- **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5) `[PH6-DATA-001/002 hoàn thành — nghiệm thu cục bộ Windows/Python 3.11; chưa đối chứng GUI/macOS/Linux]`
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
 - **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]

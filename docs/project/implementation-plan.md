@@ -374,20 +374,36 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   Đọc/liệt kê/copy có thể đổi atime; cần sinh lại ngay trước thực nghiệm.
   Xem [cách dùng và giới hạn](../../data/README.md).
 
-#### `PH6-DATA-002`: Xây dựng Pipeline Nén Tự động Sinh Mẫu Ground-Truth
+#### `PH6-DATA-002`: Xây dựng Pipeline Nén Tự động Sinh Mẫu Ground-Truth [HOÀN THÀNH — WINDOWS CLI CỤC BỘ]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH6-DATA-001`
 - **Mục tiêu:** Tự động phát hiện các công cụ nén trên máy và thực hiện nén cây thư mục mẫu ở các cấu hình khác nhau để tạo tập dữ liệu có nhãn.
 - **Nội dung công việc:**
   1. Hoàn thiện `scripts/generate_ground_truth.py`:
      - Tự động dò tìm đường dẫn cài đặt của 7-Zip (`7z.exe`), WinRAR (`winrar.exe`), Bandizip (`bc.exe`), PowerShell `Compress-Archive`.
-     - Nén theo cấu hình mặc định (kéo thả / menu ngữ cảnh như bài báo mô tả).
+     - Nén theo thiết lập CLI mặc định; phạm vi chốt 13/11/2026 là Windows CLI, chưa đối chứng kéo thả/menu ngữ cảnh GUI.
      - Nén biến thể: Nén cả thư mục gốc `set1/` vs nén các tệp bên trong; Nén có chứa tệp `.zip` con (Double zipping).
      - Ghi nhận metadata vào `data/metadata.json`: Tên công cụ, phiên bản, câu lệnh, thời gian, SHA-256 của file zip sinh ra.
 - **Đầu vào:** Thư mục mẫu từ `data/templates/`.
 - **Tệp tạo/chỉnh sửa:** `scripts/generate_ground_truth.py`, `data/metadata.json`, `data/ground_truth/`.
 - **Đầu ra:** Bộ mẫu ZIP thực tế có nhãn chuẩn xác.
 - **Tiêu chí nghiệm thu (DoD):** Sinh ra tối thiểu các mẫu tương ứng với các công cụ sẵn có trên hệ thống, kèm metadata đầy đủ.
+- **Kết quả 13/11/2026:** Đủ 9 ZIP hợp lệ từ 7-Zip 26.04, WinRAR 6.23.0 và
+  PowerShell Compress-Archive (engine 5.1.26100.9818, module 1.2.7) × ba biến thể
+  `root`/`contents`/`auxiliary`; ba mẫu Bandizip `skipped`, không có mẫu lỗi.
+  Source riêng từng mẫu, kiểm tra manifest rồi khôi phục atime/mtime trước process.
+  Catalogue v1 append lịch sử và báo cáo run; kiểm tra CRC, payload, Unicode,
+  directory header thực tế. PowerShell được gán nhãn riêng, không coi là Explorer.
+  20 test mới gồm ba integration native; chưa kiểm chứng Bandizip native, GUI hoặc
+  macOS/Linux. Chưa đánh giá accuracy/BMAC, không yêu cầu ZIP tái tạo giống byte.
+  Xem [hướng dẫn/metadata/giới hạn](../../data/README.md).
+- **Giới hạn nghiệm thu:** Chỉ Windows build 10.0.26200/Python 3.11.9 và ba công cụ
+  CLI đúng phiên bản đã ghi; corpus thay thế nhỏ, không phải tập đánh giá mù.
+  Chưa xác thực Bandizip native/WinZip, GUI/Explorer, macOS/Linux hoặc phiên bản
+  khác. Test tổng hợp encoding không chứng minh archiver đã tạo profile CP949.
+  Không mở rộng kết quả này thành nghiệm thu accuracy/BMAC/Case 2 hay toàn bộ bài
+  báo. Catalogue trong Git không thay thế bytes run artifacts bị bỏ qua.
+  Xem [phạm vi bằng chứng chi tiết](../evaluation/reproduction_report.md#giới-hạn-nghiệm-thu-hiện-tại-13112026).
 
 ---
 
