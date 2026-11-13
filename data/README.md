@@ -88,3 +88,93 @@ ZIP con, kiểm tra timestamp trước khi truy cập payload/thư mục, đối
 sinh ở hai thư mục độc lập và chạy lại. Nghiệm thu cục bộ: Windows, Python 3.11;
 chưa coi đó là kết quả kiểm thử đa nền tảng hoặc tái hiện thực nghiệm bài báo.
 
+## Ground-truth Windows CLI — PH6-DATA-002
+
+```powershell
+python scripts/generate_ground_truth.py
+python scripts/generate_ground_truth.py --data-dir C:/Temp/zip-data --tool 7zip --variant root
+python scripts/generate_ground_truth.py --tool winrar --variant root --variant contents --winrar "C:/Program Files/WinRAR/WinRAR.exe"
+python -m pytest tests/integration/test_ground_truth_generator.py
+```
+
+`--data-dir` là data root, mặc định `data/` của checkout, không phụ thuộc working
+directory. `--tool` chọn `7zip`, `winrar`, `bandizip`, `powershell`; `--variant` chọn
+`root`, `contents`, `auxiliary`. Hai option đều lặp lại được; mặc định chạy cả bốn
+adapter × ba biến thể. Có override executable `--7zip`, `--winrar`, `--bandizip`,
+`--powershell`; path không tồn tại bị từ chối trước khi tạo catalogue.
+
+| Biến thể | Nguồn nén | Tên file bên trong ZIP |
+| --- | --- | --- |
+| `root` | `set1/` | Giữ prefix `set1/` |
+| `contents` | Các phần tử trực tiếp của `set1/` | Không có prefix `set1/` |
+| `auxiliary` | `auxiliary/` | Giữ prefix `auxiliary/`, gồm ZIP con và Unicode |
+
+Mỗi mẫu có source riêng được sinh từ PH6-DATA-001 và kiểm tra theo manifest
+baseline trong Git. Generator được gọi lại ngay trước process để khôi phục
+atime/mtime sau bước kiểm tra checksum; không sửa `data/templates/` dùng chung.
+Không có cấu hình ép CP949: metadata ghi nhận tên entry thực tế được giải mã bằng
+UTF-8 flag, Unicode Path `0x7075` có CRC tên gốc hợp lệ, rồi Windows ANSI code page.
+Tên không khớp inventory nguồn được báo lỗi, không tự thay encoding để làm test pass.
+
+7-Zip dùng `a -tzip -y`, WinRAR dùng `a -afzip -cfg- -inul -ibck -y`, Bandizip dùng
+`c -y`. Không thay mức nén/timestamp để ép profile lý thuyết. PowerShell dùng
+`Compress-Archive -LiteralPath ... -CompressionLevel Optimal`; probe ghi engine,
+phiên bản và đường dẫn module, rồi import đúng module đó khi nén. Không cài công
+cụ/module hoặc thay cấu hình hệ thống. Bandizip adapter chưa được xác thực native
+trên máy này vì thiếu executable.
+
+Mỗi run tạo thư mục mới `ground_truth/run-*/`, chứa ZIP, source và `metadata.json`.
+Toàn bộ run artifacts bị Git bỏ qua. `data/metadata.json` là catalogue phiên bản 1:
+
+```json
+{"schema_version": 1, "runs": []}
+```
+
+`{}` được chấp nhận duy nhất như trạng thái khởi tạo. JSON hỏng hoặc schema không
+hỗ trợ bị từ chối trước khi nén. Run mới được append, không thay thế run cũ; ghi
+JSON qua file tạm cùng thư mục và `os.replace`. Đây là giao diện chỉ có một writer,
+không hỗ trợ nhiều process cập nhật catalogue đồng thời. Run report được ghi trước
+catalogue; nếu cập nhật catalogue lỗi, artifact vẫn còn để kiểm tra thủ công.
+
+Metadata lưu OS/build, timezone/UTC offset, ANSI code page, công cụ/executable/
+phiên bản, biến thể, timestamp UTC, argv/cwd/stdout/stderr/returncode, source times,
+checksum manifest nguồn, đường dẫn ZIP tương đối với data root, size/SHA-256 và
+validation. Lệnh PowerShell còn lưu script đã giải mã để có thể đọc lại.
+Không lấy nhãn ground truth từ classifier; PowerShell mang nhãn **PowerShell
+Compress-Archive**, không phải Explorer/Compressed folder.
+
+Validation dùng `zipfile`, đọc payload trong RAM, kiểm tra CRC, size/SHA-256,
+inventory, entry trùng và đường dẫn nguy hiểm; không giải nén ra đĩa. Thiếu directory
+header được ghi trong `missing_directory_headers`, không tự thêm/sửa archive.
+Ví dụ native trên máy này: PowerShell `contents` không có header `Study/` và
+`emptyFolder/`, nhưng bốn payload file vẫn đầy đủ. Đây là quan sát CLI hiện hành,
+không phải kết quả Explorer hoặc đối chiếu GUI năm 2021.
+
+- `generated`: process thành công và ZIP vượt validation.
+- `skipped`: thiếu công cụ hoặc OS không được hỗ trợ.
+- `failed`: không xác minh được phiên bản, process lỗi/timeout, nguồn/ZIP không hợp lệ.
+- Exit `0`: có mẫu hợp lệ và không có lỗi; `1`: có lỗi; `2`: không sinh được mẫu.
+
+Process chạy không mở cửa sổ, timeout 60 giây; giữ stdout/stderr kể cả timeout.
+Không ghi đè run cũ hoặc đi qua output symlink/reparse point. Nguồn/output từng
+mẫu nằm trong run mới; file ngoài phạm vi được giữ nguyên. Lỗi giữa chừng có thể
+để lại source/ZIP chưa hợp lệ; chỉ dùng mẫu có `status=generated`. Catalogue không
+chứa bytes ZIP: muốn chia sẻ dataset phải chuyển cả các run artifacts tương ứng.
+
+Nghiệm thu cục bộ 13/11/2026: mỗi run đủ **9 generated, 3 Bandizip skipped, 0 failed**;
+7-Zip 26.04, WinRAR 6.23.0, Windows PowerShell 5.1.26100.9818 với Archive module
+**1.2.7** thực sự được resolve trong process Python. Việc probe từ shell ngoài có
+thể thấy module khác; lấy version/path trong metadata làm bằng chứng cho mẫu.
+20 test mới gồm test tổng hợp/lỗi và ba integration native. Chưa kiểm chứng GUI,
+macOS/Linux, accuracy hoặc BMAC; ZIP không được cam kết giống byte giữa các lần chạy
+vì creation/change time và môi trường không được cố định.
+
+**Giới hạn nghiệm thu hiện tại:** chỉ nghiệm thu pipeline Windows CLI trên build
+10.0.26200/Python 3.11.9 với ba công cụ và phiên bản nêu trên, ba biến thể và 9 mẫu
+hợp lệ mỗi run. Chưa xác thực Bandizip native, WinZip, môi trường/phiên bản khác,
+GUI/Explorer, profile CP949 do archiver tạo, accuracy, BMAC hoặc Case 2 thực tế.
+Corpus thay thế nhỏ này chưa phải tập đánh giá mù hoặc đại diện thống kê. Test pass
+không xác nhận tái hiện toàn bộ bài báo; xem [bảng phạm vi nghiệm thu](../docs/evaluation/reproduction_report.md#giới-hạn-nghiệm-thu-hiện-tại-13112026).
+Git chỉ giữ catalogue, không giữ bytes ZIP/source của run; muốn kiểm chứng run
+cũ cần có artifacts tương ứng, còn sinh lại tạo một run có provenance/checksum mới.
+

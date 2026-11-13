@@ -50,6 +50,7 @@ Desktop.ini
 
 # Experimental raw binary data (keep directory structure with .gitkeep)
 data/ground_truth/*.zip
+data/ground_truth/run-*/
 data/modified_samples/*.zip
 data/modified_samples/run-*/
 data/templates/temp_*

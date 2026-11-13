@@ -1,1 +1,2183 @@
-{}
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "schema_version": 1,
+      "run_id": "run-xzp9n65j",
+      "created_utc": "2026-11-13T14:16:27.667553+00:00",
+      "environment": {
+        "os": "Windows",
+        "os_version": "10.0.26200",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "timezone_names": [
+          "SE Asia Standard Time",
+          "SE Asia Daylight Time"
+        ],
+        "utc_offset_seconds": 25200,
+        "ansi_code_page": 1252,
+        "legacy_encoding": "cp1252"
+      },
+      "metadata_path": "ground_truth/run-xzp9n65j/metadata.json",
+      "tools": {
+        "7zip": {
+          "id": "7zip",
+          "application": "7-Zip",
+          "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+          "interaction": "CLI",
+          "commands": [],
+          "version": "26.04"
+        },
+        "winrar": {
+          "id": "winrar",
+          "application": "WinRAR",
+          "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+          "interaction": "CLI",
+          "commands": [],
+          "version": "6.23.0"
+        },
+        "powershell": {
+          "id": "powershell",
+          "application": "PowerShell Compress-Archive",
+          "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "interaction": "CLI",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+              "returncode": 0,
+              "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\"}\n",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "version": "1.2.7",
+          "powershell_version": "5.1.26100.9818"
+        }
+      },
+      "samples": [
+        {
+          "sample_id": "run-xzp9n65j_7zip_root",
+          "tool_id": "7zip",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-root\\sample.zip",
+                "set1"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-root\\source",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n3 folders, 4 files, 2613 bytes (3 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-root\\sample.zip\n\nAdd new data to archive: 3 folders, 4 files, 2613 bytes (3 KiB)\n\n\nFiles read from disk: 4\nArchive size: 2486 bytes (3 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:27.960136+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-xzp9n65j/7zip-root/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/7zip-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1",
+              "set1/Study",
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "3550e9aed1486b8301bb5b29f029863be5165c7d3d570bd1802c8de3e43a1ceb",
+          "size_bytes": 2486,
+          "finished_utc": "2026-11-13T14:16:28.068326+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_7zip_contents",
+          "tool_id": "7zip",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-contents\\sample.zip",
+                "2021.JPG",
+                "Study",
+                "emptyFolder"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n2 folders, 4 files, 2613 bytes (3 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-contents\\sample.zip\n\nAdd new data to archive: 2 folders, 4 files, 2613 bytes (3 KiB)\n\n\nFiles read from disk: 4\nArchive size: 2304 bytes (3 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:28.068326+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-xzp9n65j/7zip-contents/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/7zip-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "Study",
+              "emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "1a09b8f45d5d236cd09157ada86a2843397afe7097b4c41331b9c94528fecca5",
+          "size_bytes": 2304,
+          "finished_utc": "2026-11-13T14:16:28.200917+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_7zip_auxiliary",
+          "tool_id": "7zip",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-auxiliary\\sample.zip",
+                "auxiliary"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n6 folders, 5 files, 180 bytes (1 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\7zip-auxiliary\\sample.zip\n\nAdd new data to archive: 6 folders, 5 files, 180 bytes (1 KiB)\n\n\nFiles read from disk: 5\nArchive size: 1988 bytes (2 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:28.200917+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-xzp9n65j/7zip-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/7zip-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "87ab0f4783aff9e44adc3c21a652cc02c7e9e55632126fc628a500173c63be21",
+          "size_bytes": 1988,
+          "finished_utc": "2026-11-13T14:16:28.304540+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_winrar_root",
+          "tool_id": "winrar",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-root\\sample.zip",
+                "set1"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-root\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:28.584979+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-xzp9n65j/winrar-root/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/winrar-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1",
+              "set1/Study",
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "f644425275570781f1353c159035a7fb7a8c1d66a163926afd7ce0a2ebf64e45",
+          "size_bytes": 2462,
+          "finished_utc": "2026-11-13T14:16:28.909094+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_winrar_contents",
+          "tool_id": "winrar",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-contents\\sample.zip",
+                "2021.JPG",
+                "Study",
+                "emptyFolder"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:28.909094+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-xzp9n65j/winrar-contents/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/winrar-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "Study",
+              "emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "3a71f4368eca8a52a323239ff6498e4e52d4fac0c7b7988a997ced239d325392",
+          "size_bytes": 2280,
+          "finished_utc": "2026-11-13T14:16:29.169042+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_winrar_auxiliary",
+          "tool_id": "winrar",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-auxiliary\\sample.zip",
+                "auxiliary"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\winrar-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:29.169042+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-xzp9n65j/winrar-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/winrar-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "8786cb32c3f43751ac9a6010a82d5dfdae80c6c64267adee3d81c2e4e6712658",
+          "size_bytes": 1967,
+          "finished_utc": "2026-11-13T14:16:29.433559+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_bandizip_root",
+          "tool_id": "bandizip",
+          "variant": "root",
+          "commands": [],
+          "started_utc": "2026-11-13T14:16:29.433559+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:16:29.433559+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_bandizip_contents",
+          "tool_id": "bandizip",
+          "variant": "contents",
+          "commands": [],
+          "started_utc": "2026-11-13T14:16:29.433559+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:16:29.433559+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_bandizip_auxiliary",
+          "tool_id": "bandizip",
+          "variant": "auxiliary",
+          "commands": [],
+          "started_utc": "2026-11-13T14:16:29.433559+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:16:29.433559+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_powershell_root",
+          "tool_id": "powershell",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBMAGkAdABlAHIAYQBsAFAAYQB0AGgAIABAACgAJwBzAGUAdAAxACcAKQAgAC0ARABlAHMAdABpAG4AYQB0AGkAbwBuAFAAYQB0AGgAIAAnAEMAOgBcAFUAcwBlAHIAcwBcAE8ATQBFAE4AXABEAG8AYwB1AG0AZQBuAHQAcwBcAEwASABCAFwASABLAF8AVgBsAGwAbABcAHAAYwBcAHAAagBcAHoAaQBwAC0AZgBpAG4AZwBlAHIAcAByAGkAbgB0AGkAbgBnAFwAZABhAHQAYQBcAGcAcgBvAHUAbgBkAF8AdAByAHUAdABoAFwAcgB1AG4ALQB4AHoAcAA5AG4ANgA1AGoAXABwAG8AdwBlAHIAcwBoAGUAbABsAC0AcgBvAG8AdABcAHMAYQBtAHAAbABlAC4AegBpAHAAJwAgAC0AQwBvAG0AcAByAGUAcwBzAGkAbwBuAEwAZQB2AGUAbAAgAE8AcAB0AGkAbQBhAGwA"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">2</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>20</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>40</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>60</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>80</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"8\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:29.819390+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818"
+          },
+          "path": "ground_truth/run-xzp9n65j/powershell-root/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/powershell-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Compress-Archive -LiteralPath @('set1') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-root\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": [
+              "set1",
+              "set1/Study"
+            ]
+          },
+          "status": "generated",
+          "sha256": "1843ebebb06bf7393461176bef058de230ad84c2f9ef146c4f1f8365901fce8f",
+          "size_bytes": 2030,
+          "finished_utc": "2026-11-13T14:16:30.498759+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_powershell_contents",
+          "tool_id": "powershell",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBMAGkAdABlAHIAYQBsAFAAYQB0AGgAIABAACgAJwAyADAAMgAxAC4ASgBQAEcAJwAsACcAUwB0AHUAZAB5ACcALAAnAGUAbQBwAHQAeQBGAG8AbABkAGUAcgAnACkAIAAtAEQAZQBzAHQAaQBuAGEAdABpAG8AbgBQAGEAdABoACAAJwBDADoAXABVAHMAZQByAHMAXABPAE0ARQBOAFwARABvAGMAdQBtAGUAbgB0AHMAXABMAEgAQgBcAEgASwBfAFYAbABsAGwAXABwAGMAXABwAGoAXAB6AGkAcAAtAGYAaQBuAGcAZQByAHAAcgBpAG4AdABpAG4AZwBcAGQAYQB0AGEAXABnAHIAbwB1AG4AZABfAHQAcgB1AHQAaABcAHIAdQBuAC0AeAB6AHAAOQBuADYANQBqAFwAcABvAHcAZQByAHMAaABlAGwAbAAtAGMAbwBuAHQAZQBuAHQAcwBcAHMAYQBtAHAAbABlAC4AegBpAHAAJwAgAC0AQwBvAG0AcAByAGUAcwBzAGkAbwBuAEwAZQB2AGUAbAAgAE8AcAB0AGkAbQBhAGwA"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">2</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>11</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>22</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>33</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"8\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"9\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:30.498759+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818"
+          },
+          "path": "ground_truth/run-xzp9n65j/powershell-contents/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/powershell-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Compress-Archive -LiteralPath @('2021.JPG','Study','emptyFolder') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-contents\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              },
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              }
+            ],
+            "directory_headers": [],
+            "missing_directory_headers": [
+              "Study",
+              "emptyFolder"
+            ]
+          },
+          "status": "generated",
+          "sha256": "c5521c314983b38ec5bb495e2c1f876f2c8669473c3cee5f607da5fbcbf77091",
+          "size_bytes": 1880,
+          "finished_utc": "2026-11-13T14:16:31.179228+00:00"
+        },
+        {
+          "sample_id": "run-xzp9n65j_powershell_auxiliary",
+          "tool_id": "powershell",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBMAGkAdABlAHIAYQBsAFAAYQB0AGgAIABAACgAJwBhAHUAeABpAGwAaQBhAHIAeQAnACkAIAAtAEQAZQBzAHQAaQBuAGEAdABpAG8AbgBQAGEAdABoACAAJwBDADoAXABVAHMAZQByAHMAXABPAE0ARQBOAFwARABvAGMAdQBtAGUAbgB0AHMAXABMAEgAQgBcAEgASwBfAFYAbABsAGwAXABwAGMAXABwAGoAXAB6AGkAcAAtAGYAaQBuAGcAZQByAHAAcgBpAG4AdABpAG4AZwBcAGQAYQB0AGEAXABnAHIAbwB1AG4AZABfAHQAcgB1AHQAaABcAHIAdQBuAC0AeAB6AHAAOQBuADYANQBqAFwAcABvAHcAZQByAHMAaABlAGwAbAAtAGEAdQB4AGkAbABpAGEAcgB5AFwAcwBhAG0AcABsAGUALgB6AGkAcAAnACAALQBDAG8AbQBwAHIAZQBzAHMAaQBvAG4ATABlAHYAZQBsACAATwBwAHQAaQBtAGEAbAA="
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">2</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>20</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>40</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>60</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>80</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"8\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:16:31.179228+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818"
+          },
+          "path": "ground_truth/run-xzp9n65j/powershell-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-xzp9n65j/powershell-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Compress-Archive -LiteralPath @('auxiliary') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-xzp9n65j\\powershell-auxiliary\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [],
+            "missing_directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ]
+          },
+          "status": "generated",
+          "sha256": "0207ee814008e8b7ee618d9d6439ce7348545502be38b8d98168cb52f14a4ea6",
+          "size_bytes": 894,
+          "finished_utc": "2026-11-13T14:16:31.831171+00:00"
+        }
+      ],
+      "limitations": [
+        "CLI is not GUI equivalence",
+        "Creation/change times are uncontrolled",
+        "No BMAC or classifier accuracy measurement",
+        "Single writer only"
+      ],
+      "summary": {
+        "generated": 9,
+        "skipped": 3,
+        "failed": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "run_id": "run-49gonnjf",
+      "created_utc": "2026-11-13T14:19:40.493464+00:00",
+      "environment": {
+        "os": "Windows",
+        "os_version": "10.0.26200",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "timezone_names": [
+          "SE Asia Standard Time",
+          "SE Asia Daylight Time"
+        ],
+        "utc_offset_seconds": 25200,
+        "ansi_code_page": 1252,
+        "legacy_encoding": "cp1252"
+      },
+      "metadata_path": "ground_truth/run-49gonnjf/metadata.json",
+      "tools": {
+        "7zip": {
+          "id": "7zip",
+          "application": "7-Zip",
+          "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+          "interaction": "CLI",
+          "commands": [],
+          "version": "26.04"
+        },
+        "winrar": {
+          "id": "winrar",
+          "application": "WinRAR",
+          "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+          "interaction": "CLI",
+          "commands": [],
+          "version": "6.23.0"
+        },
+        "powershell": {
+          "id": "powershell",
+          "application": "PowerShell Compress-Archive",
+          "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "interaction": "CLI",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApADsAYQByAGMAaABpAHYAZQBfAG0AbwBkAHUAbABlAF8AcABhAHQAaAA9ACgARwBlAHQALQBDAG8AbQBtAGEAbgBkACAAQwBvAG0AcAByAGUAcwBzAC0AQQByAGMAaABpAHYAZQAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwB0AG8AcAApAC4ATQBvAGQAdQBsAGUALgBQAGEAdABoAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+              "returncode": 0,
+              "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\",\"archive_module_path\":\"C:\\\\program files\\\\powershell\\\\7\\\\Modules\\\\Microsoft.PowerShell.Archive\\\\Microsoft.PowerShell.Archive.psd1\"}\n",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "version": "1.2.7",
+          "powershell_version": "5.1.26100.9818",
+          "archive_module_path": "C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1",
+          "version_probe_script": "$ErrorActionPreference='Stop';@{powershell_version=$PSVersionTable.PSVersion.ToString();archive_module_version=(Get-Command Compress-Archive -ErrorAction Stop).Module.Version.ToString();archive_module_path=(Get-Command Compress-Archive -ErrorAction Stop).Module.Path} | ConvertTo-Json -Compress"
+        }
+      },
+      "samples": [
+        {
+          "sample_id": "run-49gonnjf_7zip_root",
+          "tool_id": "7zip",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-root\\sample.zip",
+                "set1"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-root\\source",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n3 folders, 4 files, 2613 bytes (3 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-root\\sample.zip\n\nAdd new data to archive: 3 folders, 4 files, 2613 bytes (3 KiB)\n\n\nFiles read from disk: 4\nArchive size: 2486 bytes (3 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:40.775937+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-49gonnjf/7zip-root/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/7zip-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1",
+              "set1/Study",
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "3550e9aed1486b8301bb5b29f029863be5165c7d3d570bd1802c8de3e43a1ceb",
+          "size_bytes": 2486,
+          "finished_utc": "2026-11-13T14:19:40.865071+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_7zip_contents",
+          "tool_id": "7zip",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-contents\\sample.zip",
+                "2021.JPG",
+                "Study",
+                "emptyFolder"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n2 folders, 4 files, 2613 bytes (3 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-contents\\sample.zip\n\nAdd new data to archive: 2 folders, 4 files, 2613 bytes (3 KiB)\n\n\nFiles read from disk: 4\nArchive size: 2304 bytes (3 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:40.865071+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-49gonnjf/7zip-contents/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/7zip-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "Study",
+              "emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "1a09b8f45d5d236cd09157ada86a2843397afe7097b4c41331b9c94528fecca5",
+          "size_bytes": 2304,
+          "finished_utc": "2026-11-13T14:19:40.951755+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_7zip_auxiliary",
+          "tool_id": "7zip",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\7-Zip\\7z.exe",
+                "a",
+                "-tzip",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-auxiliary\\sample.zip",
+                "auxiliary"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "\n7-Zip 26.04 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-05\n\nScanning the drive:\n6 folders, 5 files, 180 bytes (1 KiB)\n\nCreating archive: C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\7zip-auxiliary\\sample.zip\n\nAdd new data to archive: 6 folders, 5 files, 180 bytes (1 KiB)\n\n\nFiles read from disk: 5\nArchive size: 1988 bytes (2 KiB)\nEverything is Ok\n",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:40.951755+00:00",
+          "tool": {
+            "id": "7zip",
+            "application": "7-Zip",
+            "executable": "C:\\Program Files\\7-Zip\\7z.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "26.04"
+          },
+          "path": "ground_truth/run-49gonnjf/7zip-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/7zip-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "87ab0f4783aff9e44adc3c21a652cc02c7e9e55632126fc628a500173c63be21",
+          "size_bytes": 1988,
+          "finished_utc": "2026-11-13T14:19:41.046978+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_winrar_root",
+          "tool_id": "winrar",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-root\\sample.zip",
+                "set1"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-root\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:41.334670+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-49gonnjf/winrar-root/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/winrar-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1",
+              "set1/Study",
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "e6e52c2277a79ffb96cb36b5990a58b04985007d438dce7eb3d415ef0eb140f6",
+          "size_bytes": 2462,
+          "finished_utc": "2026-11-13T14:19:41.615722+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_winrar_contents",
+          "tool_id": "winrar",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-contents\\sample.zip",
+                "2021.JPG",
+                "Study",
+                "emptyFolder"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:41.615722+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-49gonnjf/winrar-contents/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/winrar-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "Study",
+              "emptyFolder"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "b0ac947bc0e638ae65742e57162177bab72119c3e9f5f0f321d97be6870ee494",
+          "size_bytes": 2280,
+          "finished_utc": "2026-11-13T14:19:41.892758+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_winrar_auxiliary",
+          "tool_id": "winrar",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Program Files\\WinRAR\\WinRAR.exe",
+                "a",
+                "-afzip",
+                "-cfg-",
+                "-inul",
+                "-ibck",
+                "-y",
+                "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-auxiliary\\sample.zip",
+                "auxiliary"
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\winrar-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:41.892758+00:00",
+          "tool": {
+            "id": "winrar",
+            "application": "WinRAR",
+            "executable": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+            "interaction": "CLI",
+            "commands": [],
+            "version": "6.23.0"
+          },
+          "path": "ground_truth/run-49gonnjf/winrar-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/winrar-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ],
+            "missing_directory_headers": []
+          },
+          "status": "generated",
+          "sha256": "a8e5d3e53c1f64ace2db9c0214edf3780c8553747ed4ba27b5204018c63da76e",
+          "size_bytes": 1967,
+          "finished_utc": "2026-11-13T14:19:42.163847+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_bandizip_root",
+          "tool_id": "bandizip",
+          "variant": "root",
+          "commands": [],
+          "started_utc": "2026-11-13T14:19:42.163847+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:19:42.163847+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_bandizip_contents",
+          "tool_id": "bandizip",
+          "variant": "contents",
+          "commands": [],
+          "started_utc": "2026-11-13T14:19:42.163847+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:19:42.163847+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_bandizip_auxiliary",
+          "tool_id": "bandizip",
+          "variant": "auxiliary",
+          "commands": [],
+          "started_utc": "2026-11-13T14:19:42.163847+00:00",
+          "status": "skipped",
+          "reason": "Missing tool or unsupported OS",
+          "finished_utc": "2026-11-13T14:19:42.163847+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_powershell_root",
+          "tool_id": "powershell",
+          "variant": "root",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABJAG0AcABvAHIAdAAtAE0AbwBkAHUAbABlACAALQBOAGEAbQBlACAAJwBDADoAXABwAHIAbwBnAHIAYQBtACAAZgBpAGwAZQBzAFwAcABvAHcAZQByAHMAaABlAGwAbABcADcAXABNAG8AZAB1AGwAZQBzAFwATQBpAGMAcgBvAHMAbwBmAHQALgBQAG8AdwBlAHIAUwBoAGUAbABsAC4AQQByAGMAaABpAHYAZQBcAE0AaQBjAHIAbwBzAG8AZgB0AC4AUABvAHcAZQByAFMAaABlAGwAbAAuAEEAcgBjAGgAaQB2AGUALgBwAHMAZAAxACcAOwAgAEMAbwBtAHAAcgBlAHMAcwAtAEEAcgBjAGgAaQB2AGUAIAAtAEwAaQB0AGUAcgBhAGwAUABhAHQAaAAgAEAAKAAnAHMAZQB0ADEAJwApACAALQBEAGUAcwB0AGkAbgBhAHQAaQBvAG4AUABhAHQAaAAgACcAQwA6AFwAVQBzAGUAcgBzAFwATwBNAEUATgBcAEQAbwBjAHUAbQBlAG4AdABzAFwATABIAEIAXABIAEsAXwBWAGwAbABsAFwAcABjAFwAcABqAFwAegBpAHAALQBmAGkAbgBnAGUAcgBwAHIAaQBuAHQAaQBuAGcAXABkAGEAdABhAFwAZwByAG8AdQBuAGQAXwB0AHIAdQB0AGgAXAByAHUAbgAtADQAOQBnAG8AbgBuAGoAZgBcAHAAbwB3AGUAcgBzAGgAZQBsAGwALQByAG8AbwB0AFwAcwBhAG0AcABsAGUALgB6AGkAcAAnACAALQBDAG8AbQBwAHIAZQBzAHMAaQBvAG4ATABlAHYAZQBsACAATwBwAHQAaQBtAGEAbAA="
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>20</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>40</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>60</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>80</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:42.533692+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApADsAYQByAGMAaABpAHYAZQBfAG0AbwBkAHUAbABlAF8AcABhAHQAaAA9ACgARwBlAHQALQBDAG8AbQBtAGEAbgBkACAAQwBvAG0AcAByAGUAcwBzAC0AQQByAGMAaABpAHYAZQAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwB0AG8AcAApAC4ATQBvAGQAdQBsAGUALgBQAGEAdABoAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\",\"archive_module_path\":\"C:\\\\program files\\\\powershell\\\\7\\\\Modules\\\\Microsoft.PowerShell.Archive\\\\Microsoft.PowerShell.Archive.psd1\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818",
+            "archive_module_path": "C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1",
+            "version_probe_script": "$ErrorActionPreference='Stop';@{powershell_version=$PSVersionTable.PSVersion.ToString();archive_module_version=(Get-Command Compress-Archive -ErrorAction Stop).Module.Version.ToString();archive_module_path=(Get-Command Compress-Archive -ErrorAction Stop).Module.Path} | ConvertTo-Json -Compress"
+          },
+          "path": "ground_truth/run-49gonnjf/powershell-root/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/powershell-root/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Import-Module -Name 'C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1'; Compress-Archive -LiteralPath @('set1') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-root\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "set1/2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "set1/Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "set1/Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              }
+            ],
+            "directory_headers": [
+              "set1/emptyFolder"
+            ],
+            "missing_directory_headers": [
+              "set1",
+              "set1/Study"
+            ]
+          },
+          "status": "generated",
+          "sha256": "b3ce44f1033c7235a4359a2fcccfca451944e6afac0b81bb261fc1be4063a4ca",
+          "size_bytes": 2030,
+          "finished_utc": "2026-11-13T14:19:43.159496+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_powershell_contents",
+          "tool_id": "powershell",
+          "variant": "contents",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABJAG0AcABvAHIAdAAtAE0AbwBkAHUAbABlACAALQBOAGEAbQBlACAAJwBDADoAXABwAHIAbwBnAHIAYQBtACAAZgBpAGwAZQBzAFwAcABvAHcAZQByAHMAaABlAGwAbABcADcAXABNAG8AZAB1AGwAZQBzAFwATQBpAGMAcgBvAHMAbwBmAHQALgBQAG8AdwBlAHIAUwBoAGUAbABsAC4AQQByAGMAaABpAHYAZQBcAE0AaQBjAHIAbwBzAG8AZgB0AC4AUABvAHcAZQByAFMAaABlAGwAbAAuAEEAcgBjAGgAaQB2AGUALgBwAHMAZAAxACcAOwAgAEMAbwBtAHAAcgBlAHMAcwAtAEEAcgBjAGgAaQB2AGUAIAAtAEwAaQB0AGUAcgBhAGwAUABhAHQAaAAgAEAAKAAnADIAMAAyADEALgBKAFAARwAnACwAJwBTAHQAdQBkAHkAJwAsACcAZQBtAHAAdAB5AEYAbwBsAGQAZQByACcAKQAgAC0ARABlAHMAdABpAG4AYQB0AGkAbwBuAFAAYQB0AGgAIAAnAEMAOgBcAFUAcwBlAHIAcwBcAE8ATQBFAE4AXABEAG8AYwB1AG0AZQBuAHQAcwBcAEwASABCAFwASABLAF8AVgBsAGwAbABcAHAAYwBcAHAAagBcAHoAaQBwAC0AZgBpAG4AZwBlAHIAcAByAGkAbgB0AGkAbgBnAFwAZABhAHQAYQBcAGcAcgBvAHUAbgBkAF8AdAByAHUAdABoAFwAcgB1AG4ALQA0ADkAZwBvAG4AbgBqAGYAXABwAG8AdwBlAHIAcwBoAGUAbABsAC0AYwBvAG4AdABlAG4AdABzAFwAcwBhAG0AcABsAGUALgB6AGkAcAAnACAALQBDAG8AbQBwAHIAZQBzAHMAaQBvAG4ATABlAHYAZQBsACAATwBwAHQAaQBtAGEAbAA="
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\source\\set1",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>11</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>22</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>33</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"8\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:43.159496+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApADsAYQByAGMAaABpAHYAZQBfAG0AbwBkAHUAbABlAF8AcABhAHQAaAA9ACgARwBlAHQALQBDAG8AbQBtAGEAbgBkACAAQwBvAG0AcAByAGUAcwBzAC0AQQByAGMAaABpAHYAZQAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwB0AG8AcAApAC4ATQBvAGQAdQBsAGUALgBQAGEAdABoAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\",\"archive_module_path\":\"C:\\\\program files\\\\powershell\\\\7\\\\Modules\\\\Microsoft.PowerShell.Archive\\\\Microsoft.PowerShell.Archive.psd1\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818",
+            "archive_module_path": "C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1",
+            "version_probe_script": "$ErrorActionPreference='Stop';@{powershell_version=$PSVersionTable.PSVersion.ToString();archive_module_version=(Get-Command Compress-Archive -ErrorAction Stop).Module.Version.ToString();archive_module_path=(Get-Command Compress-Archive -ErrorAction Stop).Module.Path} | ConvertTo-Json -Compress"
+          },
+          "path": "ground_truth/run-49gonnjf/powershell-contents/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/powershell-contents/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "set1/2021.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/Sample.docx",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/capture.JPG",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "set1/Study/textsm.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Import-Module -Name 'C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1'; Compress-Archive -LiteralPath @('2021.JPG','Study','emptyFolder') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-contents\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "Study/capture.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              },
+              {
+                "name": "Study/Sample.docx",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 1306,
+                "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+              },
+              {
+                "name": "Study/textsm.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 33,
+                "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+              },
+              {
+                "name": "2021.JPG",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 637,
+                "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+              }
+            ],
+            "directory_headers": [],
+            "missing_directory_headers": [
+              "Study",
+              "emptyFolder"
+            ]
+          },
+          "status": "generated",
+          "sha256": "c5521c314983b38ec5bb495e2c1f876f2c8669473c3cee5f607da5fbcbf77091",
+          "size_bytes": 1880,
+          "finished_utc": "2026-11-13T14:19:43.803318+00:00"
+        },
+        {
+          "sample_id": "run-49gonnjf_powershell_auxiliary",
+          "tool_id": "powershell",
+          "variant": "auxiliary",
+          "commands": [
+            {
+              "argv": [
+                "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-EncodedCommand",
+                "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAIABJAG0AcABvAHIAdAAtAE0AbwBkAHUAbABlACAALQBOAGEAbQBlACAAJwBDADoAXABwAHIAbwBnAHIAYQBtACAAZgBpAGwAZQBzAFwAcABvAHcAZQByAHMAaABlAGwAbABcADcAXABNAG8AZAB1AGwAZQBzAFwATQBpAGMAcgBvAHMAbwBmAHQALgBQAG8AdwBlAHIAUwBoAGUAbABsAC4AQQByAGMAaABpAHYAZQBcAE0AaQBjAHIAbwBzAG8AZgB0AC4AUABvAHcAZQByAFMAaABlAGwAbAAuAEEAcgBjAGgAaQB2AGUALgBwAHMAZAAxACcAOwAgAEMAbwBtAHAAcgBlAHMAcwAtAEEAcgBjAGgAaQB2AGUAIAAtAEwAaQB0AGUAcgBhAGwAUABhAHQAaAAgAEAAKAAnAGEAdQB4AGkAbABpAGEAcgB5ACcAKQAgAC0ARABlAHMAdABpAG4AYQB0AGkAbwBuAFAAYQB0AGgAIAAnAEMAOgBcAFUAcwBlAHIAcwBcAE8ATQBFAE4AXABEAG8AYwB1AG0AZQBuAHQAcwBcAEwASABCAFwASABLAF8AVgBsAGwAbABcAHAAYwBcAHAAagBcAHoAaQBwAC0AZgBpAG4AZwBlAHIAcAByAGkAbgB0AGkAbgBnAFwAZABhAHQAYQBcAGcAcgBvAHUAbgBkAF8AdAByAHUAdABoAFwAcgB1AG4ALQA0ADkAZwBvAG4AbgBqAGYAXABwAG8AdwBlAHIAcwBoAGUAbABsAC0AYQB1AHgAaQBsAGkAYQByAHkAXABzAGEAbQBwAGwAZQAuAHoAaQBwACcAIAAtAEMAbwBtAHAAcgBlAHMAcwBpAG8AbgBMAGUAdgBlAGwAIABPAHAAdABpAG0AYQBsAA=="
+              ],
+              "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\source",
+              "returncode": 0,
+              "stdout": "",
+              "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"1\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>1</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"2\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>20</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"3\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>40</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"4\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>60</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"5\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>80</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"6\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>100</PC><T>Processing</T><SR>-1</SR><SD>The archive file 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' creation is in progress...</SD></PR></MS></Obj><Obj S=\"progress\" RefId=\"7\"><TNRef RefId=\"0\" /><MS><I64 N=\"SourceId\">0</I64><PR N=\"Record\"><AV>Compress-Archive</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD>Processing</SD></PR></MS></Obj></Objs>"
+            }
+          ],
+          "started_utc": "2026-11-13T14:19:43.803318+00:00",
+          "tool": {
+            "id": "powershell",
+            "application": "PowerShell Compress-Archive",
+            "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "interaction": "CLI",
+            "commands": [
+              {
+                "argv": [
+                  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                  "-NoProfile",
+                  "-NonInteractive",
+                  "-EncodedCommand",
+                  "JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQA9ACcAUwB0AG8AcAAnADsAQAB7AHAAbwB3AGUAcgBzAGgAZQBsAGwAXwB2AGUAcgBzAGkAbwBuAD0AJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkAOwBhAHIAYwBoAGkAdgBlAF8AbQBvAGQAdQBsAGUAXwB2AGUAcgBzAGkAbwBuAD0AKABHAGUAdAAtAEMAbwBtAG0AYQBuAGQAIABDAG8AbQBwAHIAZQBzAHMALQBBAHIAYwBoAGkAdgBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAHQAbwBwACkALgBNAG8AZAB1AGwAZQAuAFYAZQByAHMAaQBvAG4ALgBUAG8AUwB0AHIAaQBuAGcAKAApADsAYQByAGMAaABpAHYAZQBfAG0AbwBkAHUAbABlAF8AcABhAHQAaAA9ACgARwBlAHQALQBDAG8AbQBtAGEAbgBkACAAQwBvAG0AcAByAGUAcwBzAC0AQQByAGMAaABpAHYAZQAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwB0AG8AcAApAC4ATQBvAGQAdQBsAGUALgBQAGEAdABoAH0AIAB8ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBKAHMAbwBuACAALQBDAG8AbQBwAHIAZQBzAHMA"
+                ],
+                "cwd": "C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting",
+                "returncode": 0,
+                "stdout": "{\"archive_module_version\":\"1.2.7\",\"powershell_version\":\"5.1.26100.9818\",\"archive_module_path\":\"C:\\\\program files\\\\powershell\\\\7\\\\Modules\\\\Microsoft.PowerShell.Archive\\\\Microsoft.PowerShell.Archive.psd1\"}\n",
+                "stderr": "#< CLIXML\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>"
+              }
+            ],
+            "version": "1.2.7",
+            "powershell_version": "5.1.26100.9818",
+            "archive_module_path": "C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1",
+            "version_probe_script": "$ErrorActionPreference='Stop';@{powershell_version=$PSVersionTable.PSVersion.ToString();archive_module_version=(Get-Command Compress-Archive -ErrorAction Stop).Module.Version.ToString();archive_module_path=(Get-Command Compress-Archive -ErrorAction Stop).Module.Path} | ConvertTo-Json -Compress"
+          },
+          "path": "ground_truth/run-49gonnjf/powershell-auxiliary/sample.zip",
+          "source_path": "ground_truth/run-49gonnjf/powershell-auxiliary/source",
+          "source_manifest_sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c",
+          "source_times": [
+            {
+              "path": "auxiliary/double_zip/inner.zip",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/encodings/korean-cp949.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfc/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/korean_nfd/가나다.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            },
+            {
+              "path": "auxiliary/vietnamese/tiếng-Việt.txt",
+              "mtime_ns": 1610364659000000000,
+              "atime_ns": 1610364659000000000
+            }
+          ],
+          "powershell_script": "$ErrorActionPreference='Stop'; Import-Module -Name 'C:\\program files\\powershell\\7\\Modules\\Microsoft.PowerShell.Archive\\Microsoft.PowerShell.Archive.psd1'; Compress-Archive -LiteralPath @('auxiliary') -DestinationPath 'C:\\Users\\OMEN\\Documents\\LHB\\HK_Vlll\\pc\\pj\\zip-fingerprinting\\data\\ground_truth\\run-49gonnjf\\powershell-auxiliary\\sample.zip' -CompressionLevel Optimal",
+          "validation": {
+            "passed": true,
+            "files": [
+              {
+                "name": "auxiliary/double_zip/inner.zip",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 138,
+                "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+              },
+              {
+                "name": "auxiliary/encodings/korean-cp949.txt",
+                "name_encoding": "legacy",
+                "flag_bits": 0,
+                "size": 7,
+                "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+              },
+              {
+                "name": "auxiliary/korean_nfc/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/korean_nfd/가나다.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 10,
+                "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+              },
+              {
+                "name": "auxiliary/vietnamese/tiếng-Việt.txt",
+                "name_encoding": "utf8",
+                "flag_bits": 2048,
+                "size": 15,
+                "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+              }
+            ],
+            "directory_headers": [],
+            "missing_directory_headers": [
+              "auxiliary",
+              "auxiliary/double_zip",
+              "auxiliary/encodings",
+              "auxiliary/korean_nfc",
+              "auxiliary/korean_nfd",
+              "auxiliary/vietnamese"
+            ]
+          },
+          "status": "generated",
+          "sha256": "0207ee814008e8b7ee618d9d6439ce7348545502be38b8d98168cb52f14a4ea6",
+          "size_bytes": 894,
+          "finished_utc": "2026-11-13T14:19:44.528076+00:00"
+        }
+      ],
+      "limitations": [
+        "CLI is not GUI equivalence",
+        "Creation/change times are uncontrolled",
+        "No BMAC or classifier accuracy measurement",
+        "Single writer only"
+      ],
+      "summary": {
+        "generated": 9,
+        "skipped": 3,
+        "failed": 0
+      }
+    }
+  ]
+}
