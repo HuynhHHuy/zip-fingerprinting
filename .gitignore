@@ -53,6 +53,8 @@ data/ground_truth/*.zip
 data/modified_samples/*.zip
 data/modified_samples/run-*/
 data/templates/temp_*
+data/templates/set1/
+data/templates/auxiliary/
 !data/**/.gitkeep
 !results/**/.gitkeep
 

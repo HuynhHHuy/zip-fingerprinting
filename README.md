@@ -199,6 +199,23 @@ không có nghịch đảo. Các cảnh báo này không tự chứng minh can t
 lịch sử, chưa xác thực trên phần mềm hiện hành. Đo filesystem thuộc PH5-DEC-002;
 nối CLI thuộc PH7-CLI-001.
 
+### 3.9 Corpus chuẩn có thể tái tạo (PH6-DATA-001)
+
+```powershell
+python scripts/prepare_corpus.py
+python -m pytest tests/unit/test_prepare_corpus.py
+```
+
+Sinh `data/templates/set1/` đúng cây Hình 5 với JPEG/DOCX hợp lệ, kèm mẫu Hàn
+NFC/NFD, payload CP949, tiếng Việt và ZIP con trong `auxiliary/`. Manifest cố định
+đường dẫn và SHA-256; atime/mtime được đặt và kiểm tra tại `2021-01-11 11:30:59 UTC`.
+Payload được Git bỏ qua và sinh lại trước mỗi thực nghiệm. Script hỗ trợ `--output`,
+từ chối dữ liệu lạ hoặc đường dẫn liên kết, không xóa file.
+
+Đây là corpus thay thế tự tạo, chưa phải ground truth của archiver. Creation/change
+time không được cố định; đọc hoặc liệt kê thư mục có thể đổi atime. Xem cách chạy,
+encoding và giới hạn timestamp tại [data/README.md](data/README.md).
+
 ## 4. Lộ trình Thực hiện và Tiến độ
 
 Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-plan.md`](docs/project/implementation-plan.md).
@@ -208,6 +225,6 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 HOÀN THÀNH — đối chiếu Bảng 8; PH5-DEC-002 chưa đo thực tế]`
-- **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5)
+- **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5) `[PH6-DATA-001 hoàn thành — xác minh cục bộ Windows/Python 3.11; PH6-DATA-002 còn placeholder]`
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
 - **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]

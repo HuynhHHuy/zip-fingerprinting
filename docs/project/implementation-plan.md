@@ -341,7 +341,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ### Giai đoạn 6: Pipeline Sinh Mẫu Thực nghiệm & Bộ Dữ liệu Chuẩn (Dataset Generation)
 
-#### `PH6-DATA-001`: Hoàn thiện Bộ Sinh Cây Thư mục Mẫu Tiêu chuẩn (Hình 5)
+#### `PH6-DATA-001`: Hoàn thiện Bộ Sinh Cây Thư mục Mẫu Tiêu chuẩn (Hình 5) [HOÀN THÀNH — XÁC MINH CỤC BỘ]
 - **Mức độ ưu tiên:** P0
 - **Phụ thuộc:** `PH0-DOC-001`
 - **Mục tiêu:** Tạo cây thư mục tiêu chuẩn với nội dung và cấu trúc khớp hoàn toàn với Hình 5 trong bài báo.
@@ -357,12 +357,22 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
        ├── emptyFolder/
        └── 2021.JPG
        ```
-     - Cố định mốc thời gian hệ thống tệp cho tất cả các file (`2021-01-11 11:30:59 UTC` theo mẫu thực nghiệm của bài báo).
+      - Cố định atime/mtime cho file và thư mục tại `2021-01-11 11:30:59 UTC`; không cam kết creation/change time đa nền tảng.
      - Bổ sung các file kiểm tra phụ trợ: file Unicode tiếng Hàn (CP949/NFC/NFD), file tiếng Việt, file ZIP con để kiểm tra Double Zipping.
 - **Đầu vào:** Cấu trúc Hình 5 bài báo.
 - **Tệp tạo/chỉnh sửa:** `scripts/prepare_corpus.py`, `data/templates/`.
 - **Đầu ra:** Cây thư mục mẫu cố định, có thể sinh lại đồng nhất 100%.
 - **Tiêu chí nghiệm thu (DoD):** Chạy `python scripts/prepare_corpus.py` tạo cây thư mục chuẩn với đúng cấu trúc và checksum định trước.
+- **Kết quả triển khai 13/11/2026:** Generator dùng stdlib, JPEG fixture cố định,
+  DOCX OOXML hợp lệ, ZIP con có CRC hợp lệ; mẫu Hàn NFC/NFD, CP949 và tiếng Việt
+  đặt riêng trong `auxiliary/`. `data/templates/manifest.json` lưu inventory 9 file,
+  9 thư mục và SHA-256 định trước. Test kiểm tra định dạng, timestamp, manifest,
+  sinh độc lập/chạy lại, CLI và từ chối dữ liệu lạ/junction Windows trước khi ghi.
+  Xác minh cục bộ trên Windows/Python 3.11; chưa xác minh macOS/Linux. Nội dung là
+  payload thay thế, không phải tệp gốc tác giả; chưa tạo ground truth bằng archiver
+  (PH6-DATA-002), đo BMAC (PH5-DEC-002) hay đánh giá accuracy (PH7-EVAL-002).
+  Đọc/liệt kê/copy có thể đổi atime; cần sinh lại ngay trước thực nghiệm.
+  Xem [cách dùng và giới hạn](../../data/README.md).
 
 #### `PH6-DATA-002`: Xây dựng Pipeline Nén Tự động Sinh Mẫu Ground-Truth
 - **Mức độ ưu tiên:** P1
