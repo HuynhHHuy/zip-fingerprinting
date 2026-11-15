@@ -382,6 +382,24 @@ def test_mixed_nanosecond_patterns_are_subsidiary_only():
     assert sorted(indicator.entries) == ["a.txt", "b.txt"]
 
 
+def test_mixed_central_extra_field_order_is_subsidiary_only():
+    """Table 6: WinZip writes 0x7075 before 0x000A; Bandizip/WinRAR write 0x000A first."""
+    a, b = "set1/가.txt", "set1/나.txt"
+    winzip_order = Entry(a, host=0, local=[unicode_path(a)], central=[unicode_path(a), ntfs()])
+    report = analyze([win_bandizip_unicode(b), winzip_order])
+    assert report.is_multi_provenance is False
+    assert report.requires_further_analysis is True
+    (indicator,) = [item for item in report.indicators if item.code == "MIXED_EXTRA_FIELD_ORDER"]
+    assert indicator.weight == "SUBSIDIARY"
+    assert sorted(indicator.entries) == sorted([a, b])
+
+
+def test_consistent_extra_field_order_raises_no_order_indicator():
+    report = analyze([win_bandizip_unicode("set1/가.txt"), win_bandizip_unicode("set1/나.txt")])
+    assert "MIXED_EXTRA_FIELD_ORDER" not in indicator_codes(report)
+    assert report.requires_further_analysis is False
+
+
 # ----------------------------------------------------------------------------- report contract
 def test_report_dict_is_json_serializable_and_input_is_not_mutated():
     archive = parse([win_7zip("set1/2021.JPG"), mac_compress("set1/added.txt")])

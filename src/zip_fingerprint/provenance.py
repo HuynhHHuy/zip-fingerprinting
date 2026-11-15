@@ -8,8 +8,9 @@ When a second program (SW2) adds, modifies or deletes entries of an archive crea
 the binary headers record it in one of two ways (Section 4.2):
 
 * **Case 1 - mixed fingerprints:** only the manipulated entry receives SW2's headers, so a single
-  archive holds entries whose host OS, extra-field types/order or ``0x5455`` lengths belong to
-  different, mutually incompatible environments.
+  archive holds entries whose host OS, extra-field types or ``0x5455`` lengths belong to
+  different, mutually incompatible environments. Differences in extra-field *order* alone are
+  reported as subsidiary evidence, matching the classifier's policy.
 * **Case 2 - cascade rewrite:** SW2 rewrites the headers of the remaining entries (e.g. strips or
   replaces their extra fields after a deletion). When local file headers keep SW1's structure while
   central directory headers carry SW2's, the LFH/CDH pair of an entry matches no single profile.
@@ -23,7 +24,7 @@ single provenance: SW2 may rewrite every header, and some catalog profiles overl
 """
 
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
+from typing import Any, Dict, FrozenSet, Iterator, List, Optional, Set, Tuple
 
 from zip_fingerprint.classifier import AutomatedClassifier
 from zip_fingerprint.constants import (
@@ -440,7 +441,7 @@ class ProvenanceTracker:
                     entries=[name for group in known for name in group.entry_names],
                     detail=(
                         f"{len(known)} entry groups have disjoint compatible environments "
-                        "(extra-field types/order, 0x5455 lengths, descriptor or host OS)."
+                        "(extra-field types, 0x5455 lengths, descriptor or host OS)."
                     ),
                 )
             )
@@ -521,6 +522,31 @@ class ProvenanceTracker:
                         detail=(
                             "Entries with compatible high-weight structure mix WinZip-style "
                             "'fff0000' and full 'fffffff' 0x000A nanoseconds."
+                        ),
+                    )
+                )
+            # Same CDH header-ID set but different order (Table 6: WinZip 0x7075 -> 0x000A vs
+            # WinRAR/Bandizip 0x000A -> 0x7075). Subsidiary, consistent with classifier policy.
+            orders: Dict[FrozenSet[int], Set[Tuple[int, ...]]] = {}
+            for entry in members:
+                sequence = tuple(entry.central_extra_field_sequence)
+                if len(set(sequence)) > 1:
+                    orders.setdefault(frozenset(sequence), set()).add(sequence)
+            mixed = {sequence for seqs in orders.values() if len(seqs) > 1 for sequence in seqs}
+            if mixed:
+                indicators.append(
+                    ProvenanceIndicator(
+                        code="MIXED_EXTRA_FIELD_ORDER",
+                        case=CASE_1,
+                        weight=WEIGHT_SUBSIDIARY,
+                        entries=[
+                            entry.file_name
+                            for entry in members
+                            if tuple(entry.central_extra_field_sequence) in mixed
+                        ],
+                        detail=(
+                            "Entries share the same CDH extra-field types but differ in header "
+                            "order (e.g. WinZip 0x7075->0x000A vs WinRAR/Bandizip 0x000A->0x7075)."
                         ),
                     )
                 )
