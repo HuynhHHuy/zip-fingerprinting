@@ -123,17 +123,118 @@ Nhận diện hệ điều hành và công cụ nén nguồn gốc dựa trên b
 
 ---
 
-### 2.3 Subcommands dành cho Phần B (`PH7-CLI-001/B`)
-Các lệnh sau đã được đăng ký trong parser nhưng chưa cài đặt logic xử lý ở Phase A:
-* `provenance <zip_path>`: Phân tích lịch sử can thiệp tệp, phát hiện đa nguồn gốc (Case 1 vs Case 2).
-* `decompress-check --bmac <pattern>`: Đối chiếu dấu vết mốc thời gian giải nén trên NTFS với Bảng 8.
+### 2.3 Subcommand: `provenance` (PH7-CLI-001/B)
+Phân tích lịch sử can thiệp tệp, phát hiện đa nguồn gốc (Case 1 mixed fingerprints vs Case 2 cascade rewrite) và xuất các giới hạn pháp y.
 
-**Quy ước bắt buộc ở Phase A:**
-Khi người dùng gọi các lệnh này, CLI **bắt buộc** xuất thông báo lỗi ra `stderr` và trả về mã thoát `1`:
-```text
-Error: Subcommand 'provenance' is not yet implemented (PH7-CLI-001/B).
-```
-Tuyệt đối không trả về `0` hoặc in placeholder rỗng.
+* **Cú pháp:**
+  ```bash
+  zip-fingerprint provenance <zip_path> [--format {json,text}] [--output <file_path>]
+  ```
+* **Tham số:**
+  - `<zip_path>` *(bắt buộc)*: Đường dẫn đến tệp ZIP cần phân tích.
+  - `--format {json, text}` *(tùy chọn, mặc định `json`)*: Định dạng xuất kết quả.
+  - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả (từ chối nếu trùng input).
+* **Định dạng JSON (`--format json`):**
+  ```json
+  {
+    "file_path": "sample.zip",
+    "is_multi_provenance": false,
+    "requires_further_analysis": false,
+    "cases": {
+      "case1_mixed_fingerprints": false,
+      "case2_cascade_rewrite": false
+    },
+    "groups": [],
+    "indicators": [],
+    "suspected_applications": [],
+    "inference_history": [
+      "Fingerprinted 1 entries independently from CDH/LFH pairs without decompression.",
+      "All entries share at least one compatible environment (one group).",
+      "No high-weight heterogeneity found. This does not prove single provenance: SW2 may rewrite every header, or SW1/SW2 profiles may overlap."
+    ],
+    "limitations": [
+      "Absence of heterogeneity does not prove single provenance: SW2 may rewrite every header, or SW1/SW2 profiles may overlap.",
+      "Subsidiary signals (e.g. nanosecond timestamp patterns) require further analysis and do not establish multi-provenance alone.",
+      "Role assignment (ORIGINAL_CREATOR vs MODIFIER) is heuristic based on header offsets (Add operations append entries).",
+      "Synthetic tests and reconstructed headers do not establish native reproduction of Case 2."
+    ],
+    "entries": []
+  }
+  ```
+
+---
+
+### 2.4 Subcommand: `decompress-check` (PH7-CLI-001/B)
+Đối chiếu dấu vết mốc thời gian giải nén trên hệ thống tệp Windows NTFS với Bảng 8 (Um et al., 2021).
+
+* **Cú pháp:**
+  ```bash
+  zip-fingerprint decompress-check --bmac <pattern> [--entry-type <type>] [--extra-field <field>] [--format {json,text}] [--output <file_path>]
+  ```
+* **Tham số:**
+  - `--bmac <pattern>` *(bắt buộc)*: Mẫu BMAC quan sát gồm 4 ký tự R/H/E (ví dụ `EEER`, `REER`, `RERR`, `HHHR`).
+  - `--entry-type <type>` *(tùy chọn, mặc định `file`)*: Loại entry (`file`, `folder_with_files`, `empty_folder`, `folder_no_header`).
+  - `--extra-field <field>` *(tùy chọn, mặc định `None`)*: Mã trường mở rộng (ví dụ `0x000A`, `0x5455`, `0x5855`, `None`, `N/A`).
+  - `--format {json, text}` *(tùy chọn, mặc định `json`)*: Định dạng xuất kết quả.
+  - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả.
+* **Quy tắc bảo toàn ứng viên đồng hạng (Tie-Preservation):**
+  - Mọi công cụ thỏa mãn mẫu BMAC trong Bảng 8 đều được giữ nguyên theo thứ tự cột chuẩn (`WinRAR`, `WinZip`, `7-Zip`, `Bandizip`, `Compressed folder`).
+  - Mẫu hợp lệ không có công cụ khớp trả về danh sách rỗng `[]` với exit code `0`.
+  - Mẫu sai cú pháp hoặc ngữ cảnh không hợp lệ (ví dụ `folder_no_header` kèm `0x000A`) báo lỗi qua `stderr` với exit code `1`.
+* **Định dạng JSON (`--format json`):**
+  ```json
+  {
+    "observed_bmac": "EEER",
+    "entry_type": "file",
+    "extra_field": "0x000A",
+    "total_candidates": 3,
+    "candidates": [
+      "WinZip",
+      "7-Zip",
+      "Bandizip"
+    ]
+  }
+  ```
+
+---
+
+### 2.5 Subcommand: `compare` (PH7-CLI-001/B)
+So sánh đặc trưng cấu trúc pháp y giữa hai tệp ZIP, báo cáo tính tương đương cấu trúc và danh sách khác biệt.
+
+* **Cú pháp:**
+  ```bash
+  zip-fingerprint compare <zip_path1> <zip_path2> [--format {json,text}] [--output <file_path>]
+  ```
+* **Tham số:**
+  - `<zip_path1>` *(bắt buộc)*: Đường dẫn tệp ZIP thứ nhất.
+  - `<zip_path2>` *(bắt buộc)*: Đường dẫn tệp ZIP thứ hai.
+  - `--format {json, text}` *(tùy chọn, mặc định `json`)*: Định dạng xuất kết quả.
+  - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả (từ chối nếu trùng một trong hai input).
+* **Quy tắc so sánh cấu trúc:**
+  - Không so sánh `file_path` như sự khác biệt cấu trúc; hai tệp khác đường dẫn nhưng giống nhau về đặc trưng cấu trúc có `structural_match: true`.
+  - Không tự gán điểm tương đồng tùy ý không có định nghĩa; chỉ so sánh tường minh các trường trong `high_weight_features` và `subsidiary_features`.
+* **Định dạng JSON (`--format json`):**
+  ```json
+  {
+    "target1": {
+      "file_path": "sample1.zip",
+      "structural_hash": "a1b2c3d4...",
+      "archive_sha256": "e3b0c442..."
+    },
+    "target2": {
+      "file_path": "sample2.zip",
+      "structural_hash": "a1b2c3d4...",
+      "archive_sha256": "f5a6b7c8..."
+    },
+    "equal": true,
+    "structural_match": true,
+    "total_differences": 0,
+    "differences": {
+      "high_weight": [],
+      "subsidiary": []
+    }
+  }
+  ```
 
 ---
 
@@ -146,19 +247,23 @@ Tuyệt đối không trả về `0` hoặc in placeholder rỗng.
 | **Đường dẫn là thư mục** | `stderr` | `Error: Target path is not a regular file: '<path>'` | `1` |
 | **Tệp ZIP hỏng / không hợp lệ** | `stderr` | `Error analyzing ZIP file: <chi_tiết_lỗi>` | `1` |
 | **Lỗi ghi tệp output** | `stderr` | `Error writing output file '<path>': <chi_tiết_lỗi>` | `1` |
-| **Subcommand chưa cài đặt** | `stderr` | `Error: Subcommand '<cmd>' is not yet implemented (PH7-CLI-001/B).` | `1` |
+| **Output trùng file input** | `stderr` | `Error: Output file must not be an input ZIP or an alias.` | `1` |
+| **BMAC sai định dạng** | `stderr` | `Error: BMAC must contain four R/H/E symbols in B-M-A-C order` | `1` |
+| **Ngữ cảnh decompress-check sai** | `stderr` | `Error: <chi_tiết_lỗi_từ_DecompressionAnalyzer>` | `1` |
 | **Thiếu đối số bắt buộc** | `stderr` | Do `argparse` sinh (e.g. `zip-fingerprint: error: the following arguments are required...`) | `2` |
 | **Cờ / tùy chọn không hợp lệ** | `stderr` | Do `argparse` sinh (e.g. `zip-fingerprint: error: unrecognized arguments: ...`) | `2` |
 
-## 4. Kiểm chứng regression CLI/A — 2026-11-17
+---
 
-Môi trường: Windows, Python 3.11.9; worktree nhánh `feat/cli-fingerprint-identify`, dựa trên `ad65962`.
+## 4. Kiểm chứng regression CLI/A & CLI/B — 2026-11-17
 
-- Trước sửa: nhóm test mới có **10 failed, 4 passed, 2 skipped**, tái hiện mất dữ liệu khi output trùng input/đường dẫn tương đối/hardlink, lỗi Unicode cp1252 và lỗi ghi stdout.
-- Review độc lập phát hiện stdout pipe đóng sớm khiến Python flush lại lúc shutdown, trả `120`. Hai test subprocess mới đều RED trước sửa và GREEN sau khi chặn flush lại trên descriptor đã lỗi.
-- Sau sửa: toàn bộ suite **189 passed, 2 skipped** (14.90 giây). Hai ca symlink bị skip vì Windows trả `WinError 1314` (thiếu quyền tạo symlink); chưa xác minh native hai ca này. Hardlink, pipe đóng sớm và subprocess cp1252/UTF-8 đã chạy thực tế.
-- Mypy toàn bộ `src`, Black/Flake8 hai file Python thay đổi, `pip check` và `git diff --check` đều pass.
-- Đây là kiểm chứng chức năng CLI với fixture ZIP; không phải đo accuracy hoặc tái hiện thực nghiệm bài báo.
+Môi trường: Windows, Python 3.11.9 & Python 3.13; worktree nhánh `feat/cli-provenance-decompress-compare`.
+
+- Toàn bộ suite pytest: **204 passed, 5 skipped** (mốc ban đầu: 161 passed).
+- Test riêng CLI (`test_cli.py`): **43 passed, 3 skipped**, độ bao phủ `src/zip_fingerprint/cli.py` đạt **85%**.
+- Các ca skip symlink do môi trường Windows không cấp đặc quyền SeCreateSymbolicLinkPrivilege cho non-admin (`WinError 1314`); hardlink đã được kiểm tra trực tiếp.
+- Mypy trên 15 source files: `Success: no issues found`.
+- Black và Flake8 (max-line-length 100): 100% pass không cảnh báo.
 
 Lệnh chạy tại worktree (dùng venv hiện có của checkout chính):
 

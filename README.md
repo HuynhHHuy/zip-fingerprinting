@@ -231,7 +231,7 @@ Nghiệm thu chỉ áp dụng cho Windows/Python và các phiên bản công c�
 xác thực Bandizip native, profile CP949 do archiver tạo, accuracy hoặc BMAC. Xem
 [giới hạn nghiệm thu hiện tại](docs/evaluation/reproduction_report.md#giới-hạn-nghiệm-thu-hiện-tại-13112026).
 
-### 3.11 Công cụ dòng lệnh CLI (PH7-CLI-001/A)
+### 3.11 Công cụ dòng lệnh CLI (PH7-CLI-001)
 
 ```powershell
 # Trích xuất vân tay cấu trúc và SHA-256
@@ -239,9 +239,18 @@ zip-fingerprint fingerprint <archive.zip> [--output <file.json>]
 
 # Nhận diện HĐH và công cụ nén nguồn gốc
 zip-fingerprint identify <archive.zip> [--format json|text] [--output <file.json>]
+
+# Phân tích đa nguồn gốc và lịch sử can thiệp tệp (Case 1 vs Case 2)
+zip-fingerprint provenance <archive.zip> [--format json|text] [--output <file.json>]
+
+# Đối chiếu dấu vết mốc thời gian giải nén NTFS với Bảng 8
+zip-fingerprint decompress-check --bmac <pattern> [--entry-type <type>] [--extra-field <field>] [--format json|text] [--output <file.json>]
+
+# So sánh tương đương cấu trúc giữa hai tệp ZIP (bỏ qua file_path)
+zip-fingerprint compare <zip1> <zip2> [--format json|text] [--output <file.json>]
 ```
 
-Quy ước mã thoát (`0` thành công, `1` lỗi I/O/dữ liệu/chưa hỗ trợ, `2` sai cú pháp) và đặc tả schema chi tiết xem tại [`docs/project/cli-contract.md`](docs/project/cli-contract.md).
+Quy ước mã thoát (`0` thành công, `1` lỗi I/O/dữ liệu, `2` sai cú pháp) và đặc tả schema chi tiết xem tại [`docs/project/cli-contract.md`](docs/project/cli-contract.md).
 
 ## 4. Lộ trình Thực hiện và Tiến độ
 
