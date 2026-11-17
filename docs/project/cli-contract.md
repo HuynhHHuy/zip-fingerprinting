@@ -213,6 +213,10 @@ So sánh đặc trưng cấu trúc pháp y giữa hai tệp ZIP, báo cáo tính
 * **Quy tắc so sánh cấu trúc:**
   - Không so sánh `file_path` như sự khác biệt cấu trúc; hai tệp khác đường dẫn nhưng giống nhau về đặc trưng cấu trúc có `structural_match: true`.
   - Không tự gán điểm tương đồng tùy ý không có định nghĩa; chỉ so sánh tường minh các trường trong `high_weight_features` và `subsidiary_features`.
+  - Danh sách diff dùng cùng hai nhóm đặc trưng extractor mà structural hash sử dụng,
+    trước khi chiếu sang schema. Tên trường giữ theo extractor, bao gồm `uid`, `gid`
+    và `double_zipping` (`STORED`/`RECOMPRESSED`/`null`); không bỏ các khác biệt này
+    do schema dùng tên khác. Cách tính structural hash hiện có không thay đổi.
 * **Định dạng JSON (`--format json`):**
   ```json
   {
@@ -278,3 +282,10 @@ $env:PYTHONDONTWRITEBYTECODE = '1'
 & $python -m pip check
 git diff --check
 ```
+
+Bản sửa sau review ngày 17/11/2026: `compare` từng bỏ sót UID/GID và double-zipping
+trong danh sách diff do chiếu schema, dù structural hash khác. Sáu regression
+entrypoint (ba đặc trưng × JSON/text) đã RED → GREEN. Kiểm tra lại trên Windows,
+Python 3.11.9: cùng lệnh pytest ở trên đạt **212 passed, 3 skipped** (symlink
+WinError1314); mypy `src`, Black/Flake8 hai file Python thay đổi, `pip check` và
+diff đều đạt. Review độc lập chạy riêng compare đạt 10 passed.

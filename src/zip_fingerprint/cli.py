@@ -314,8 +314,10 @@ def handle_compare(args: argparse.Namespace) -> int:
         sys.stderr.write(f"Unexpected error analyzing ZIP file '{args.zip_path2}': {e}\n")
         return 1
 
-    hw1 = canonical_fp1.high_weight_features.model_dump()
-    hw2 = canonical_fp2.high_weight_features.model_dump()
+    # Diff the same feature groups that compute_structural_hash hashes. The
+    # schema projection drops raw subsidiary keys such as uid/gid/double_zipping.
+    hw1 = features1["high_weight"]
+    hw2 = features2["high_weight"]
     diff_hw = []
     for key in sorted(hw1.keys()):
         val1 = hw1[key]
@@ -323,8 +325,8 @@ def handle_compare(args: argparse.Namespace) -> int:
         if val1 != val2:
             diff_hw.append({"feature": key, "target1": val1, "target2": val2})
 
-    sub1 = canonical_fp1.subsidiary_features.model_dump()
-    sub2 = canonical_fp2.subsidiary_features.model_dump()
+    sub1 = features1["subsidiary"]
+    sub2 = features2["subsidiary"]
     diff_sub = []
     for key in sorted(sub1.keys()):
         val1 = sub1[key]

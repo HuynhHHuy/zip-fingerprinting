@@ -7,6 +7,7 @@ from pathlib import Path
 import struct
 import subprocess
 import sys
+import zipfile
 
 import pytest
 
@@ -599,6 +600,60 @@ def test_cli_compare_different_structures(
     assert "host_os" in hw_diffs
     assert hw_diffs["host_os"]["target1"] == 0
     assert hw_diffs["host_os"]["target2"] == 3
+
+
+@pytest.mark.parametrize("feature", ["double_zipping", "uid", "gid"])
+@pytest.mark.parametrize("output_format", ["json", "text"])
+def test_cli_compare_reports_hashed_subsidiary_differences(
+    tmp_path: Path, feature: str, output_format: str
+) -> None:
+    """Real ZIPs differing in one hashed feature must explain that difference."""
+    inner = io.BytesIO()
+    with zipfile.ZipFile(inner, "w") as archive:
+        archive.writestr("payload.txt", b"same payload")
+    paths = [tmp_path / "left.zip", tmp_path / "right.zip"]
+    for index, path in enumerate(paths):
+        item = zipfile.ZipInfo("inner.zip" if feature == "double_zipping" else "payload.txt")
+        item.compress_type = (
+            zipfile.ZIP_DEFLATED if feature == "double_zipping" and index else zipfile.ZIP_STORED
+        )
+        if feature in {"uid", "gid"}:
+            uid = 1000 + (index if feature == "uid" else 0)
+            gid = 1000 + (index if feature == "gid" else 0)
+            body = struct.pack("<BBIBI", 1, 4, uid, 4, gid)
+            item.extra = struct.pack("<HH", 0x7875, len(body)) + body
+        with zipfile.ZipFile(path, "w") as archive:
+            archive.writestr(item, inner.getvalue() if feature == "double_zipping" else b"payload")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "zip_fingerprint",
+            "compare",
+            *map(str, paths),
+            "--format",
+            output_format,
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stderr == ""
+    left, right = ("STORED", "RECOMPRESSED") if feature == "double_zipping" else (1000, 1001)
+    if output_format == "json":
+        report = json.loads(result.stdout)
+        assert report["structural_match"] is False
+        assert report["target1"]["structural_hash"] != report["target2"]["structural_hash"]
+        assert report["total_differences"] == 1
+        assert report["differences"] == {
+            "high_weight": [],
+            "subsidiary": [{"feature": feature, "target1": left, "target2": right}],
+        }
+    else:
+        assert "Structural Match:   False" in result.stdout
+        assert f"[subsidiary]  {feature}: {left} != {right}" in result.stdout
 
 
 def test_cli_compare_text_and_output_file(
