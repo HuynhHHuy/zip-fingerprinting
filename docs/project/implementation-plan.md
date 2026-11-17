@@ -422,9 +422,12 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
      - Lệnh `compare <zip1> <zip2>`: So sánh tương đồng cấu trúc nhị phân giữa hai file ZIP.
   2. Định dạng bảng xuất đẹp mắt trên terminal bằng bảng text ANSI hoặc JSON có cấu trúc.
 - **Đầu vào:** Các module cốt lõi của package.
-- **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/cli.py`, `src/zip_fingerprint/__main__.py`.
+- **Tệp tạo/chỉnh sửa:** `src/zip_fingerprint/cli.py`, `src/zip_fingerprint/__main__.py`, `docs/project/cli-contract.md`, `tests/unit/test_cli.py`.
 - **Đầu ra:** Giao diện dòng lệnh hoàn chỉnh chạy qua `python -m zip_fingerprint` hoặc lệnh `zip-fingerprint`.
-- **Tiêu chí nghiệm thu (DoD):** Chạy lệnh `--help` in đầy đủ hướng dẫn, các lệnh con trả về mã lỗi `0` khi thành công.
+- **Tiêu chí nghiệm thu (DoD):** Chạy lệnh `--help` in đầy đủ hướng dẫn, các lệnh con trả về mã lỗi `0` khi thành công, mã `1` khi gặp lỗi I/O/chưa hỗ trợ, mã `2` khi sai cú pháp.
+- **Tiến độ triển khai:**
+  - **Phần A (`PH7-CLI-001/A` — HOÀN THÀNH):** Nối `fingerprint` và `identify` với module thực (`parser`, `extractor`, `hasher`, `classifier`); chuẩn hóa exit codes (`0`, `1`, `2`), streams (`stdout`/`stderr`), hỗ trợ file Unicode/spaces, `--output`, bảo toàn ứng viên đồng hạng; ban hành tài liệu quy ước [`docs/project/cli-contract.md`](cli-contract.md).
+  - **Phần B (`PH7-CLI-001/B` — TIẾP NỐI):** Nối `provenance` và `decompress-check` kế thừa quy ước từ contract của Phần A.
 
 #### `PH7-EVAL-002`: Thí nghiệm Đánh giá Phân loại, Ma trận Nhầm lẫn & Báo cáo Khoa học Hoàn chỉnh
 - **Mức độ ưu tiên:** P1

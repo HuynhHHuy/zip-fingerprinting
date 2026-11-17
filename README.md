@@ -116,7 +116,7 @@ thực tế hoặc kết quả tái hiện toàn bộ bài báo.
 Không đủ bằng chứng cấu trúc, OS không được hỗ trợ, archive rỗng hoặc host OS
 không đồng nhất sẽ trả `[]`. Giá trị không quan sát được không được tính là bằng
 chứng phủ định. Profile ASCII của Windows 7-Zip và Bandizip có thể đồng hạng;
-cần thêm bằng chứng để phân biệt. CLI chưa được nối với classifier trong bước này.
+cần thêm bằng chứng để phân biệt. Đã được tích hợp vào CLI qua subcommand `identify` trong `PH7-CLI-001/A`.
 
 ### 3.6 Bộ truy vết đa nguồn gốc
 
@@ -230,6 +230,18 @@ PowerShell có nhãn riêng, chưa đối chứng Explorer/GUI; xem [hướng d�
 Nghiệm thu chỉ áp dụng cho Windows/Python và các phiên bản công cụ đã đo; chưa
 xác thực Bandizip native, profile CP949 do archiver tạo, accuracy hoặc BMAC. Xem
 [giới hạn nghiệm thu hiện tại](docs/evaluation/reproduction_report.md#giới-hạn-nghiệm-thu-hiện-tại-13112026).
+
+### 3.11 Công cụ dòng lệnh CLI (PH7-CLI-001/A)
+
+```powershell
+# Trích xuất vân tay cấu trúc và SHA-256
+zip-fingerprint fingerprint <archive.zip> [--output <file.json>]
+
+# Nhận diện HĐH và công cụ nén nguồn gốc
+zip-fingerprint identify <archive.zip> [--format json|text] [--output <file.json>]
+```
+
+Quy ước mã thoát (`0` thành công, `1` lỗi I/O/dữ liệu/chưa hỗ trợ, `2` sai cú pháp) và đặc tả schema chi tiết xem tại [`docs/project/cli-contract.md`](docs/project/cli-contract.md).
 
 ## 4. Lộ trình Thực hiện và Tiến độ
 
