@@ -21,6 +21,12 @@ Công cụ dòng lệnh `zip-fingerprint` được xây dựng nhằm cung cấp
 3. **Bất biến cấu trúc pháp y (Forensic Structural Invariance):**
    - Mã băm cấu trúc (`structural_hash`) chỉ tính toán dựa trên các đặc trưng cấu trúc bất biến (`high_weight` và `subsidiary features`), độc lập hoàn toàn với đường dẫn tệp (`file_path`) hay vị trí lưu trữ trên đĩa.
    - Phân biệt rõ ràng giữa **Mã băm cấu trúc** (`structural_hash`) và **Mã băm nội dung nhị phân** toàn bộ archive (`sha256_content`).
+4. **Bảo vệ ZIP đầu vào và encoding đầu ra:**
+   - `fingerprint` và `identify` từ chối `--output` trỏ cùng file với ZIP đầu vào, kể cả đường dẫn tương đối, hardlink hoặc symlink. Trả `1`, báo lỗi qua `stderr` và giữ nguyên ZIP.
+   - JSON dùng escape Unicode (`\uXXXX`); đọc bằng JSON parser vẫn nhận đúng giá trị Unicode gốc. Schema và structural hash không đổi.
+   - File output được ghi bằng UTF-8. Text trên `stdout` giữ Unicode nếu encoding hỗ trợ; ký tự không biểu diễn được dùng backslash escape, ví dụ khi stdout dùng cp1252.
+   - Lỗi ghi hoặc flush `stdout` được báo qua `stderr` với exit `1`.
+   - Kiểm tra file trùng áp dụng tại thời điểm ghi; không bảo đảm chống process khác đổi liên kết/đường dẫn đồng thời. Người dùng phải tránh redirect shell trực tiếp vào ZIP nguồn (`> source.zip`), vì shell có thể truncate file trước khi CLI chạy.
 
 ---
 
@@ -143,3 +149,27 @@ Tuyệt đối không trả về `0` hoặc in placeholder rỗng.
 | **Subcommand chưa cài đặt** | `stderr` | `Error: Subcommand '<cmd>' is not yet implemented (PH7-CLI-001/B).` | `1` |
 | **Thiếu đối số bắt buộc** | `stderr` | Do `argparse` sinh (e.g. `zip-fingerprint: error: the following arguments are required...`) | `2` |
 | **Cờ / tùy chọn không hợp lệ** | `stderr` | Do `argparse` sinh (e.g. `zip-fingerprint: error: unrecognized arguments: ...`) | `2` |
+
+## 4. Kiểm chứng regression CLI/A — 2026-11-17
+
+Môi trường: Windows, Python 3.11.9; worktree nhánh `feat/cli-fingerprint-identify`, dựa trên `ad65962`.
+
+- Trước sửa: nhóm test mới có **10 failed, 4 passed, 2 skipped**, tái hiện mất dữ liệu khi output trùng input/đường dẫn tương đối/hardlink, lỗi Unicode cp1252 và lỗi ghi stdout.
+- Review độc lập phát hiện stdout pipe đóng sớm khiến Python flush lại lúc shutdown, trả `120`. Hai test subprocess mới đều RED trước sửa và GREEN sau khi chặn flush lại trên descriptor đã lỗi.
+- Sau sửa: toàn bộ suite **189 passed, 2 skipped** (14.90 giây). Hai ca symlink bị skip vì Windows trả `WinError 1314` (thiếu quyền tạo symlink); chưa xác minh native hai ca này. Hardlink, pipe đóng sớm và subprocess cp1252/UTF-8 đã chạy thực tế.
+- Mypy toàn bộ `src`, Black/Flake8 hai file Python thay đổi, `pip check` và `git diff --check` đều pass.
+- Đây là kiểm chứng chức năng CLI với fixture ZIP; không phải đo accuracy hoặc tái hiện thực nghiệm bài báo.
+
+Lệnh chạy tại worktree (dùng venv hiện có của checkout chính):
+
+```powershell
+$python = '../zip-fingerprinting/.venv-ci/Scripts/python.exe'
+$env:PYTHONPATH = Join-Path (Get-Location) 'src'
+$env:PYTHONDONTWRITEBYTECODE = '1'
+& $python -B -m pytest -p no:cacheprovider
+& $python -m mypy src
+& $python -m black --check src/zip_fingerprint/cli.py tests/unit/test_cli.py
+& $python -m flake8 --max-line-length=100 src/zip_fingerprint/cli.py tests/unit/test_cli.py
+& $python -m pip check
+git diff --check
+```

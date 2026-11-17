@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 from typing import List, Optional
@@ -23,6 +24,35 @@ def compute_file_sha256(path: Path) -> str:
     return hasher.hexdigest()
 
 
+def _write_output(zip_path: Path, output: Optional[str], text: str) -> int:
+    """Write a report without overwriting its source or leaking stream errors."""
+    try:
+        if output:
+            out_path = Path(output)
+            if out_path.exists() and out_path.samefile(zip_path):
+                sys.stderr.write("Error: Output file must not be the input ZIP or an alias.\n")
+                return 1
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(text, encoding="utf-8")
+        else:
+            encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+            safe_text = text.encode(encoding, errors="backslashreplace").decode(encoding)
+            sys.stdout.write(safe_text)
+            sys.stdout.flush()
+    except (OSError, UnicodeError) as exc:
+        if not output:
+            # Prevent Python retrying a failed buffered flush during shutdown.
+            try:
+                with open(os.devnull, "w") as sink:
+                    os.dup2(sink.fileno(), sys.stdout.fileno())
+            except (OSError, ValueError):
+                pass  # In-memory streams may not have a file descriptor.
+        destination = f"output file '{output}'" if output else "stdout"
+        sys.stderr.write(f"Error writing {destination}: {exc}\n")
+        return 1
+    return 0
+
+
 def handle_fingerprint(args: argparse.Namespace) -> int:
     """Execute 'fingerprint' subcommand."""
     zip_path = Path(args.zip_path)
@@ -40,7 +70,7 @@ def handle_fingerprint(args: argparse.Namespace) -> int:
         extractor = StructuralFeatureExtractor(archive)
         features = extractor.extract()
         canonical_fp = build_canonical_fingerprint(features, sha256_content=content_hash)
-        output_json = canonical_fp.model_dump_json(indent=2)
+        output_json = json.dumps(canonical_fp.model_dump(mode="json"), indent=2, ensure_ascii=True)
     except (ZipFingerprintError, OSError) as e:
         sys.stderr.write(f"Error analyzing ZIP file: {e}\n")
         return 1
@@ -48,19 +78,7 @@ def handle_fingerprint(args: argparse.Namespace) -> int:
         sys.stderr.write(f"Unexpected error analyzing ZIP file: {e}\n")
         return 1
 
-    if args.output:
-        try:
-            out_path = Path(args.output)
-            if out_path.parent:
-                out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(output_json + "\n", encoding="utf-8")
-        except OSError as e:
-            sys.stderr.write(f"Error writing output file '{args.output}': {e}\n")
-            return 1
-    else:
-        sys.stdout.write(output_json + "\n")
-
-    return 0
+    return _write_output(zip_path, args.output, output_json + "\n")
 
 
 def handle_identify(args: argparse.Namespace) -> int:
@@ -134,20 +152,7 @@ def handle_identify(args: argparse.Namespace) -> int:
         }
         rendered_output = json.dumps(result_payload, indent=2, ensure_ascii=True) + "\n"
 
-    output_file = getattr(args, "output", None)
-    if output_file:
-        try:
-            out_path = Path(output_file)
-            if out_path.parent:
-                out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(rendered_output, encoding="utf-8")
-        except OSError as e:
-            sys.stderr.write(f"Error writing output file '{output_file}': {e}\n")
-            return 1
-    else:
-        sys.stdout.write(rendered_output)
-
-    return 0
+    return _write_output(zip_path, getattr(args, "output", None), rendered_output)
 
 
 def build_parser() -> argparse.ArgumentParser:

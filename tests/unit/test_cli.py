@@ -1,6 +1,7 @@
 """Tests for the zip-fingerprint CLI interface (PH7-CLI-001/A)."""
 
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,108 @@ from zip_fingerprint.extractor import StructuralFeatureExtractor
 from zip_fingerprint.hasher import build_canonical_fingerprint
 from zip_fingerprint.parser import ZipBinaryParser
 from zip_fingerprint.schema import FingerprintSchemaV1
+
+
+@pytest.mark.parametrize("command", ["fingerprint", "identify"])
+@pytest.mark.parametrize("alias", ["same", "relative", "hardlink", "symlink"])
+def test_cli_rejects_output_aliasing_input(
+    tmp_path: Path, minimal_zip_bytes: bytes, command: str, alias: str
+) -> None:
+    """Output aliases must never destroy the source archive."""
+    source = tmp_path / "source.zip"
+    source.write_bytes(minimal_zip_bytes)
+    output = source
+    if alias == "relative":
+        output = Path("source.zip")
+    elif alias in {"hardlink", "symlink"}:
+        output = tmp_path / "alias.zip"
+        try:
+            if alias == "hardlink":
+                output.hardlink_to(source)
+            else:
+                output.symlink_to(source)
+        except OSError as exc:
+            pytest.skip(f"Filesystem cannot create {alias}: {exc}")
+
+    result = subprocess.run(
+        [sys.executable, "-m", "zip_fingerprint", command, str(source), "-o", str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        check=False,
+    )
+    assert source.read_bytes() == minimal_zip_bytes
+    assert result.returncode == 1
+    assert result.stdout == b""
+    assert b"Error" in result.stderr
+    assert b"Traceback" not in result.stderr
+
+
+@pytest.mark.parametrize("encoding", ["cp1252", "utf-8"])
+@pytest.mark.parametrize(
+    "command", [["fingerprint"], ["identify"], ["identify", "--format", "text"]]
+)
+def test_cli_unicode_subprocess_output(
+    tmp_path: Path, minimal_zip_bytes: bytes, encoding: str, command: list[str]
+) -> None:
+    """Legacy stdout must preserve JSON values or escape unencodable text."""
+    source = tmp_path / "tệp nén.zip"
+    source.write_bytes(minimal_zip_bytes)
+    result = subprocess.run(
+        [sys.executable, "-m", "zip_fingerprint", command[0], str(source), *command[1:]],
+        env={**os.environ, "PYTHONIOENCODING": encoding},
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stderr == b""
+    output = result.stdout.decode(encoding)
+    if "text" in command:
+        expected = str(source).encode(encoding, errors="backslashreplace").decode(encoding)
+        assert f"Target: {expected}" in output
+    else:
+        data = json.loads(output)
+        path = (
+            data["file_metadata"]["file_path"] if command[0] == "fingerprint" else data["file_path"]
+        )
+        assert path == str(source)
+
+
+@pytest.mark.parametrize("command", ["fingerprint", "identify"])
+def test_cli_stdout_io_error(
+    tmp_path: Path,
+    minimal_zip_bytes: bytes,
+    command: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """A real unwritable stream returns an I/O error instead of a traceback."""
+    source = tmp_path / "source.zip"
+    source.write_bytes(minimal_zip_bytes)
+    with source.open("r", encoding="utf-8") as stream:
+        with monkeypatch.context() as patch:
+            patch.setattr(sys, "stdout", stream)
+            assert main([command, str(source)]) == 1
+    assert "Error" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("command", ["fingerprint", "identify"])
+def test_cli_closed_stdout_pipe(tmp_path: Path, minimal_zip_bytes: bytes, command: str) -> None:
+    """A closed pipe must not trigger another failing flush at interpreter exit."""
+    source = tmp_path / "source.zip"
+    source.write_bytes(minimal_zip_bytes)
+    with subprocess.Popen(
+        [sys.executable, "-m", "zip_fingerprint", command, str(source)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ) as child:
+        assert child.stdout is not None
+        assert child.stderr is not None
+        child.stdout.close()
+        stderr = child.stderr.read()
+        assert child.wait(timeout=10) == 1
+    assert b"Error writing stdout" in stderr
+    assert b"Exception ignored" not in stderr
+    assert b"Traceback" not in stderr
 
 
 def test_cli_help(capsys: pytest.CaptureFixture[str]) -> None:
