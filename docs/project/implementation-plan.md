@@ -291,6 +291,14 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   Explorer; C dùng 7-Zip làm SW2. Cần đối chứng B trên môi trường thích hợp để
   nghiệm thu, không coi nhãn kịch bản là bằng chứng phát hiện Case 2.
   Xem [hướng dẫn và giới hạn](../research/modification-simulator.md).
+- **Đối chứng native 18/11/2026 (#19):** Có workflow prepare/finalize độc lập
+  trong `experiments/explorer_delete.py`, kiểm tra CRC/payload, tên Unicode,
+  snapshot LFH/CDH và bảng delta không phụ thuộc dự đoán tracker. Bandizip
+  7.47.0.1 portable → Explorer Delete trên Windows 10.0.26200 đã xóa đúng
+  `target.txt`; cả ba survivor giữ cấu trúc, chỉ offset thay đổi. Run mới
+  `control-add` xác nhận Case 1. **Case 2 âm, DoD vẫn chưa đạt; giữ #19 mở.**
+  Mặc định portable đã có Unicode Path 0x7075; không chạy lại cùng cấu hình.
+  Xem [báo cáo và bằng chứng](../evaluation/native-case2-2026-11-18.md).
 
 ---
 

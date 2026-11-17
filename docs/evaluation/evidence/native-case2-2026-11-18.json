@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "issue": 19,
+  "date": "2026-11-18",
+  "implementation_commit": "f427211d066dc8037ac6da8af41e848de95cda1c",
+  "measurement_code": "99414aa (working code before Task2 commit); f427211 fixes future config snapshots; original run unchanged",
+  "native_case2": false,
+  "native_case1": true,
+  "dod_met": false,
+  "issue_should_remain_open": true,
+  "runs": [
+    "run-case2-je0_bndz",
+    "run-h7agwli8"
+  ],
+  "handoff": {
+    "status": "pending_upload"
+  },
+  "bundle": {
+    "name": "native-case2-2026-11-18-evidence.zip",
+    "size": 32615,
+    "sha256": "85b0d16ed136337007ea0b4daddf3ecd32147e56dca840e8a7001dd6d476036d"
+  },
+  "verification": {
+    "status": "pending_final_review",
+    "native": "Actual Explorer Delete, payload/CRC valid, only offset deltas; fresh native Case1 control.",
+    "synthetic": "Contract/fault tests do not establish Case2.",
+    "limits": [
+      "Single current Windows build and portable version",
+      "Operator-observed GUI evidence, not authenticated telemetry",
+      "Outer extra ID/order/length only; inner same-size layout not classified",
+      "Original INI text snapshot lossy, original hash and post-observation raw bytes retained"
+    ]
+  },
+  "files": [
+    {
+      "path": "run-case2-je0_bndz/after.zip",
+      "size": 594,
+      "sha256": "ffc277283a9c6545e27ea59c7153bad843cf6aad00436cb6be822d848e954faa"
+    },
+    {
+      "path": "run-case2-je0_bndz/bandizip-settings-observed.json",
+      "size": 6402,
+      "sha256": "36fae0553f36839138aed729eb9bbc004c0877b9f08d532bec821d8d4f1d2a80"
+    },
+    {
+      "path": "run-case2-je0_bndz/before.zip",
+      "size": 745,
+      "sha256": "88869cf246d6c34087671850bf7903ea339d9c6e43ee6879b65ba1da878a4b92"
+    },
+    {
+      "path": "run-case2-je0_bndz/gui-after.json",
+      "size": 10601,
+      "sha256": "58fe0fd42ba3b798f75c1d159df35212f4bcba6b04fd59557d6eef15f578895d"
+    },
+    {
+      "path": "run-case2-je0_bndz/gui-before.json",
+      "size": 12407,
+      "sha256": "b7adea7975a969e6b367eca4a4b660f9864dc07d9ead262b07a4696b4846f4f2"
+    },
+    {
+      "path": "run-case2-je0_bndz/gui-log.json",
+      "size": 693,
+      "sha256": "881c3f8e9012e683dab608dfae213fc1f295319815ef44d425e2f87dea74dfba"
+    },
+    {
+      "path": "run-case2-je0_bndz/metadata.json",
+      "size": 101415,
+      "sha256": "cf9729b99ffae441bcb508a4f2ce9748ce57c93386fd317b2c0b5c7c14d8ed5a"
+    },
+    {
+      "path": "run-case2-je0_bndz/observed-after.zip",
+      "size": 594,
+      "sha256": "ffc277283a9c6545e27ea59c7153bad843cf6aad00436cb6be822d848e954faa"
+    },
+    {
+      "path": "run-case2-je0_bndz/report.md",
+      "size": 859,
+      "sha256": "1bd1bea506032657298f562ad8caa44620884de4b5aabf1037ff2939d0313849"
+    },
+    {
+      "path": "run-case2-je0_bndz/source/keep.txt",
+      "size": 18,
+      "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+    },
+    {
+      "path": "run-case2-je0_bndz/source/target.txt",
+      "size": 17,
+      "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+    },
+    {
+      "path": "run-case2-je0_bndz/source/tieng-viet-\u1ec7.txt",
+      "size": 20,
+      "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+    },
+    {
+      "path": "run-case2-je0_bndz/source/\uac00\ub098\ub2e4.txt",
+      "size": 16,
+      "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+    },
+    {
+      "path": "run-h7agwli8/control-add/after.zip",
+      "size": 517,
+      "sha256": "e161db282bb23d6c29bc9238f243d72b4cb222637d5e5092acaf063b01c293b2"
+    },
+    {
+      "path": "run-h7agwli8/control-add/before.zip",
+      "size": 373,
+      "sha256": "0129cb53113dc4a21105cbd1b692d315e46bdc8023698862fc54a0dd02a11a1d"
+    },
+    {
+      "path": "run-h7agwli8/control-add/source/added.txt",
+      "size": 14,
+      "sha256": "22ccbc3d324e0f45cddbb0fba720745cfa1585c1f0c8b50af73947cbd8743ff1"
+    },
+    {
+      "path": "run-h7agwli8/control-add/source/keep.txt",
+      "size": 18,
+      "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+    },
+    {
+      "path": "run-h7agwli8/control-add/source/target.txt",
+      "size": 17,
+      "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+    },
+    {
+      "path": "run-h7agwli8/control-add/source/tieng-viet-\u1ec7.txt",
+      "size": 16,
+      "sha256": "d16db5f9059322d0de128f99a7252d1c900c3d4a53bcd9cb7488c5ed9ecf22fe"
+    },
+    {
+      "path": "run-h7agwli8/metadata.json",
+      "size": 24702,
+      "sha256": "34323d382437c4eba4f90285caf989453f2c2e8739ef16e1ef7c95fe343d4af2"
+    },
+    {
+      "path": "tool-provenance.json",
+      "size": 35461,
+      "sha256": "4d1ba5b9e4af249b414a0292176dc2f0e25b6070dcef8f8b3d5e3141ce2c1a6b"
+    },
+    {
+      "path": "native-case2-2026-11-18.md",
+      "size": 4108,
+      "sha256": "cb2a7eb941a332fa163db2138b20375e2734ed2f4cb26a2e7514a23c48956107"
+    }
+  ]
+}

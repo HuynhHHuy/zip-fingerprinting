@@ -160,7 +160,11 @@ có lỗi, 2 khi không có mẫu hoặc không đạt điều kiện `--require
 
 Đã chạy trên Windows với 7-Zip 26.04 và WinRAR 6.23.0: sinh 4 cặp mẫu, tái hiện
 Case 1 qua biến thể tắt lưu timestamp của 7-Zip; chưa tái hiện Case 2. Bandizip và
-WinZip CLI chưa có trên máy. **Chưa đạt đầy đủ DoD của PH4-PROV-002.**
+WinZip CLI chưa có ở mốc đo cũ. Ngày 18/11/2026 đã đối chứng thêm Bandizip
+7.47 portable → **Explorer Delete thực tế**: xóa đúng entry, CRC/payload giữ
+nguyên, chỉ offset đổi; **chưa có Case 2, chưa đạt DoD PH4-PROV-002**.
+Workflow mới: `python -m experiments.explorer_delete prepare --bandizip PATH`
+và `finalize RUN --gui-log PATH`; xem hướng dẫn thí nghiệm để lưu bằng chứng GUI.
 
 ---
 
