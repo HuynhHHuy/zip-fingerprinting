@@ -4,7 +4,6 @@ import json
 from datetime import datetime, timezone
 import os
 from pathlib import Path
-import sys
 import subprocess
 import zipfile
 
@@ -27,7 +26,11 @@ def prepared(tmp_path, monkeypatch):
                 z.write(file, file.name)
 
     monkeypatch.setattr(workflow, "run_command", compress)
-    return workflow.prepare(tmp_path, Path(sys.executable))
+    # CI's Python can be a symlink, which the real executable guard rejects.
+    # The mocked process needs only a private regular file, never an interpreter.
+    executable = tmp_path / "Bandizip.exe"
+    executable.write_bytes(b"SYNTHETIC TEST TOOL ONLY")
+    return workflow.prepare(tmp_path, executable)
 
 
 def gui_log(report, level="operator_assertion"):
@@ -66,6 +69,12 @@ def test_prepare_anchors_and_distinct_runs(prepared):
     assert len(prepared["source_manifest"]) == 4
     assert prepared["commands"][0]["returncode"] == 0
     assert prepared["native_case2"] is False
+
+
+def test_mocked_archiver_is_private_regular_file(prepared, tmp_path):
+    executable = Path(prepared["tool"]["executable"])
+    assert executable.parent == tmp_path
+    assert executable.is_file() and not executable.is_symlink()
 
 
 def test_operator_assertion_does_not_establish_native_case2(prepared):
@@ -153,7 +162,7 @@ def test_process_errors_persist_commands(prepared, monkeypatch, tmp_path, error)
         raise error
 
     monkeypatch.setattr(workflow, "run_command", fail)
-    result = workflow.prepare(tmp_path, Path(sys.executable))
+    result = workflow.prepare(tmp_path, Path(prepared["tool"]["executable"]))
     assert result["status"] == "failed"
     assert result["commands"][0]["error"]
     assert json.loads(Path(result["run_directory"], "metadata.json").read_text())["reason"]
