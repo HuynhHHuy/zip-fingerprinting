@@ -196,8 +196,14 @@ không có nghịch đảo. Các cảnh báo này không tự chứng minh can t
 đã được sử dụng.
 
 Đã đối chiếu **13 dòng × 5 công cụ** với PDF trang 9; đây là profile thực nghiệm
-lịch sử, chưa xác thực trên phần mềm hiện hành. Đo filesystem thuộc PH5-DEC-002;
-nối CLI thuộc PH7-CLI-001.
+lịch sử. Ngày 17/11/2026, PH5-DEC-002 đo native Windows/NTFS bằng 7-Zip 26.04 và
+WinRAR 6.23.0: 12/12 phép đo, có khác biệt nguồn BMAC ổn định; chưa tái hiện đầy
+đủ môi trường bài báo. Xem [hướng dẫn, bằng chứng và giới hạn tracer](docs/evaluation/windows-decompression-tracer.md).
+
+```powershell
+python -m pip install -e ".[dev,experiments]"
+python experiments/trace_decompression.py --dos-timezone Asia/Ho_Chi_Minh --require-dod
+```
 
 ### 3.9 Corpus chuẩn có thể tái tạo (PH6-DATA-001)
 
@@ -260,7 +266,7 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
 - **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
-- **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 HOÀN THÀNH — đối chiếu Bảng 8; PH5-DEC-002 chưa đo thực tế]`
+- **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 đối chiếu Bảng 8; PH5-DEC-002 đạt DoD đo cục bộ 2 công cụ/12 phép đo — bàn giao/review theo evidence manifest, chưa tái hiện đầy đủ lịch sử]`
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5) `[PH6-DATA-001/002 hoàn thành — nghiệm thu cục bộ Windows/Python 3.11; chưa đối chứng GUI/macOS/Linux]`
 - **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
 - **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]
