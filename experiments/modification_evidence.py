@@ -113,6 +113,30 @@ def read_evidence(path: Path, encoding: str) -> dict:
                 raise ValueError("Encrypted entries unsupported")
             if info.header_offset != central.local_header_offset:
                 raise ValueError("Parser header offset disagreement")
+            # ZipExtFile truncates to the declared size, even when deflate
+            # expands much further. Validate actual bounded output first.
+            start = local.offset + 30 + local.file_name_length + local.extra_field_length
+            compressed = raw[start : start + info.compress_size]
+            if len(compressed) != info.compress_size:
+                raise ValueError("Truncated compressed payload")
+            if info.compress_type != local.compression_method:
+                raise ValueError("LFH/CDH compression method mismatch")
+            if info.compress_type == zipfile.ZIP_STORED:
+                if len(compressed) != info.file_size:
+                    raise ValueError("Stored payload size mismatch")
+            elif info.compress_type == zipfile.ZIP_DEFLATED:
+                decoder = zlib.decompressobj(-15)
+                bounded = decoder.decompress(compressed, info.file_size + 1)
+                if (
+                    len(bounded) != info.file_size
+                    or not decoder.eof
+                    or decoder.unconsumed_tail
+                    or decoder.unused_data
+                ):
+                    raise ValueError("Invalid deflate payload/declared size")
+                del bounded
+            else:
+                raise ValueError("Only stored/deflate payloads supported by bounded reader")
             # zipfile checks raw LFH names, which can use a different encoding
             # from the CDH; the decoded identity agreement was verified above.
             read_info = copy(info)

@@ -121,6 +121,8 @@ trong khoảng thao tác, `phase` before/after, `window_title`,
 Các record là bằng chứng operator, không chống giả mạo; reviewer cần đối
 chiếu cặp ZIP và log, không chỉ nhìn evidence_level.
 
+Reader hỗ trợ STORE/DEFLATE, từ chối codec khác, size khai báo sai hoặc
+deflate thừa/thiếu dữ liệu; kiểm tra output thực với giới hạn trước CRC read.
 Reader từ chối tên trùng/unsafe, reparse/link, ZIP hoặc tổng payload >16 MiB,
 UTF-8/Unicode Path CRC sai hoặc LFH/CDH identity xung đột. Payload chỉ đọc
 trong bộ nhớ. So sánh độc lập tracker: all/partial/none theo version/method,

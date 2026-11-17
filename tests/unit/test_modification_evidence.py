@@ -1,6 +1,7 @@
 """Synthetic contracts, not evidence of a native Explorer operation."""
 
 from copy import deepcopy
+import io
 import struct
 import zipfile
 import zlib
@@ -51,6 +52,21 @@ def test_timestamp_values_alone_do_not_qualify(tmp_path):
     result = compare_delete(before, after)
     assert result["rewrite_scope"] == "none"
     assert "LFH.extra_fields" in result["entries"][0]["changes"]
+
+
+def test_forged_uncompressed_size_is_rejected(tmp_path):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as stream:
+        stream.writestr("payload", b"x" * (32 * 1024 * 1024))
+    raw = bytearray(buffer.getvalue())
+    central = raw.index(b"PK\x01\x02")
+    for crc_offset, size_offset in [(14, 22), (central + 16, central + 24)]:
+        struct.pack_into("<I", raw, crc_offset, zlib.crc32(b"x"))
+        struct.pack_into("<I", raw, size_offset, 1)
+    path = tmp_path / "forged.zip"
+    path.write_bytes(raw)
+    with pytest.raises(ValueError, match="payload|size|deflate"):
+        read_evidence(path, "cp1252")
 
 
 @pytest.mark.parametrize(

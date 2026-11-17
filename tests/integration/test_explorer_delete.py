@@ -125,6 +125,17 @@ def test_malformed_observation_is_persisted_as_failure(prepared):
     assert result["status"] == "failed"
 
 
+def test_null_gui_timestamp_is_persisted_as_failure(prepared):
+    remove_target(prepared)
+    path = gui_log(prepared)
+    log = json.loads(path.read_text())
+    log["started_utc"] = None
+    path.write_text(json.dumps(log))
+    result = workflow.finalize(path.parent, path)
+    assert result["status"] == "failed"
+    assert result["reason"]
+
+
 def test_invalid_tool_retains_run(tmp_path):
     report = workflow.prepare(tmp_path, tmp_path / "missing.exe")
     assert report["status"] in {"failed", "skipped"}

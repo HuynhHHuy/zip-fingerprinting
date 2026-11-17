@@ -171,6 +171,8 @@ def prepare(output: Path, executable: Path, configuration: str = "default") -> d
 
 
 def _time(value: str) -> datetime:
+    if not isinstance(value, str):
+        raise ValueError("GUI time must be an ISO string")
     stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if stamp.tzinfo is None:
         raise ValueError("GUI time must include timezone")
