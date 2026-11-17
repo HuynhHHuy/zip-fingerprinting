@@ -137,6 +137,17 @@ class SuspectedApplication:
         return asdict(self)
 
 
+DEFAULT_LIMITATIONS: List[str] = [
+    "Absence of heterogeneity does not prove single provenance: "
+    "SW2 may rewrite every header, or SW1/SW2 profiles may overlap.",
+    "Subsidiary signals (e.g. nanosecond timestamp patterns) require further analysis "
+    "and do not establish multi-provenance alone.",
+    "Role assignment (ORIGINAL_CREATOR vs MODIFIER) is heuristic based on header offsets "
+    "(Add operations append entries).",
+    "Synthetic tests and reconstructed headers do not establish native reproduction of Case 2.",
+]
+
+
 @dataclass
 class ProvenanceReport:
     """Multi-provenance and integrity report for one archive."""
@@ -150,6 +161,7 @@ class ProvenanceReport:
     suspected_applications: List[SuspectedApplication]
     inference_history: List[str]
     entries: List[EntryFingerprint]
+    limitations: List[str] = field(default_factory=lambda: list(DEFAULT_LIMITATIONS))
 
     def to_dict(self) -> Dict[str, Any]:
         """Return a JSON-serializable representation."""
@@ -164,6 +176,7 @@ class ProvenanceReport:
             "indicators": [indicator.to_dict() for indicator in self.indicators],
             "suspected_applications": [item.to_dict() for item in self.suspected_applications],
             "inference_history": list(self.inference_history),
+            "limitations": list(self.limitations),
             "entries": [entry.to_dict() for entry in self.entries],
         }
 
@@ -453,7 +466,9 @@ class ProvenanceTracker:
                     case=CASE_1,
                     weight=WEIGHT_HIGH,
                     entries=[name for group in unknown for name in group.entry_names],
-                    detail="Uncatalogued entry structures differ from other entries in the archive.",
+                    detail=(
+                        "Uncatalogued entry structures differ from other entries in the archive."
+                    ),
                 )
             )
         return indicators
