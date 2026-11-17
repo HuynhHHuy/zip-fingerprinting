@@ -13,7 +13,10 @@
     "run-h7agwli8"
   ],
   "handoff": {
-    "status": "pending_upload"
+    "status": "uploaded_download_verified",
+    "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-2026-11-18",
+    "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-2026-11-18/native-case2-2026-11-18-evidence.zip",
+    "release_id": 449335731
   },
   "bundle": {
     "name": "native-case2-2026-11-18-evidence.zip",
@@ -21,7 +24,7 @@
     "sha256": "85b0d16ed136337007ea0b4daddf3ecd32147e56dca840e8a7001dd6d476036d"
   },
   "verification": {
-    "status": "pending_final_review",
+    "status": "passed_with_environment_skips",
     "native": "Actual Explorer Delete, payload/CRC valid, only offset deltas; fresh native Case1 control.",
     "synthetic": "Contract/fault tests do not establish Case2.",
     "limits": [
@@ -29,7 +32,48 @@
       "Operator-observed GUI evidence, not authenticated telemetry",
       "Outer extra ID/order/length only; inner same-size layout not classified",
       "Original INI text snapshot lossy, original hash and post-observation raw bytes retained"
-    ]
+    ],
+    "full_suite": "345 passed, 3 skipped in 35.20s",
+    "interpreter": "../zip-fingerprinting/.venv-ci/Scripts/python.exe",
+    "environment": {
+      "PYTHONPATH": "<checkout>;<checkout>/src",
+      "CASE2_BANDIZIP": "official private portable Bandizip.x64.exe 7.47.0.1"
+    },
+    "commands": [
+      {
+        "command": "python -B -m pytest -p no:cacheprovider -ra",
+        "result": "345 passed, 3 skipped in 35.20s",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m mypy src experiments/modification_evidence.py experiments/explorer_delete.py",
+        "result": "Success: no issues found in 17 source files",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m black --check experiments/modification_evidence.py experiments/explorer_delete.py tests/unit/test_modification_evidence.py tests/integration/test_explorer_delete.py",
+        "result": "4 files unchanged",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m flake8 experiments/modification_evidence.py experiments/explorer_delete.py tests/unit/test_modification_evidence.py tests/integration/test_explorer_delete.py",
+        "result": "No findings",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m pip check",
+        "result": "No broken requirements found",
+        "exit_code": 0
+      },
+      {
+        "command": "git diff --check",
+        "result": "No whitespace errors",
+        "exit_code": 0
+      }
+    ],
+    "skips": "Three existing CLI symlink cases: Windows WinError1314. Native Bandizip integration ran.",
+    "review": "Independent whole-branch review: forged-size decompression bound and null GUI time diagnostics reproduced RED then fixed GREEN; final full suite passed. Native pair and bundle hashes independently verified. Final bounded reader revalidated retained native pair, comparison unchanged.",
+    "evidence_integrity": "22 evidence files checked individually and ZIP CRC verified; public download size and SHA matched."
   },
   "files": [
     {
