@@ -155,6 +155,16 @@ def test_gui_log_outside_run_is_rejected(prepared, tmp_path):
     assert workflow.finalize(Path(prepared["run_directory"]), outside)["status"] == "failed"
 
 
+def test_configuration_snapshot_is_lossless(prepared, tmp_path):
+    executable = tmp_path / "Bandizip.exe"
+    executable.write_bytes(b"TEST ONLY")
+    raw = "[setting]\nbZipUnicode=0\n".encode("utf-16")
+    (tmp_path / "Bandizip.ini").write_bytes(raw)
+    result = workflow.prepare(tmp_path, executable)
+    snapshot = result["tool"]["configuration_files"]["Bandizip.ini"]
+    assert bytes.fromhex(snapshot["raw_hex"]) == raw
+
+
 def test_ui_observations_are_retained_for_negative_result(prepared):
     """Synthetic UI records test validation, not an actual Explorer action."""
     remove_target(prepared)

@@ -138,7 +138,7 @@ def prepare(output: Path, executable: Path, configuration: str = "default") -> d
             "sha256": sha256(executable),
         }
         report["tool"]["configuration_files"] = {
-            p.name: {"sha256": sha256(p), "text": p.read_text(encoding="utf-8", errors="replace")}
+            p.name: {"sha256": sha256(p), "raw_hex": p.read_bytes().hex()}
             for p in executable.parent.glob("*.ini")
             if p.stat().st_size <= 1024 * 1024
         }
