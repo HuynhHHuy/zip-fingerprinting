@@ -262,16 +262,48 @@ def _environment(output: Path) -> dict:
 
 def _save(report: dict) -> None:
     path = Path(report["report_path"])
-    with tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf-8", dir=path.parent, prefix="report-", suffix=".tmp", delete=False
-    ) as stream:
-        temporary = Path(stream.name)
-        json.dump(report, stream, indent=2)
-        stream.write("\n")
-    try:
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
+    markdown = [
+        "# Windows decompression run",
+        "",
+        f"Created UTC: {report['created_utc']}",
+        f"DOS timezone: {report['dos_timezone']}",
+        f"Measured: {report['coverage'].get('measured', 0)}",
+        f"dod_met: {report['coverage'].get('dod_met', False)}",
+        "",
+        "Partial/failed runs retain their current status. See report.json for raw",
+        "BMAC/UTC, commands, bounds, checksums, references and time-reversal analysis.",
+        "",
+        "| Item | Status | Reason |",
+        "| --- | --- | --- |",
+    ]
+    rows = [
+        *({"id": tool, **info} for tool, info in report["tools"].items()),
+        *report["profiles"],
+        *report["measurements"],
+    ]
+    for row in rows:
+        cells = [row.get("id", row.get("profile", "")), row["status"], row.get("reason", "")]
+        cells = [str(cell).replace("|", "\\|").replace("\n", " ") for cell in cells]
+        markdown.append("| " + " | ".join(cells) + " |")
+    markdown.extend(["", "## Limitations", "", *report["limitations"]])
+    for target, body in (
+        (path, json.dumps(report, indent=2) + "\n"),
+        (path.with_suffix(".md"), "\n".join(markdown) + "\n"),
+    ):
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix="report-",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(body)
+        try:
+            os.replace(temporary, target)
+        finally:
+            temporary.unlink(missing_ok=True)
 
 
 def _coverage(report: dict) -> dict:

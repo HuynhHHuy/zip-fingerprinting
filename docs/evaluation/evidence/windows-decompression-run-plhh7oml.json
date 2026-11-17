@@ -1,0 +1,515 @@
+{
+  "schema_version": 1,
+  "run_id": "run-plhh7oml",
+  "measurement_commit": "e7e9158b5cfde426ac8750be4ca2dc985da20a46",
+  "created_utc": "2026-11-17T08:06:51.445587+00:00",
+  "measurement_dod_met": true,
+  "historical_reproduction_complete": false,
+  "handoff": {
+    "status": "uploaded_verified",
+    "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph5-dec-002-2026-11-17",
+    "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph5-dec-002-2026-11-17/run-plhh7oml-evidence.zip",
+    "note": "Public bundle downloaded and SHA-256/size matched; issue #20 remains open pending human review.",
+    "release_id": 448330014
+  },
+  "bundle": {
+    "name": "run-plhh7oml-evidence.zip",
+    "size": 82257,
+    "sha256": "88c82086bdaa8d9b7901d8aae100a8244ae2e23b791511d5d32d9e1526c34e45",
+    "root_directory": "run-plhh7oml"
+  },
+  "verification": {
+    "status": "passed_with_environment_skips",
+    "date": "2026-11-17",
+    "python": "3.11.9",
+    "interpreter": "../zip-fingerprinting/.venv-ci/Scripts/python.exe",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPATH": "<checkout>;<checkout>/src"
+    },
+    "commands": [
+      {
+        "command": "python -B -m pytest -p no:cacheprovider",
+        "result": "286 passed, 2 skipped in 24.68s",
+        "exit_code": 0,
+        "skips": "Two existing CLI symlink cases: Windows WinError1314, missing privilege. Native tracer tests did not skip."
+      },
+      {
+        "command": "python -B -m mypy src experiments/windows_filetimes.py experiments/trace_decompression.py experiments/decompression_pipeline.py",
+        "result": "Success: no issues found in 18 source files",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m black --check experiments/windows_filetimes.py experiments/trace_decompression.py experiments/decompression_pipeline.py tests/unit/test_windows_filetimes.py tests/unit/test_decompression_tracer.py tests/integration/test_native_decompression_tracer.py",
+        "result": "6 files would be left unchanged",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m flake8 --max-line-length=100 experiments/windows_filetimes.py experiments/trace_decompression.py experiments/decompression_pipeline.py tests/unit/test_windows_filetimes.py tests/unit/test_decompression_tracer.py tests/integration/test_native_decompression_tracer.py",
+        "result": "No findings",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m pip check",
+        "result": "No broken requirements found",
+        "exit_code": 0
+      },
+      {
+        "command": "git diff --check",
+        "result": "No whitespace errors",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B experiments/trace_decompression.py --dos-timezone Asia/Ho_Chi_Minh --require-dod",
+        "result": "run-plhh7oml: measured=12, complete=true, dod_met=true",
+        "exit_code": 0
+      }
+    ],
+    "review": "Final independent whole-branch review: no verified Critical/Important findings; 97 targeted tests passed, raw report and all72 bundled files/directories independently verified. Task4 automatic Markdown: four cases RED then GREEN. GitHub public download SHA-256/size verified separately after upload.",
+    "evidence_integrity": "All 72 packaged files verified against manifest and bundle CRC checked before upload."
+  },
+  "files": [
+    {
+      "path": "no-extra/7zip-1/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-1/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-1/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/7zip-1/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/7zip-2/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-2/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-2/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/7zip-2/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/7zip-3/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-3/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/7zip-3/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/7zip-3/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/source/auxiliary/double_zip/inner.zip",
+      "size": 138,
+      "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+    },
+    {
+      "path": "no-extra/source/auxiliary/encodings/korean-cp949.txt",
+      "size": 7,
+      "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+    },
+    {
+      "path": "no-extra/source/auxiliary/korean_nfc/\uac00\ub098\ub2e4.txt",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "no-extra/source/auxiliary/korean_nfd/\u1100\u1161\u1102\u1161\u1103\u1161.txt",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "no-extra/source/auxiliary/vietnamese/ti\u1ebfng-Vi\u1ec7t.txt",
+      "size": 15,
+      "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+    },
+    {
+      "path": "no-extra/source/manifest.json",
+      "size": 2683,
+      "sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c"
+    },
+    {
+      "path": "no-extra/source/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/source/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/source/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/source/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/source.zip",
+      "size": 2234,
+      "sha256": "2f2d442dec143c29c4a73accebbe4a3a41dc2fe8fea3c610b704869b5eabdb7b"
+    },
+    {
+      "path": "no-extra/winrar-1/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-1/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-1/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/winrar-1/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/winrar-2/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-2/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-2/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/winrar-2/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "no-extra/winrar-3/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-3/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "no-extra/winrar-3/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "no-extra/winrar-3/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/7zip-1/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-1/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-1/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/7zip-1/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/7zip-2/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-2/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-2/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/7zip-2/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/7zip-3/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-3/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/7zip-3/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/7zip-3/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/source/auxiliary/double_zip/inner.zip",
+      "size": 138,
+      "sha256": "21e05561f1192aa17bb330b28b1133cb961972f22dada7b2601f4bfa9e8403ad"
+    },
+    {
+      "path": "ntfs/source/auxiliary/encodings/korean-cp949.txt",
+      "size": 7,
+      "sha256": "059edb06535776e26888621429d1c8adfbf433878ff435be60798dfc16d4c312"
+    },
+    {
+      "path": "ntfs/source/auxiliary/korean_nfc/\uac00\ub098\ub2e4.txt",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "ntfs/source/auxiliary/korean_nfd/\u1100\u1161\u1102\u1161\u1103\u1161.txt",
+      "size": 10,
+      "sha256": "a89e8daa881cf5e22d2e3c08c1e96a11a42d0e96d800804efe54ea405eea3a6b"
+    },
+    {
+      "path": "ntfs/source/auxiliary/vietnamese/ti\u1ebfng-Vi\u1ec7t.txt",
+      "size": 15,
+      "sha256": "4fa57b28e8bdcad5cdd3ee6dac6f1f4efbf28ba246c704332b1f5bd2f9d30906"
+    },
+    {
+      "path": "ntfs/source/manifest.json",
+      "size": 2683,
+      "sha256": "fb18956ace6f80aec19651c7124f89a079071f520e70019d9385a0fb5c910d3c"
+    },
+    {
+      "path": "ntfs/source/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/source/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/source/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/source/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/source.zip",
+      "size": 2486,
+      "sha256": "94743e2e3204c78f11fd5a354daebab905b391dae9ae9fc73065dc0d328ef290"
+    },
+    {
+      "path": "ntfs/winrar-1/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-1/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-1/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/winrar-1/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/winrar-2/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-2/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-2/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/winrar-2/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "ntfs/winrar-3/set1/2021.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-3/set1/Study/capture.JPG",
+      "size": 637,
+      "sha256": "caf72c89db38ea511813ecb782bc3a6deec2385c10afe1a77044c2c1b1cb1e3f"
+    },
+    {
+      "path": "ntfs/winrar-3/set1/Study/Sample.docx",
+      "size": 1306,
+      "sha256": "2bcb5fc7da708b9ebaca179e6ba5dac0aa2f6f87773a632199874dd12ce3217b"
+    },
+    {
+      "path": "ntfs/winrar-3/set1/Study/textsm.txt",
+      "size": 33,
+      "sha256": "9af99550895886ac32b5c413daf7a4222c87913f9b11ee31bc870636d482dac8"
+    },
+    {
+      "path": "report.json",
+      "size": 690230,
+      "sha256": "57367d5466565c171e410f17098e5886a937b8cfe7ba74a06c3780fc531ed3a9"
+    },
+    {
+      "path": "report.md",
+      "size": 3091,
+      "sha256": "91a1842f5d398646284c8766102f8118d1fae4f0854f7db95f9d419e6cf89ad2"
+    }
+  ],
+  "directories": [
+    "no-extra",
+    "no-extra/7zip-1",
+    "no-extra/7zip-1/set1",
+    "no-extra/7zip-1/set1/emptyFolder",
+    "no-extra/7zip-1/set1/Study",
+    "no-extra/7zip-2",
+    "no-extra/7zip-2/set1",
+    "no-extra/7zip-2/set1/emptyFolder",
+    "no-extra/7zip-2/set1/Study",
+    "no-extra/7zip-3",
+    "no-extra/7zip-3/set1",
+    "no-extra/7zip-3/set1/emptyFolder",
+    "no-extra/7zip-3/set1/Study",
+    "no-extra/source",
+    "no-extra/source/auxiliary",
+    "no-extra/source/auxiliary/double_zip",
+    "no-extra/source/auxiliary/encodings",
+    "no-extra/source/auxiliary/korean_nfc",
+    "no-extra/source/auxiliary/korean_nfd",
+    "no-extra/source/auxiliary/vietnamese",
+    "no-extra/source/set1",
+    "no-extra/source/set1/emptyFolder",
+    "no-extra/source/set1/Study",
+    "no-extra/winrar-1",
+    "no-extra/winrar-1/set1",
+    "no-extra/winrar-1/set1/emptyFolder",
+    "no-extra/winrar-1/set1/Study",
+    "no-extra/winrar-2",
+    "no-extra/winrar-2/set1",
+    "no-extra/winrar-2/set1/emptyFolder",
+    "no-extra/winrar-2/set1/Study",
+    "no-extra/winrar-3",
+    "no-extra/winrar-3/set1",
+    "no-extra/winrar-3/set1/emptyFolder",
+    "no-extra/winrar-3/set1/Study",
+    "ntfs",
+    "ntfs/7zip-1",
+    "ntfs/7zip-1/set1",
+    "ntfs/7zip-1/set1/emptyFolder",
+    "ntfs/7zip-1/set1/Study",
+    "ntfs/7zip-2",
+    "ntfs/7zip-2/set1",
+    "ntfs/7zip-2/set1/emptyFolder",
+    "ntfs/7zip-2/set1/Study",
+    "ntfs/7zip-3",
+    "ntfs/7zip-3/set1",
+    "ntfs/7zip-3/set1/emptyFolder",
+    "ntfs/7zip-3/set1/Study",
+    "ntfs/source",
+    "ntfs/source/auxiliary",
+    "ntfs/source/auxiliary/double_zip",
+    "ntfs/source/auxiliary/encodings",
+    "ntfs/source/auxiliary/korean_nfc",
+    "ntfs/source/auxiliary/korean_nfd",
+    "ntfs/source/auxiliary/vietnamese",
+    "ntfs/source/set1",
+    "ntfs/source/set1/emptyFolder",
+    "ntfs/source/set1/Study",
+    "ntfs/winrar-1",
+    "ntfs/winrar-1/set1",
+    "ntfs/winrar-1/set1/emptyFolder",
+    "ntfs/winrar-1/set1/Study",
+    "ntfs/winrar-2",
+    "ntfs/winrar-2/set1",
+    "ntfs/winrar-2/set1/emptyFolder",
+    "ntfs/winrar-2/set1/Study",
+    "ntfs/winrar-3",
+    "ntfs/winrar-3/set1",
+    "ntfs/winrar-3/set1/emptyFolder",
+    "ntfs/winrar-3/set1/Study"
+  ],
+  "limitations": [
+    "CLI configurations are not GUI defaults.",
+    "Metadata snapshot precedes payload reads; directory enumeration still occurs.",
+    "NTFS delayed access-time updates, indexers and antivirus may affect observations.",
+    "Current tool versions do not reproduce the complete historical paper environment.",
+    "Only two current tool versions on one Windows NTFS system and a substitute corpus.",
+    "Repeat measurements do not represent independent source ZIPs.",
+    "Downloaded filesystem timestamps do not reproduce the recorded raw snapshot.",
+    "Directory patterns unresolved; zero NTFS/0x5855 timestamps omitted by shared decoder."
+  ]
+}

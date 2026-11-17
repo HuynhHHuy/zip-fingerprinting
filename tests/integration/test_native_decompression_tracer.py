@@ -23,6 +23,8 @@ def test_missing_tools_leave_report_and_no_native_measurements(tmp_path: Path) -
     assert not any(r["status"] == "measured" for r in report["measurements"])
     saved = json.loads(Path(report["report_path"]).read_text(encoding="utf-8"))
     assert saved["coverage"]["dod_met"] is False
+    markdown = Path(report["report_path"]).with_suffix(".md").read_text(encoding="utf-8")
+    assert "skipped" in markdown and "dod_met: False" in markdown
 
 
 @pytest.mark.skipif(os.name != "nt", reason="Windows executable and volume validation")
@@ -161,6 +163,8 @@ def test_native_extractors_measure_both_profiles(
             assert all(isinstance(row[field], int) for field in pipeline.FIELDS)
             assert all(row["utc"][field].endswith("Z") for field in pipeline.FIELDS)
     assert report["coverage"]["dod_met"] is False  # One tool, one repeat is not the DoD matrix.
+    markdown = Path(report["report_path"]).with_suffix(".md").read_text(encoding="utf-8")
+    assert "measured" in markdown and "7zip" in markdown
 
 
 def test_native_runs_are_separate_and_old_outputs_unchanged(
@@ -200,6 +204,8 @@ def test_failed_process_is_saved(
     assert pipeline.exit_code(report) == 1
     assert report["profiles"][0]["commands"][-1]["returncode"] == 9
     assert Path(report["report_path"]).is_file()
+    markdown = Path(report["report_path"]).with_suffix(".md").read_text(encoding="utf-8")
+    assert "failed" in markdown and "Injected process failure" in markdown
 
 
 def test_timeout_is_saved(

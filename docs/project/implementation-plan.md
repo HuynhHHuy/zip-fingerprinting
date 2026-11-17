@@ -320,7 +320,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   `evaluate_bmac_pattern` và `check_time_reversal`. Benchmark dùng bảng kỳ vọng
   chép độc lập từ PDF; có kiểm thử đồng hạng, đầu vào không hợp lệ, timestamp
   bằng nhau, dữ liệu thiếu và chuyển đổi múi giờ. Chưa đo timestamp thực tế trên
-  filesystem (PH5-DEC-002) hoặc nối CLI (PH7-CLI-001).
+  filesystem tại thời điểm 06/11/2026; phép đo PH5-DEC-002 mới ở mục dưới.
 
 #### `PH5-DEC-002`: Kịch bản Thực nghiệm Đo lường Dấu vết Giải nén trên Hệ thống Tệp Windows
 - **Mức độ ưu tiên:** P2
@@ -329,13 +329,15 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Nội dung công việc:**
   1. Hoàn thiện `experiments/trace_decompression.py`:
      - Tạo thư mục tạm thời trên ổ đĩa NTFS.
-     - Gọi lệnh giải nén tự động qua CLI của các phần mềm có sẵn (Windows Explorer, 7-Zip, WinRAR, Bandizip).
-     - Sử dụng Windows API (`ctypes.windll.kernel32.GetFileTime`) để đọc chính xác 100ns Creation, Last Access, Last Write Time của file và thư mục giải nén.
-     - Đối chiếu kết quả thu được với Bảng 8 và lưu kết quả vào `results/decompression_profiles/windows_decompression.json`.
-- **Đầu vào:** Mẫu ZIP từ `data/ground_truth/`.
-- **Tệp tạo/chỉnh sửa:** `experiments/trace_decompression.py`, `results/decompression_profiles/windows_decompression.json`.
+     - Gọi CLI 7-Zip và WinRAR có sẵn; Explorer GUI/Bandizip ngoài phạm vi đợt nghiệm thu này.
+     - Dùng Win32 `GetFileInformationByHandleEx(FileBasicInfo)` đọc riêng Birth, Modified, Accessed, Changed bằng integer FILETIME 100 ns; không thay Changed bằng Modified.
+     - Giữ tham chiếu H/E/R, ứng viên/ambiguity Table 8, time reversal; snapshot trước đọc payload. Mỗi run có `results/decompression_profiles/run-*/report.json` và bản Markdown evidence.
+- **Đầu vào:** Hai ZIP tự tạo bằng 7-Zip thật từ source riêng PH6-DATA-001, profile NTFS/no-extra; không sửa catalogue DATA-002.
+- **Tệp tạo/chỉnh sửa:** `experiments/windows_filetimes.py`, `experiments/trace_decompression.py`, `experiments/decompression_pipeline.py`, unit/native integration tests và tài liệu evidence.
 - **Đầu ra:** Hồ sơ đo lường thời gian giải nén thực địa.
 - **Tiêu chí nghiệm thu (DoD):** Ghi nhận được sự khác biệt dấu vết thời gian giữa ít nhất 2 công cụ nén trên Windows.
+- **Trạng thái 17/11/2026:** đã triển khai adapter, phân tích và pipeline; có test tổng hợp/fault injection và đo native Windows build 10.0.26200/NTFS, 7-Zip 26.04 + WinRAR 6.23.0. Run `run-plhh7oml` đủ 2 ZIP × 2 extractor × 3 repeat = 12 phép đo, raw BMAC/payload đều hợp lệ, có 11 cặp khác nhãn nguồn ổn định; `dod_met=true` cho phép đo cục bộ. File NTFS: EEER/RERR; no-extra: cả hai RHRR. Các thư mục chưa có pattern xác định giữ nguyên.
+- **Nghiệm thu khoa học/bàn giao:** không đồng nghĩa tái hiện GUI/năm 2021 hoặc accuracy. Chưa tự đóng #20; cần reviewer kiểm chứng artifact qua [hướng dẫn và evidence manifest](../evaluation/windows-decompression-tracer.md). Repeat không tính là nguồn độc lập; trạng thái/link bàn giao ghi riêng trong manifest.
 
 ---
 

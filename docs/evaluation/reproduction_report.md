@@ -34,8 +34,8 @@ hóa bảng, **không phải độ chính xác trên bộ dữ liệu thực t�
 
 Kiểm thử đơn vị bao phủ hai điều kiện nghịch đảo (B > M và thời gian thư mục con
 sớm hơn cha), trường hợp bằng nhau, thiếu dữ liệu và múi giờ. Việc đo timestamp
-filesystem trên các phiên bản công cụ hiện hành vẫn chưa thực hiện; thuộc
-`experiments/trace_decompression.py` / PH5-DEC-002.
+filesystem chưa có tại mốc 06/11/2026. Kết quả native PH5-DEC-002 mới ngày
+17/11/2026 được báo riêng tại Mục 2.6; không thay đổi ý nghĩa benchmark bảng.
 
 ### 2.4 Corpus nguồn tái tạo — PH6-DATA-001
 
@@ -123,9 +123,47 @@ report bị Git bỏ qua: checkout repository chỉ có metadata không đủ đ
 bytes các run này. Cần chuyển cả run artifacts hoặc sinh một run mới; run mới có
 provenance riêng, không được tuyên bố có cùng bytes với run đã lưu.
 
-PH5-DEC-002 (đo giải nén), PH7-EVAL-002 (accuracy) và phần Case 2 của PH4-PROV-002
-vẫn chưa đạt nghiệm thu tương ứng. Không mở rộng trạng thái của các task này từ
-kết quả PH6-DATA-002.
+Tại mốc DATA-002 ngày 13/11, PH5-DEC-002 (đo giải nén), PH7-EVAL-002 (accuracy)
+và Case 2 của PH4-PROV-002 chưa đạt nghiệm thu tương ứng. Kết quả DATA-002 không
+mở rộng trạng thái các task này; cập nhật PH5-DEC-002 ngày 17/11 ở mục dưới.
+
+### 2.6 BMAC filesystem native — PH5-DEC-002 (17/11/2026)
+
+Tracer đọc đủ Birth/Modified/Accessed/Changed qua Win32 FILE_BASIC_INFO, giữ
+integer ticks 100 ns và UTC bảy chữ số, snapshot toàn cây trước đọc payload.
+Môi trường: Windows build 10.0.26200, NTFS, Python 3.11.9, UTC+07:00/DOS zone
+Asia/Ho_Chi_Minh; 7-Zip 26.04 và WinRAR 6.23.0 thực sự được gọi. Không thay
+timezone, policy last-access hoặc corpus/catalogue dùng chung.
+
+Run `run-plhh7oml` gồm **2 ZIP native × 2 extractor × 3 repeat = 12 phép đo**,
+0 failed/skipped, mỗi phép có 4 file, 2 thư mục chứa file và 1 thư mục rỗng.
+Cùng bytes ZIP được dùng cho cả hai extractor; CRC/inventory/payload checksum
+đều hợp lệ. Nguồn riêng có B/M/A cố định khác nhau, Changed ghi thực tế.
+
+| Profile | File 7-Zip | File WinRAR | Kết luận giới hạn |
+| --- | --- | --- | --- |
+| NTFS 0x000A | EEER | RERR | Birth/Accessed khác E/R ổn định qua 3 repeat |
+| Không timestamp extra | RHRR | RHRR | Chưa phân biệt hai công cụ bằng pattern file |
+
+Có 11 cặp entry/thuộc tính khác nhãn nguồn ổn định, gồm Birth của thư mục;
+khác giá trị R do clock hai process không được tính. Directory snapshot đủ raw
+BMAC nhưng không đủ pattern bốn nhãn xác định; giữ unmatched/ambiguity thay vì
+ép Table 8. Candidates lookup không dùng làm ground truth. Có time reversal,
+song số cặp thay đổi giữa repeat, không tự chứng minh can thiệp. Bảng từng phép
+đo, raw deltas, header/extra và command logs nằm trong gói evidence.
+
+CLI `--require-dod` exit 0, `coverage.complete=true`, `coverage.dod_met=true`:
+**đạt DoD đo cục bộ**, tách khỏi bàn giao/review và tái hiện môi trường lịch sử.
+Xem [hướng dẫn tracer](windows-decompression-tracer.md) và
+[manifest SHA-256/link bàn giao](evidence/windows-decompression-run-plhh7oml.json).
+Artifact không commit trực tiếp; chưa tự đóng #20 trước reviewer kiểm chứng.
+Test tổng hợp/fault injection không tính thành native measurements. Kết quả
+kiểm tra phần mềm cuối ghi trong manifest; test pass không là accuracy.
+
+Giới hạn: CLI cấu hình rõ, corpus thay thế, chỉ hai phiên bản công cụ và một
+máy Windows; snapshot tức thời chịu directory enumeration/delayed NTFS access
+updates/antivirus. Chưa nghiệm thu GUI/Explorer/Bandizip, Ubuntu, toàn bộ Table 8
+trên phần mềm hiện hành, accuracy, hoặc đầy đủ thực nghiệm năm 2021.
 
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix)
 *(Sẽ đối chiếu với phân bố thực nghiệm 3 máy trạm PC1, PC2, PC3 từ Hình 9)*
