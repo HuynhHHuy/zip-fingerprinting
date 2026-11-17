@@ -411,7 +411,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 
 ### Giai đoạn 7: Giao diện Dòng lệnh (CLI) & Đánh giá Khoa học Định lượng (CLI & Scientific Evaluation)
 
-#### `PH7-CLI-001`: Hoàn thiện Công cụ Dòng lệnh Toàn diện (CLI)
+#### `PH7-CLI-001`: Hoàn thiện Công cụ Dòng lệnh Toàn diện (CLI) [HOÀN THÀNH — XÁC MINH CỤC BỘ]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH3-CLF-002`, `PH4-PROV-001`, `PH5-DEC-001`
 - **Mục tiêu:** Cung cấp công cụ CLI hoàn chỉnh, chuyên nghiệp cho giám định viên pháp y số.
@@ -429,7 +429,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Tiêu chí nghiệm thu (DoD):** Chạy lệnh `--help` in đầy đủ hướng dẫn, các lệnh con trả về mã lỗi `0` khi thành công, mã `1` khi gặp lỗi I/O/chưa hỗ trợ, mã `2` khi sai cú pháp.
 - **Tiến độ triển khai:**
   - **Phần A (`PH7-CLI-001/A` — HOÀN THÀNH):** Nối `fingerprint` và `identify` với module thực (`parser`, `extractor`, `hasher`, `classifier`); chuẩn hóa exit codes (`0`, `1`, `2`), streams (`stdout`/`stderr`), hỗ trợ file Unicode/spaces, `--output`, bảo toàn ứng viên đồng hạng; ban hành tài liệu quy ước [`docs/project/cli-contract.md`](cli-contract.md).
-  - **Phần B (`PH7-CLI-001/B` — TIẾP NỐI):** Nối `provenance` và `decompress-check` kế thừa quy ước từ contract của Phần A.
+  - **Phần B (`PH7-CLI-001/B` — HOÀN THÀNH):** Nối `provenance` (báo cáo tracker thực, cases, groups, indicators, suspected apps, inference history, limitations), `decompress-check` (nhận `--bmac`, `--entry-type`, `--extra-field`, bảo toàn đồng hạng, xử lý sai ngữ cảnh), và `compare` (so sánh structural hash, phát hiện tương đồng cấu trúc bỏ qua `file_path`, báo cáo khác biệt chi tiết). Kế thừa hoàn toàn quy ước I/O contract, exit codes và an toàn file từ Phần A. Toàn bộ 204 unit & integration tests pass (85% coverage trên `cli.py`).
 
 #### `PH7-EVAL-002`: Thí nghiệm Đánh giá Phân loại, Ma trận Nhầm lẫn & Báo cáo Khoa học Hoàn chỉnh
 - **Mức độ ưu tiên:** P1
