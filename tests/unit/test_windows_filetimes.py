@@ -132,7 +132,9 @@ def test_native_clock_and_volume(tmp_path: Path) -> None:
     lower = datetime.now(timezone.utc)
     value = ft.now_filetime()
     upper = datetime.now(timezone.utc)
-    observed = datetime.fromisoformat(ft.filetime_utc(value).replace("Z", "+00:00"))
+    # Python 3.10 cannot parse the formatter's seven fractional digits. Only
+    # this clock sanity check uses datetime precision; raw tick tests stay exact.
+    observed = datetime(1601, 1, 1, tzinfo=timezone.utc) + timedelta(microseconds=value // 10)
     # Python 3.10/3.11 datetime.now can use a coarser Windows clock. This
     # sanity margin is only for this independent epoch/unit check, not R bounds.
     assert lower - timedelta(seconds=1) <= observed <= upper + timedelta(seconds=1)
