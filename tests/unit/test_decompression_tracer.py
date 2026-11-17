@@ -198,15 +198,15 @@ def test_bad_timezone_has_actionable_error(tmp_path: Path) -> None:
         tracer.archive_references(make_zip(tmp_path), "Not/A/Timezone")
 
 
-def test_cli_does_not_claim_native_extraction_is_implemented() -> None:
+def test_cli_requires_explicit_timezone() -> None:
     result = subprocess.run(
-        [sys.executable, "-m", "experiments.trace_decompression", "--dos-timezone", "UTC"],
+        [sys.executable, "-m", "experiments.trace_decompression"],
         capture_output=True,
         check=False,
     )
-    assert result.returncode == 1
+    assert result.returncode == 2
     assert result.stdout == b""
-    assert b"Task 3" in result.stderr
+    assert b"--dos-timezone" in result.stderr
 
 
 def test_ntfs_internal_tag_size_is_validated(tmp_path: Path) -> None:

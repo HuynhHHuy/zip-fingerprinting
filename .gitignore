@@ -53,6 +53,7 @@ data/ground_truth/*.zip
 data/ground_truth/run-*/
 data/modified_samples/*.zip
 data/modified_samples/run-*/
+results/decompression_profiles/run-*/
 data/templates/temp_*
 data/templates/set1/
 data/templates/auxiliary/

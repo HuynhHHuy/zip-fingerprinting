@@ -1,6 +1,6 @@
-"""ZIP timestamp evidence and BMAC analysis; native extraction awaits Task 3.
+"""ZIP timestamp evidence, BMAC analysis and native Windows extraction experiment.
 
-These functions analyze observations, never produce native evidence themselves.
+The pure analysis functions do not produce native evidence themselves.
 All matching uses integer FILETIME ticks; ambiguous sources remain ambiguous.
 Directory inventory currently requires slash-terminated directory headers. The
 shared NTFS/0x5855 decoders omit zero timestamps; raw extra bytes remain in the
@@ -451,15 +451,40 @@ def analyze_observations(
 
 
 def main(argv: list[str] | None = None) -> int:
+    from experiments.decompression_pipeline import TOOLS, PROFILES, exit_code, trace
+    from scripts.simulate_modifications import discover_tools
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dos-timezone", required=True, help="IANA zone for ZIP DOS timestamps")
+    parser.add_argument("--output", type=Path, default=ROOT / "results/decompression_profiles")
+    parser.add_argument("--tool", action="append", choices=TOOLS)
+    parser.add_argument("--profile", action="append", choices=PROFILES)
+    parser.add_argument("--repeat", type=int, default=3)
+    parser.add_argument("--require-dod", action="store_true")
+    for tool in TOOLS:
+        parser.add_argument(f"--{tool}", type=Path)
     args = parser.parse_args(argv)
+    if args.repeat < 1:
+        parser.error("--repeat must be >= 1")
     try:
         _zone(args.dos_timezone)
     except ValueError as exc:
         parser.error(str(exc))
-    sys.stderr.write("Native extraction pipeline is not implemented yet (Task 3).\n")
-    return 1
+    tools = discover_tools()
+    for tool in TOOLS:
+        if getattr(args, tool):
+            tools[tool] = getattr(args, tool).absolute()
+    try:
+        report = trace(args.output, tools, args.dos_timezone, args.tool, args.profile, args.repeat)
+    except (OSError, ValueError, RuntimeError) as exc:
+        sys.stderr.write(f"Error running decompression experiment: {exc}\n")
+        return 1
+    import json
+
+    sys.stdout.write(
+        json.dumps({"report": report["report_path"], "coverage": report["coverage"]}) + "\n"
+    )
+    return exit_code(report, args.require_dod)
 
 
 if __name__ == "__main__":
