@@ -27,10 +27,42 @@
     "local_suite": "364 passed, 3 skipped in 40.85s",
     "skips": "Three existing Windows WinError1314 CLI symlink cases; native Bandizip preparation ran",
     "static": "mypy src+experiments/explorer_delete.py:16files clean; changed Black/Flake8 clean; pipcheck/diff clean",
-    "review": "pending_independent_review",
+    "review": "Independent whole-branch review: no Critical/Important/Minor findings. Reviewer ran38passed1native-preparation-skip(environment unset), independently verified all33bundle members and recomputed retained ZIP comparison exactly. No native artifacts modified.",
     "native": "actual GUI creation and Explorer Delete; CRC/inventory/payload valid, only offsets changed; fresh Case1 control generated",
     "synthetic": "Lifecycle/fault/gating tests are not native Case2 evidence",
-    "integrity": "All packaged files and bundle CRC verified before upload; public download pending"
+    "integrity": "All packaged files and bundle CRC verified before upload; public download pending",
+    "commands": [
+      {
+        "command": "python -B -m pytest -p no:cacheprovider -ra",
+        "result": "364 passed, 3 skipped in40.85s",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m mypy src experiments/explorer_delete.py",
+        "result": "Success: no issues found in16source files",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m black --check experiments/explorer_delete.py tests/integration/test_explorer_delete.py",
+        "result": "2files unchanged",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m flake8 experiments/explorer_delete.py tests/integration/test_explorer_delete.py",
+        "result": "No findings",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m pip check",
+        "result": "No broken requirements found",
+        "exit_code": 0
+      },
+      {
+        "command": "git diff --check",
+        "result": "No whitespace errors",
+        "exit_code": 0
+      }
+    ]
   },
   "limits": [
     "Single current host/tool/configuration, flat tiny source",
