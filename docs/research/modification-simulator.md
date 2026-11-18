@@ -78,6 +78,63 @@ bộ PH4-PROV-002. Cần chạy lại với Bandizip/WinZip CLI và môi trườ
 hợp, đồng thời đối chứng thao tác Delete thực tế trong Explorer. Code hỗ trợ B/C
 chưa được kiểm chứng với các executable thiếu trên máy này.
 
+## Explorer Delete thực tế — workflow mới (18/11/2026)
+
+```powershell
+# Chạy từ root checkout, package đã cài editable hoặc PYTHONPATH=src
+python -m experiments.explorer_delete prepare --bandizip "C:/private/Bandizip.x64.exe"
+# exit 2, status awaiting_gui: chưa có thao tác Delete, chưa nghiệm thu
+# Mở RUN/after.zip trong Explorer; chỉ xóa target.txt; quan sát trước/sau,
+# đóng cửa sổ ZIP rồi lưu gui-before.json, gui-after.json và gui-log.json.
+python -m experiments.explorer_delete finalize RUN --gui-log RUN/gui-log.json
+python -m experiments.explorer_delete finalize OTHER_RUN --gui-log OTHER_RUN/gui-log.json --require-case2
+```
+
+Không sửa `before.zip`, source hoặc metadata để retry. Mỗi lần prepare tạo
+`run-case2-*` mới; `finalize` chỉ nhận state awaiting_gui và không ghi đè
+observed-after.zip. JSON là báo cáo authoritative; lỗi được lưu thành failed.
+Exit 0 nghĩa quan sát hợp lệ (kể cả âm), 1 lỗi, 2 pending/skipped hoặc âm khi
+dùng `--require-case2`. Không gọi lại finalize trên run đã kết thúc.
+
+`--configuration default|unicode-path` chỉ là nhãn cấu hình do operator đã
+thiết lập trong profile portable riêng, **không tự bật tùy chọn**. Kiểm tra
+raw header/config snapshot để xác nhận hành vi thực; không gán nhãn bằng
+classifier. Không dùng workflow này để sửa ZIP của người dùng.
+
+GUI log phải nằm trong run, là JSON object có `run_id`, `archive` (đường dẫn
+tuyệt đối after.zip), `target: "target.txt"`, `action: "Delete"`,
+`application: "explorer.exe"`, `started_utc`, `ended_utc` (ISO có timezone),
+`archive_closed: true`, `evidence_level` và `observations`. Thời gian phải
+sau prepared_utc, trước hiện tại. `operator_assertion` ghi nhận thao tác
+nhưng không xác nhận native Case 2. `ui_observed` cần hai file quan sát:
+
+```json
+{"observations": [
+  {"path": "gui-before.json", "sha256": "<SHA-256 file>"},
+  {"path": "gui-after.json", "sha256": "<SHA-256 file>"}
+]}
+```
+
+Mỗi file là object với cùng run_id/archive/application, `observed_utc` nằm
+trong khoảng thao tác, `phase` before/after, `window_title`,
+`accessibility_tree` thực tế; before thêm `selected_target: "target.txt"`.
+Các record là bằng chứng operator, không chống giả mạo; reviewer cần đối
+chiếu cặp ZIP và log, không chỉ nhìn evidence_level.
+
+Reader hỗ trợ STORE/DEFLATE, từ chối codec khác, size khai báo sai hoặc
+deflate thừa/thiếu dữ liệu; kiểm tra output thực với giới hạn trước CRC read.
+Reader từ chối tên trùng/unsafe, reparse/link, ZIP hoặc tổng payload >16 MiB,
+UTF-8/Unicode Path CRC sai hoặc LFH/CDH identity xung đột. Payload chỉ đọc
+trong bộ nhớ. So sánh độc lập tracker: all/partial/none theo version/method,
+UTF8/descriptor bits, raw name và extra ID/order/length. Offset/timestamp
+values/CRC/size không đủ xác nhận Case 2. Layout bên trong extra cùng ID và
+length chưa được phân loại; raw bytes vẫn giữ để review.
+
+Đối chứng 18/11: Bandizip portable 7.47.0.1 → Explorer Delete thực tế cho
+scope none; Case 1 mới có bằng chứng. Unicode Path đã bật mặc định nên không
+lặp cùng cấu hình. **#19 vẫn chưa đạt DoD Case 2.** Xem
+[kết quả, giới hạn và bằng chứng](../evaluation/native-case2-2026-11-18.md).
+
 ## Tài liệu công cụ
 
 - [Bandizip command line](https://www.bandisoft.com/bandizip/help/parameter/)

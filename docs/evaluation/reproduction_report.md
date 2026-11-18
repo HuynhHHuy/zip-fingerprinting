@@ -165,6 +165,19 @@ máy Windows; snapshot tức thời chịu directory enumeration/delayed NTFS ac
 updates/antivirus. Chưa nghiệm thu GUI/Explorer/Bandizip, Ubuntu, toàn bộ Table 8
 trên phần mềm hiện hành, accuracy, hoặc đầy đủ thực nghiệm năm 2021.
 
+### 2.7 Explorer Delete native — PH4-PROV-002 (18/11/2026)
+
+Bandizip portable 7.47.0.1 → Explorer Delete thực tế trên Windows 10.0.26200:
+xóa đúng target.txt, CRC/payload SHA-256 ba survivor nguyên vẹn; chỉ vị trí
+header/local-header-offset đổi, extra fields và cấu trúc giữ nguyên.
+Comparator độc lập và tracker đều không thấy Case 2. Control-add mới bằng
+7-Zip 26.04 → WinRAR 6.23.0 thấy Case 1. **Kết quả âm, #19 chưa đạt DoD.**
+Không chạy lần hai vì mặc định đã có Unicode Path 0x7075. Không suy diễn
+CP949, GUI tạo ZIP hay tái hiện môi trường 2021. Test tổng hợp không tính
+thành bằng chứng Case 2; log UI là ghi nhận operator, không telemetry xác
+thực. Xem [bảng delta, cách tái chạy và giới hạn snapshot cấu hình](native-case2-2026-11-18.md)
+và [manifest bàn giao](evidence/native-case2-2026-11-18.json).
+
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix)
 *(Sẽ đối chiếu với phân bố thực nghiệm 3 máy trạm PC1, PC2, PC3 từ Hình 9)*
 
