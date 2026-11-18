@@ -165,6 +165,10 @@ WinZip CLI chưa có ở mốc đo cũ. Ngày 18/11/2026 đã đối chứng th�
 nguyên, chỉ offset đổi; **chưa có Case 2, chưa đạt DoD PH4-PROV-002**.
 Workflow mới: `python -m experiments.explorer_delete prepare --bandizip PATH`
 và `finalize RUN --gui-log PATH`; xem hướng dẫn thí nghiệm để lưu bằng chứng GUI.
+Đợt bổ sung tạo ZIP bằng **GUI** cũng âm: đã quan sát tạo ZIP/Normal và
+Explorer Delete, payload nguyên vẹn, chỉ offset đổi. Workflow hỗ trợ
+`prepare --creation-mode gui` rồi `seal-creation` trước Delete; xem
+[báo cáo GUI và điểm dừng VM](docs/evaluation/native-case2-gui-2026-11-18.md).
 
 ---
 

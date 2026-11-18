@@ -178,6 +178,20 @@ thành bằng chứng Case 2; log UI là ghi nhận operator, không telemetry x
 thực. Xem [bảng delta, cách tái chạy và giới hạn snapshot cấu hình](native-case2-2026-11-18.md)
 và [manifest bàn giao](evidence/native-case2-2026-11-18.json).
 
+### 2.8 GUI tạo ZIP rồi Explorer Delete — PH4-PROV-002 (18/11/2026)
+
+Run `run-case2-hz8kgcll`: Bandizip7.47.0.1 portable GUI tạo ZIP/Normal,
+Unicode Path/NTFS on, UTF8 filename off; seal xác minh bốn entry và payload.
+Explorer Delete đúng target.txt, đóng cửa sổ rồi finalize: scope none,
+payload ba survivor giữ nguyên; chỉ offset đổi, tracker Case2 false.
+Có ảnh và log cả hai thao tác GUI, raw INI lossless và cặp ZIP. Native
+control-add mới `run-16gz65r7` xác nhận Case1. **#19 chưa đạt DoD Case2.**
+Một cấu hình, không retry; kết quả âm của GUI và CLI là hai quan sát riêng,
+không cam kết tương đương. Dừng host, chuẩn bị hướng dẫn VMware Windows10v2004;
+chưa có media hợp lệ nên chưa dựng/chạy guest. Xem
+[kết quả/giới hạn](native-case2-gui-2026-11-18.md) và
+[manifest/checksums](evidence/native-case2-gui-2026-11-18.json).
+
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix)
 *(Sẽ đối chiếu với phân bố thực nghiệm 3 máy trạm PC1, PC2, PC3 từ Hình 9)*
 
