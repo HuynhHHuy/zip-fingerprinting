@@ -7,7 +7,6 @@ import json
 import os
 import platform
 from pathlib import Path
-import shutil
 import sys
 import tempfile
 import time
@@ -103,9 +102,13 @@ def _tracker(path: Path) -> dict:
     return ProvenanceTracker(archive).analyze().to_dict()
 
 
-def prepare(output: Path, executable: Path, configuration: str = "default") -> dict:
+def prepare(
+    output: Path, executable: Path, configuration: str = "default", creation_mode: str = "cli"
+) -> dict:
     if configuration not in {"default", "unicode-path"}:
         raise ValueError("Unknown configuration")
+    if creation_mode not in {"cli", "gui"}:
+        raise ValueError("Unknown creation mode")
     output = _guard_path(output)
     output.mkdir(parents=True, exist_ok=True)
     run = Path(tempfile.mkdtemp(prefix="run-case2-", dir=output))
@@ -117,6 +120,7 @@ def prepare(output: Path, executable: Path, configuration: str = "default") -> d
         "created_utc": _utc(),
         "status": "preparing",
         "configuration": configuration,
+        "creation_mode": creation_mode,
         "native_case2": False,
         "commands": [],
         "environment": _environment(),
@@ -151,23 +155,49 @@ def prepare(output: Path, executable: Path, configuration: str = "default") -> d
             os.utime(path, ns=(1610364659123456700, 1610364659123456700))
             report["source_manifest"][name] = {"size": len(content), "sha256": sha256(path)}
         _save(report)
+        if creation_mode == "gui":
+            report.update(status="awaiting_creation", creation_ready_utc=_utc())
+            _save(report)
+            return report
         before = run / "before.zip"
         run_command([str(executable), "c", "-y", str(before), *SOURCES], source, report["commands"])
-        encoding = report["environment"]["legacy_encoding"]
-        baseline = read_evidence(before, encoding)
-        if set(baseline["entries"]) != set(SOURCES):
-            raise ValueError("Baseline inventory differs from source")
-        for name, row in report["source_manifest"].items():
-            entry = baseline["entries"][name]
-            if row["sha256"] != entry["payload_sha256"] or row["size"] != entry["size"]:
-                raise ValueError("Baseline payload differs from source")
-        report.update(before=baseline, tracker_before=_tracker(before))
-        shutil.copyfile(before, run / "after.zip")
-        report.update(status="awaiting_gui", prepared_utc=_utc())
+        _seal_baseline(run, report)
     except ERRORS as exc:
         report.update(status="failed", reason=str(exc))
     _save(report)
     return report
+
+
+def _check_source(run: Path, report: dict) -> None:
+    if set(report["source_manifest"]) != set(SOURCES):
+        raise ValueError("Source manifest inventory changed")
+    for name, row in report["source_manifest"].items():
+        source = _guard_path(run / "source" / name)
+        source.relative_to(run / "source")
+        if source.stat().st_size != row["size"] or sha256(source) != row["sha256"]:
+            raise ValueError("Anchored source payload changed")
+
+
+def _seal_baseline(run: Path, report: dict) -> None:
+    _check_source(run, report)
+    before, after = [_guard_path(run / name) for name in ("before.zip", "after.zip")]
+    baseline = read_evidence(before, report["environment"]["legacy_encoding"])
+    if set(baseline["entries"]) != set(SOURCES):
+        raise ValueError("Baseline inventory differs from source")
+    for name, row in report["source_manifest"].items():
+        entry = baseline["entries"][name]
+        if row["sha256"] != entry["payload_sha256"] or row["size"] != entry["size"]:
+            raise ValueError("Baseline payload differs from source")
+    with before.open("rb") as original:
+        data = original.read(MAX_BYTES + 1)
+    if len(data) > MAX_BYTES:
+        raise ValueError("Baseline exceeds size limit while sealing")
+    with after.open("xb") as stream:
+        stream.write(data)
+    if sha256(before) != baseline["sha256"] or sha256(after) != baseline["sha256"]:
+        raise ValueError("Baseline changed while sealing; close archiver first")
+    report.update(before=baseline, tracker_before=_tracker(before))
+    report.update(status="awaiting_gui", prepared_utc=_utc())
 
 
 def _time(value: str) -> datetime:
@@ -179,7 +209,7 @@ def _time(value: str) -> datetime:
     return stamp
 
 
-def _gui_evidence(run: Path, report: dict, path: Path) -> tuple[dict, bool]:
+def _gui_evidence(run: Path, report: dict, path: Path, creation: bool = False) -> tuple[dict, bool]:
     path = _guard_path(path)
     path.relative_to(run)
     if path.stat().st_size > MAX_BYTES:
@@ -189,15 +219,23 @@ def _gui_evidence(run: Path, report: dict, path: Path) -> tuple[dict, bool]:
         raise ValueError("GUI log must be an object")
     expected = {
         "run_id": report["run_id"],
-        "archive": str(run / "after.zip"),
-        "target": "target.txt",
-        "action": "Delete",
-        "application": "explorer.exe",
+        "archive": str(run / ("before.zip" if creation else "after.zip")),
+        "action": "Create" if creation else "Delete",
+        "application": Path(report["tool"]["executable"]).name if creation else "explorer.exe",
     }
+    if creation:
+        expected.update(
+            source_directory=str(run / "source"),
+            executable=report["tool"]["executable"],
+            selected_entries=sorted(SOURCES),
+        )
+    else:
+        expected["target"] = "target.txt"
     if any(log.get(k) != v for k, v in expected.items()) or log.get("archive_closed") is not True:
         raise ValueError("Incomplete/path-mismatched GUI record")
     started, ended = _time(log["started_utc"]), _time(log["ended_utc"])
-    if not _time(report["prepared_utc"]) <= started <= ended <= datetime.now(timezone.utc):
+    ready = report["creation_ready_utc" if creation else "prepared_utc"]
+    if not _time(ready) <= started <= ended <= datetime.now(timezone.utc):
         raise ValueError("GUI observation time outside experiment")
     level = log.get("evidence_level")
     if level not in {"operator_assertion", "ui_observed"}:
@@ -218,31 +256,31 @@ def _gui_evidence(run: Path, report: dict, path: Path) -> tuple[dict, bool]:
             if any(
                 observation.get(k) != v
                 for k, v in expected.items()
-                if k in {"run_id", "archive", "application"}
+                if k in {"run_id", "archive", "application", "source_directory", "executable"}
             ):
                 raise ValueError("GUI observation belongs to another experiment")
             if not started <= _time(observation["observed_utc"]) <= ended:
                 raise ValueError("GUI observation outside action interval")
             if not observation.get("accessibility_tree") or not observation.get("window_title"):
                 raise ValueError("GUI observation lacks UI evidence")
-            if (
-                observation["phase"] == "before"
-                and observation.get("selected_target") != "target.txt"
+            if observation["phase"] == "before" and (
+                observation.get("selected_entries") != sorted(SOURCES)
+                if creation
+                else observation.get("selected_target") != "target.txt"
             ):
                 raise ValueError("Wrong GUI selection")
             phases.add(observation["phase"])
         if phases != {"before", "after"}:
             raise ValueError("GUI observations require before/after evidence")
     return {
-        "path": path.name,
+        "path": path.relative_to(run).as_posix(),
         "sha256": sha256(path),
         "record": log,
         "trust": "contemporaneous operator observations; not authenticated telemetry",
     }, level == "ui_observed"
 
 
-def finalize(run: Path, gui_log: Path) -> dict:
-    run = _guard_path(run)
+def _load_run(run: Path, state: str) -> dict:
     metadata = _guard_path(run / "metadata.json")
     if metadata.stat().st_size > MAX_BYTES:
         raise ValueError("Metadata exceeds size limit")
@@ -257,20 +295,52 @@ def finalize(run: Path, gui_log: Path) -> dict:
         or not run.name.startswith("run-case2-")
     ):
         raise ValueError("Not a workflow-owned run")
-    if report.get("status") != "awaiting_gui":
-        raise ValueError("Cannot finalize this state")
+    if report.get("status") != state:
+        raise ValueError("Cannot process this state")
+    return report
+
+
+def seal_creation(run: Path, gui_log: Path) -> dict:
+    run = _guard_path(run)
+    report = _load_run(run, "awaiting_creation")
+    try:
+        if report.get("creation_mode") != "gui":
+            raise ValueError("Not a GUI creation run")
+        report["creation_evidence"], _ = _gui_evidence(run, report, gui_log, creation=True)
+        executable = _guard_path(Path(report["tool"]["executable"]))
+        if sha256(executable) != report["tool"]["sha256"]:
+            raise ValueError("Creation executable changed")
+        report["tool"]["configuration_files_after_creation"] = {
+            p.name: {"sha256": sha256(p), "raw_hex": p.read_bytes().hex()}
+            for p in executable.parent.glob("*.ini")
+            if p.stat().st_size <= 1024 * 1024
+        }
+        _seal_baseline(run, report)
+    except (*ERRORS, KeyError, TypeError) as exc:
+        report.update(status="failed", reason=str(exc), native_case2=False)
+    _save(report)
+    return report
+
+
+def finalize(run: Path, gui_log: Path) -> dict:
+    run = _guard_path(run)
+    report = _load_run(run, "awaiting_gui")
     try:
         report["gui_evidence"], verified = _gui_evidence(run, report, gui_log)
+        if report.get("creation_mode", "cli") == "gui":
+            anchored = report["creation_evidence"]
+            evidence, creation_verified = _gui_evidence(
+                run, report, run / anchored["path"], creation=True
+            )
+            if evidence["sha256"] != anchored["sha256"]:
+                raise ValueError("Creation evidence changed after sealing")
+            verified = verified and creation_verified
         before, after = [_guard_path(run / name) for name in ("before.zip", "after.zip")]
         encoding = report["environment"]["legacy_encoding"]
         baseline = read_evidence(before, encoding)
         if baseline["sha256"] != report["before"]["sha256"]:
             raise ValueError("Baseline changed")
-        for name, row in report["source_manifest"].items():
-            source = _guard_path(run / "source" / name)
-            source.relative_to(run / "source")
-            if sha256(source) != row["sha256"]:
-                raise ValueError("Anchored source payload changed")
+        _check_source(run, report)
         measured = read_evidence(after, encoding)
         frozen = _guard_path(run / "observed-after.zip")
         if frozen.exists():
@@ -309,17 +379,22 @@ def main(argv: list[str] | None = None) -> int:
     prep.add_argument("--bandizip", type=Path, required=True)
     prep.add_argument("--output", type=Path, default=ROOT / "data/modified_samples")
     prep.add_argument("--configuration", choices=("default", "unicode-path"), default="default")
+    prep.add_argument("--creation-mode", choices=("cli", "gui"), default="cli")
+    seal = commands.add_parser("seal-creation")
+    seal.add_argument("run", type=Path)
+    seal.add_argument("--gui-log", type=Path, required=True)
     final = commands.add_parser("finalize")
     final.add_argument("run", type=Path)
     final.add_argument("--gui-log", type=Path, required=True)
     final.add_argument("--require-case2", action="store_true")
     args = parser.parse_args(argv)
     try:
-        report = (
-            prepare(args.output, args.bandizip, args.configuration)
-            if args.command == "prepare"
-            else finalize(args.run, args.gui_log)
-        )
+        if args.command == "prepare":
+            report = prepare(args.output, args.bandizip, args.configuration, args.creation_mode)
+        elif args.command == "seal-creation":
+            report = seal_creation(args.run, args.gui_log)
+        else:
+            report = finalize(args.run, args.gui_log)
     except (*ERRORS, KeyError, TypeError) as exc:
         sys.stderr.write(f"Experiment error: {exc}\n")
         return 1
@@ -334,7 +409,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     if report["status"] == "failed":
         return 1
-    if report["status"] in {"preparing", "awaiting_gui", "skipped"}:
+    if report["status"] in {"preparing", "awaiting_creation", "awaiting_gui", "skipped"}:
         return 2
     return 2 if args.require_case2 and not report["native_case2"] else 0
 

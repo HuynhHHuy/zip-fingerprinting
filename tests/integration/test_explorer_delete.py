@@ -1,6 +1,7 @@
 """Workflow/fault contracts; mocked preparation is never native evidence."""
 
 import json
+import io
 from datetime import datetime, timezone
 import os
 from pathlib import Path
@@ -225,3 +226,214 @@ def test_native_bandizip_prepare(tmp_path):
     assert report["status"] == "awaiting_gui", report
     assert report["tool"]["version"] != "TEST ONLY"
     assert report["before"]["entries"]["가나다.txt"]["payload_sha256"]
+
+
+@pytest.fixture
+def gui_prepared(prepared, tmp_path):
+    return workflow.prepare(tmp_path, Path(prepared["tool"]["executable"]), creation_mode="gui")
+
+
+def create_baseline(report):
+    run = Path(report["run_directory"])
+    with zipfile.ZipFile(run / "before.zip", "w") as archive:
+        for name in workflow.SOURCES:
+            archive.write(run / "source" / name, name)
+
+
+def creation_log(report, level="ui_observed"):
+    """Synthetic observations exercise contracts only, never native evidence."""
+    run = Path(report["run_directory"])
+    log = {
+        "run_id": report["run_id"],
+        "archive": str(run / "before.zip"),
+        "source_directory": str(run / "source"),
+        "selected_entries": sorted(workflow.SOURCES),
+        "executable": report["tool"]["executable"],
+        "application": Path(report["tool"]["executable"]).name,
+        "action": "Create",
+        "started_utc": report["creation_ready_utc"],
+        "ended_utc": datetime.now(timezone.utc).isoformat(),
+        "archive_closed": True,
+        "evidence_level": level,
+        "observations": [],
+    }
+    for phase in ("before", "after"):
+        observation = {
+            **log,
+            "phase": phase,
+            "observed_utc": log["started_utc"],
+            "window_title": "TEST ONLY Bandizip",
+            "accessibility_tree": "SYNTHETIC TEST DATA ONLY",
+        }
+        path = run / f"creation-{phase}.json"
+        path.write_text(json.dumps(observation))
+        log["observations"].append({"path": path.name, "sha256": workflow.sha256(path)})
+    path = run / "creation-log.json"
+    path.write_text(json.dumps(log))
+    return path
+
+
+def test_gui_prepare_waits_without_compression(gui_prepared):
+    assert gui_prepared["status"] == "awaiting_creation"
+    run = Path(gui_prepared["run_directory"])
+    assert (run / "source/keep.txt").is_file()
+    assert not (run / "before.zip").exists()
+    assert not (run / "after.zip").exists()
+    assert gui_prepared["commands"] == []
+
+
+def test_gui_seal_valid_baseline_and_legacy_finalize(gui_prepared):
+    create_baseline(gui_prepared)
+    run = Path(gui_prepared["run_directory"])
+    result = workflow.seal_creation(run, creation_log(gui_prepared))
+    assert result["status"] == "awaiting_gui", result
+    assert result["before"]["sha256"] == workflow.sha256(run / "after.zip")
+    with pytest.raises(ValueError, match="state"):
+        workflow.seal_creation(run, run / "creation-log.json")
+    remove_target(result)
+    finalized = workflow.finalize(run, gui_log(result))
+    assert finalized["status"] == "finalized_negative"
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "missing",
+        "corrupt",
+        "payload",
+        "source",
+        "log-path",
+        "tool",
+        "time",
+        "selection",
+        "observation",
+        "after-exists",
+    ],
+)
+def test_gui_seal_preserves_failures(gui_prepared, fault):
+    create_baseline(gui_prepared)
+    run = Path(gui_prepared["run_directory"])
+    path = creation_log(gui_prepared)
+    log = json.loads(path.read_text())
+    if fault == "missing":
+        (run / "before.zip").unlink()
+    elif fault == "corrupt":
+        (run / "before.zip").write_bytes(b"bad")
+    elif fault == "payload":
+        with zipfile.ZipFile(run / "before.zip", "w") as archive:
+            archive.writestr("wrong", b"bad")
+    elif fault == "source":
+        (run / "source/keep.txt").write_bytes(b"changed")
+    elif fault == "log-path":
+        log["archive"] = str(run / "other.zip")
+    elif fault == "tool":
+        log["executable"] = "other.exe"
+    elif fault == "time":
+        log["started_utc"] = None
+    elif fault == "selection":
+        log["selected_entries"] = ["keep.txt"]
+    elif fault == "observation":
+        log["observations"] = []
+    elif fault == "after-exists":
+        (run / "after.zip").write_bytes(b"preserve me")
+    path.write_text(json.dumps(log))
+    result = workflow.seal_creation(run, path)
+    assert result["status"] == "failed"
+    assert json.loads((run / "metadata.json").read_text())["reason"]
+    if fault == "after-exists":
+        assert (run / "after.zip").read_bytes() == b"preserve me"
+
+
+def test_finalize_revalidates_gui_creation_anchors(gui_prepared):
+    create_baseline(gui_prepared)
+    run = Path(gui_prepared["run_directory"])
+    path = creation_log(gui_prepared)
+    result = workflow.seal_creation(run, path)
+    remove_target(result)
+    path.write_text("{}")
+    result = workflow.finalize(run, gui_log(result))
+    assert result["status"] == "failed"
+
+
+@pytest.mark.parametrize("level, expected", [("operator_assertion", False), ("ui_observed", True)])
+def test_case2_requires_both_gui_operations(gui_prepared, level, expected):
+    """Synthetic all-survivor rewrite tests evidence gating, not native Case2."""
+    create_baseline(gui_prepared)
+    run = Path(gui_prepared["run_directory"])
+    sealed = workflow.seal_creation(run, creation_log(gui_prepared, level))
+    with zipfile.ZipFile(run / "after.zip", "w") as archive:
+        for name, payload in workflow.SOURCES.items():
+            if name != "target.txt":
+                info = zipfile.ZipInfo(name)
+                old_host = sealed["before"]["entries"][name]["CDH"]["version_made_by"] >> 8
+                info.create_system = 0 if old_host == 3 else 3
+                archive.writestr(info, payload)
+    path = gui_log(sealed, "ui_observed")
+    log = json.loads(path.read_text())
+    for phase in ("before", "after"):
+        observation = {
+            **log,
+            "phase": phase,
+            "observed_utc": log["started_utc"],
+            "window_title": "TEST ONLY Explorer",
+            "accessibility_tree": "TEST ONLY",
+            "selected_target": "target.txt",
+        }
+        output = run / f"delete-{phase}.json"
+        output.write_text(json.dumps(observation))
+        log["observations"].append({"path": output.name, "sha256": workflow.sha256(output)})
+    path.write_text(json.dumps(log))
+    result = workflow.finalize(run, path)
+    assert result["comparison"]["global_rewrite"] is True
+    assert result["native_case2"] is expected
+
+
+def test_gui_cli_pending_exit_codes(prepared, tmp_path, capsys):
+    code = workflow.main(
+        [
+            "prepare",
+            "--creation-mode",
+            "gui",
+            "--bandizip",
+            prepared["tool"]["executable"],
+            "--output",
+            str(tmp_path),
+        ]
+    )
+    assert code == 2
+    report = json.loads(capsys.readouterr().out)
+    run = Path(report["run"])
+    metadata = json.loads((run / "metadata.json").read_text())
+    assert metadata["status"] == "awaiting_creation"
+    create_baseline(metadata)
+    log = creation_log(metadata)
+    assert workflow.main(["seal-creation", str(run), "--gui-log", str(log)]) == 2
+    assert json.loads(capsys.readouterr().out)["status"] == "awaiting_gui"
+
+
+def test_legacy_cli_metadata_without_creation_mode(prepared):
+    run = Path(prepared["run_directory"])
+    prepared.pop("creation_mode", None)
+    workflow._atomic_json(run / "metadata.json", prepared)
+    remove_target(prepared)
+    result = workflow.finalize(run, gui_log(prepared))
+    assert result["status"] == "finalized_negative"
+
+
+def test_sealing_rejects_baseline_growth_before_copy(gui_prepared, monkeypatch):
+    create_baseline(gui_prepared)
+    run = Path(gui_prepared["run_directory"])
+    path = creation_log(gui_prepared)
+    baseline = workflow.read_evidence(run / "before.zip", "utf-8")
+    monkeypatch.setattr(workflow, "read_evidence", lambda *args: baseline)
+    original_open = Path.open
+
+    def grows(file, mode="r", *args, **kwargs):
+        if file == run / "before.zip" and mode == "rb":
+            return io.BytesIO(b"x" * (workflow.MAX_BYTES + 1))
+        return original_open(file, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", grows)
+    result = workflow.seal_creation(run, path)
+    assert result["status"] == "failed"
+    assert not (run / "after.zip").exists()
