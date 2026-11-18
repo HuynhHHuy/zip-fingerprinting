@@ -299,6 +299,12 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   `control-add` xác nhận Case 1. **Case 2 âm, DoD vẫn chưa đạt; giữ #19 mở.**
   Mặc định portable đã có Unicode Path 0x7075; không chạy lại cùng cấu hình.
   Xem [báo cáo và bằng chứng](../evaluation/native-case2-2026-11-18.md).
+- **Đối chứng GUI bổ sung 18/11:** workflow prepare/seal-creation/finalize giữ
+  bằng chứng cả GUI tạo ZIP và Explorer Delete. Run `run-case2-hz8kgcll` âm,
+  scope none, payload ba survivor nguyên vẹn; Case1 control mới hợp lệ.
+  Không thử thêm cấu hình host. Chỉ bàn giao hướng dẫn VM Windows10v2004 vì
+  chưa có media Windows hợp lệ; chưa chạy guest/Bandizip6.29. **#19 vẫn mở,
+  DoD Case2 false.** Xem [kết quả GUI](../evaluation/native-case2-gui-2026-11-18.md).
 
 ---
 

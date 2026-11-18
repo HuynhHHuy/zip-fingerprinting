@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-18",
+  "issue": 19,
+  "measurement_commit": "e8abf453bef928c15bea9358597190f2533c2da3",
+  "runs": [
+    "run-case2-hz8kgcll",
+    "run-16gz65r7"
+  ],
+  "native_case1": true,
+  "native_case2": false,
+  "dod_met": false,
+  "case2_scope": "none",
+  "creation_mode": "gui",
+  "host_configurations": 1,
+  "operational_retries": 0,
+  "vm_status": "waiting_for_valid_media; runbook only",
+  "handoff": {
+    "status": "uploaded_download_verified",
+    "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-gui-2026-11-18",
+    "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-gui-2026-11-18/native-case2-gui-2026-11-18-evidence.zip",
+    "release_id": 449502211
+  },
+  "bundle": {
+    "name": "native-case2-gui-2026-11-18-evidence.zip",
+    "size": 257466,
+    "sha256": "102c2c3165571f4f5fc20a3f9fc55a3bad53f49a4037854a02be2e65b6be1421"
+  },
+  "verification": {
+    "local_suite": "364 passed, 3 skipped in 40.85s",
+    "skips": "Three existing Windows WinError1314 CLI symlink cases; native Bandizip preparation ran",
+    "static": "mypy src+experiments/explorer_delete.py:16files clean; changed Black/Flake8 clean; pipcheck/diff clean",
+    "review": "Independent whole-branch review: no Critical/Important/Minor findings. Reviewer ran38passed1native-preparation-skip(environment unset), independently verified all33bundle members and recomputed retained ZIP comparison exactly. No native artifacts modified.",
+    "native": "actual GUI creation and Explorer Delete; CRC/inventory/payload valid, only offsets changed; fresh Case1 control generated",
+    "synthetic": "Lifecycle/fault/gating tests are not native Case2 evidence",
+    "integrity": "32evidence files plus file-manifest.json verified; ZIP CRC passed; public GitHub bundle downloaded and size/SHA256 matched.",
+    "commands": [
+      {
+        "command": "python -B -m pytest -p no:cacheprovider -ra",
+        "result": "364 passed, 3 skipped in40.85s",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m mypy src experiments/explorer_delete.py",
+        "result": "Success: no issues found in16source files",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m black --check experiments/explorer_delete.py tests/integration/test_explorer_delete.py",
+        "result": "2files unchanged",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m flake8 experiments/explorer_delete.py tests/integration/test_explorer_delete.py",
+        "result": "No findings",
+        "exit_code": 0
+      },
+      {
+        "command": "python -B -m pip check",
+        "result": "No broken requirements found",
+        "exit_code": 0
+      },
+      {
+        "command": "git diff --check",
+        "result": "No whitespace errors",
+        "exit_code": 0
+      }
+    ]
+  },
+  "limits": [
+    "Single current host/tool/configuration, flat tiny source",
+    "Operator GUI observations are not authenticated telemetry",
+    "Same-ID/length internal extra layout not classified; no extra bytes changed in measured pair",
+    "Windows10v2004/Bandizip6.29 not executed; no valid Windows media"
+  ],
+  "files": [
+    {
+      "path": "run-case2-hz8kgcll/after.zip",
+      "size": 594,
+      "sha256": "d7a8853c507e8b4df28fff6a2b5ef0b5a9357f21c4c4fa84e3a340a8596df604"
+    },
+    {
+      "path": "run-case2-hz8kgcll/before.zip",
+      "size": 745,
+      "sha256": "202e5bb6d7a423947914e9e20d52483b8345ad654bc8153e3f5e98079ff5380b"
+    },
+    {
+      "path": "run-case2-hz8kgcll/creation-after.jpg",
+      "size": 20013,
+      "sha256": "426dd362f91fb45358786b8060f0320d6992550bc7491e32b8f9d9bf2c923c47"
+    },
+    {
+      "path": "run-case2-hz8kgcll/creation-after.json",
+      "size": 3562,
+      "sha256": "e151925a2296e57ffeb0285312e90084ebe73cd7385e5b8d2d1479b94b9ba361"
+    },
+    {
+      "path": "run-case2-hz8kgcll/creation-before.jpg",
+      "size": 57259,
+      "sha256": "77212d7f850c0a4c66289517102dc4aee647c9b97f9b40020f77526a07bcb6e4"
+    },
+    {
+      "path": "run-case2-hz8kgcll/creation-before.json",
+      "size": 7956,
+      "sha256": "90dcffb65de5549c4998540dfaa12dc7017881d51810c2693294af128511ae9f"
+    },
+    {
+      "path": "run-case2-hz8kgcll/creation-log.json",
+      "size": 1135,
+      "sha256": "34f74ef18cfe4976215bda69174cb39fa2add1dcad6410d0ebdacc34255d8946"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-after.jpg",
+      "size": 76032,
+      "sha256": "18cab6f59ffd23afc7611fc0a5bfba559271e4531bf5aebd49e88fd9803e398a"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-after.json",
+      "size": 10583,
+      "sha256": "db3b5029339fa31b0ba153a5d94ecefee62cfd9fef43b7f3748df3ce02ef5867"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-before.jpg",
+      "size": 82306,
+      "sha256": "b5a53bb0bcbd3fe9eaabf61b5e610c5500448e6fd2e6e04eca9ebf86a76a12b9"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-before.json",
+      "size": 11294,
+      "sha256": "69e7bece8b6b4de8e55f37666119fe8aa9ead1c2f78e1151c1f2af6cf366afca"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-confirmation.jpg",
+      "size": 11776,
+      "sha256": "8c87c2cb87d7463fb279698f9c9089d86c65240711e9da457423492e848eb5bb"
+    },
+    {
+      "path": "run-case2-hz8kgcll/delete-log.json",
+      "size": 699,
+      "sha256": "787b6caee8048029eb791a46859579687c8c403058909822b8f130913b70971f"
+    },
+    {
+      "path": "run-case2-hz8kgcll/metadata.json",
+      "size": 81758,
+      "sha256": "f206d931d7a0a69d9c484045d6834b5bf46e16302d1d15b9565a0993b8062ef9"
+    },
+    {
+      "path": "run-case2-hz8kgcll/observed-after.zip",
+      "size": 594,
+      "sha256": "d7a8853c507e8b4df28fff6a2b5ef0b5a9357f21c4c4fa84e3a340a8596df604"
+    },
+    {
+      "path": "run-case2-hz8kgcll/report.md",
+      "size": 859,
+      "sha256": "3bf2c4bf7a8f9eea1698a2ce43198f82f9c0f56b7d0e89ae494716e229d289fe"
+    },
+    {
+      "path": "run-case2-hz8kgcll/settings-observed.jpg",
+      "size": 64585,
+      "sha256": "abd3d1a93684b9dbb7b6af7896d5c9577dba27cf71caf43767bec5bcf43830b5"
+    },
+    {
+      "path": "run-case2-hz8kgcll/settings-observed.json",
+      "size": 6337,
+      "sha256": "252a6cc1126acdbc7c33e74e4ce9c07af7c11bcf38eee50bd6818fb8d9dd9fde"
+    },
+    {
+      "path": "run-case2-hz8kgcll/source/keep.txt",
+      "size": 18,
+      "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+    },
+    {
+      "path": "run-case2-hz8kgcll/source/target.txt",
+      "size": 17,
+      "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+    },
+    {
+      "path": "run-case2-hz8kgcll/source/tieng-viet-\u1ec7.txt",
+      "size": 20,
+      "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+    },
+    {
+      "path": "run-case2-hz8kgcll/source/\uac00\ub098\ub2e4.txt",
+      "size": 16,
+      "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+    },
+    {
+      "path": "run-16gz65r7/control-add/after.zip",
+      "size": 517,
+      "sha256": "8b6b544b7a0a5b1ed09ce8ec900b6a1ec48f4878445389a6959bb3176c39ac54"
+    },
+    {
+      "path": "run-16gz65r7/control-add/before.zip",
+      "size": 373,
+      "sha256": "0129cb53113dc4a21105cbd1b692d315e46bdc8023698862fc54a0dd02a11a1d"
+    },
+    {
+      "path": "run-16gz65r7/control-add/source/added.txt",
+      "size": 14,
+      "sha256": "22ccbc3d324e0f45cddbb0fba720745cfa1585c1f0c8b50af73947cbd8743ff1"
+    },
+    {
+      "path": "run-16gz65r7/control-add/source/keep.txt",
+      "size": 18,
+      "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+    },
+    {
+      "path": "run-16gz65r7/control-add/source/target.txt",
+      "size": 17,
+      "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+    },
+    {
+      "path": "run-16gz65r7/control-add/source/tieng-viet-\u1ec7.txt",
+      "size": 16,
+      "sha256": "d16db5f9059322d0de128f99a7252d1c900c3d4a53bcd9cb7488c5ed9ecf22fe"
+    },
+    {
+      "path": "run-16gz65r7/metadata.json",
+      "size": 24702,
+      "sha256": "5da92af900ed49567d3579b04450aea02c145d5b26015e418a3262434532e7a6"
+    },
+    {
+      "path": "tool-provenance.json",
+      "size": 1202,
+      "sha256": "2ef2a56acefe08367d863ac900e2528df5939ebf8d92df5076660b706a657669"
+    },
+    {
+      "path": "native-case2-gui-2026-11-18.md",
+      "size": 3913,
+      "sha256": "0a9a49379306fe9f2f8a2ee748f26cf0b9186b6900115bc706d35da6d3bba00b"
+    },
+    {
+      "path": "case2-windows10-vm.md",
+      "size": 5760,
+      "sha256": "e8300124fb2173bd3f256086c202409ab6defd2e134480fc9837b2b6bdbab4d3"
+    }
+  ]
+}

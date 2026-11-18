@@ -135,6 +135,49 @@ scope none; Case 1 mới có bằng chứng. Unicode Path đã bật mặc đị
 lặp cùng cấu hình. **#19 vẫn chưa đạt DoD Case 2.** Xem
 [kết quả, giới hạn và bằng chứng](../evaluation/native-case2-2026-11-18.md).
 
+## Tạo baseline bằng GUI rồi seal
+
+CLI tạo ZIP vẫn là mặc định, run cũ không có creation_mode được xử lý như CLI.
+Chế độ GUI không chạy lệnh nén; version helper vẫn đọc phiên bản executable.
+
+```powershell
+python -m experiments.explorer_delete prepare --creation-mode gui --configuration unicode-path --bandizip "C:/private/Bandizip.x64.exe"
+# exit2 awaiting_creation: source/manifest sẵn, chưa có ZIP
+# GUI Bandizip chọn bốn file source, output RUN/before.zip; nén xong, đóng ZIP
+python -m experiments.explorer_delete seal-creation RUN --gui-log RUN/creation-log.json
+# exit2 awaiting_gui: before.zip đã kiểm chứng, after.zip mới được sao chép
+# Explorer Delete target.txt trên after.zip; đóng ZIP
+python -m experiments.explorer_delete finalize RUN --gui-log RUN/delete-log.json --require-case2
+```
+
+Creation-log dùng schema GUI observation ở trên, thay các trường bằng:
+`archive` = absolute RUN/before.zip, `action: "Create"`, `application` = tên
+executable Bandizip, `executable` = đường dẫn tuyệt đối đúng metadata,
+`source_directory` = absolute RUN/source, `selected_entries` = danh sách tên
+bốn file sort theo Python. Không có target trong creation-log.
+Thời gian bắt đầu phải sau creation_ready_utc; archive_closed phải true.
+
+Hai observation before/after cùng run/archive/application/executable và
+source_directory; before ghi selected_entries đúng bốn file, mỗi observation
+có observed_utc/window_title/accessibility_tree. Ghi ảnh và setting thật để
+review thêm; cấu hình GUI không được suy từ nhãn --configuration. File log và
+observations phải nằm trong run, checksum khớp; xem run evidence để có ví dụ
+native. GUI log được operator ghi, không tự chứng minh tác giả của thao tác.
+
+Seal kiểm source anchors, inventory/CRC/payload/identity, executable hash và
+lưu raw INI sau tạo ZIP; không ghi đè after.zip tồn tại, không seal lặp.
+ZIP tăng kích thước/đổi bytes trong lúc seal bị từ chối. Lỗi lưu failed kèm
+reason; không chỉnh metadata để retry, dùng prepare mới. Finalize kiểm lại
+creation-log cùng checksum observations và baseline; nhánh GUI chỉ xác nhận
+native Case2 khi cả creation và Delete đều ui_observed và global rewrite.
+Operator-only creation có thể seal để phân tích, nhưng không đạt native DoD.
+
+Đợt GUI18/11: run-case2-hz8kgcll scope none; không retry; source/baseline và
+payload survivor nguyên vẹn. Case1 control mới run-16gz65r7 hợp lệ. Xem
+[báo cáo GUI](../evaluation/native-case2-gui-2026-11-18.md) và
+[hướng dẫn VM đang chờ media](case2-windows10-vm.md). Không chạy thêm cấu hình
+host hoặc tự dùng Ubuntu/Wine để thay Windows Explorer.
+
 ## Tài liệu công cụ
 
 - [Bandizip command line](https://www.bandisoft.com/bandizip/help/parameter/)
