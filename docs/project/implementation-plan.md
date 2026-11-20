@@ -462,6 +462,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Tệp tạo/chỉnh sửa:** `experiments/evaluate_classifier.py`, `docs/evaluation/reproduction_report.md`, `results/benchmarks/reproduction_evaluation.json`.
 - **Đầu ra:** Báo cáo khoa học tái hiện hoàn chỉnh, số liệu đo lường minh bạch.
 - **Tiêu chí nghiệm thu (DoD):** Độ chính xác nhận diện HĐH đạt 100%, độ chính xác nhận diện công cụ nén trên Windows đạt ≥ 90% trên tập mẫu chuẩn.
+- **Trạng thái (20/11/2026):** Đã triển khai evaluator (`experiments/evaluate_classifier.py`) và kiểm thử tổng hợp (`tests/integration/test_classifier_evaluation.py`). **Chưa nghiệm thu khoa học.** Chạy thử trên một run native WinRAR/PowerShell tạm thời cho kết quả: OS 6/6 (`insufficient_coverage`), công cụ Windows 0/3 (`not_met`), PowerShell bị gán nhầm thành Compressed folder. Còn chờ artifacts chia sẻ được, #17 và #18/#21. Xem [báo cáo mục 3](../evaluation/reproduction_report.md#3-đánh-giá-ma-trận-nhầm-lẫn-và-độ-chính-xác-confusion-matrix--ph7-eval-002).
 
 ---
 

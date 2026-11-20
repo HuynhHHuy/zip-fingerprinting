@@ -192,8 +192,112 @@ chưa có media hợp lệ nên chưa dựng/chạy guest. Xem
 [kết quả/giới hạn](native-case2-gui-2026-11-18.md) và
 [manifest/checksums](evidence/native-case2-gui-2026-11-18.json).
 
-## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix)
-*(Sẽ đối chiếu với phân bố thực nghiệm 3 máy trạm PC1, PC2, PC3 từ Hình 9)*
+## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix) — PH7-EVAL-002
+
+> **Trạng thái (20/11/2026): đã triển khai evaluator, đã kiểm thử tổng hợp; CHƯA
+> nghiệm thu khoa học.** DoD khoa học (OS 100 %, công cụ Windows ≥ 90 % trên tập
+> mẫu chuẩn có đủ độ phủ) chưa đạt; issue phải giữ mở.
+
+### 3.1 Triển khai evaluator
+
+`experiments/evaluate_classifier.py` đọc catalogue schema v1 và chỉ dùng mẫu
+`status=generated`. Với mỗi mẫu, script đọc bytes ZIP **một lần**, kiểm tra
+path nằm trong data root, size và SHA-256, rồi phân loại chính bytes đó qua API
+`ZipBinaryParser → StructuralFeatureExtractor → AutomatedClassifier`. CLI
+`identify` vẫn là placeholder, chờ #18/#21. Mẫu bị loại được ghi lại cùng lý do:
+`status_*`, `missing_artifact`, `checksum_mismatch`, `size_mismatch`,
+`unsafe_path`, `missing_checksum`.
+
+- **Ground truth** = (`run.environment.os`, `sample.tool_id`) theo invocation
+  provenance; không bao giờ lấy từ dự đoán. `Linux` không được gán thành Ubuntu.
+  `powershell` mang nhãn **PowerShell Compress-Archive** và thuộc nhóm
+  *out-of-catalog*, không được gán lại thành `Windows/Compressed folder`.
+- **Top-1** chỉ tồn tại khi đúng một ứng viên giữ điểm cao nhất. Nếu đồng hạng
+  thì ghi `AMBIGUOUS`; danh sách rỗng ghi `UNKNOWN`; exception ghi `ERROR`. Cả ba
+  trường hợp vẫn **nằm trong mẫu số** và bị tính là sai. Candidate coverage
+  (nhãn đúng có xuất hiện trong danh sách ứng viên hay không) được báo riêng.
+- Metric được tính trên **cả hai tập**: raw và tập SHA-256 duy nhất. Run lặp hoặc
+  bản sao trùng byte được đếm và công bố, không coi là bằng chứng độc lập. Ngưỡng
+  được xét trên tập SHA-256 duy nhất. Trạng thái `met` còn đòi hỏi mỗi nhãn
+  catalogue thuộc phạm vi đều có ít nhất một mẫu; nếu thiếu, trạng thái là
+  `insufficient_coverage`.
+- JSON ghi đầy đủ: lệnh chạy, Python/platform, git commit/dirty, SHA-256 của
+  catalogue và của các file classifier, định nghĩa từng mẫu số, kết quả từng mẫu
+  (truth, toàn bộ ứng viên/điểm, dự đoán, outcome, lý do được tính vào mẫu số nào).
+  Script trả exit `0` khi có mẫu được đánh giá, `2` khi không có mẫu hợp lệ, `1`
+  khi gặp lỗi catalogue/IO. Chưa đạt ngưỡng **không** phải lỗi chương trình.
+
+Tái chạy:
+
+```powershell
+python experiments/evaluate_classifier.py                       # data/ + results/benchmarks/
+python experiments/evaluate_classifier.py --data-dir <data-root> --run <run_id> --output <file>
+python -m pytest tests/integration/test_classifier_evaluation.py
+```
+
+### 3.2 Kiểm thử tổng hợp
+
+`tests/integration/test_classifier_evaluation.py` gồm 23 test. Predictor được
+stub để kiểm tra phép tính metric độc lập với bộ luật. Fixture có các trường hợp
+known-correct, wrong, unknown, đồng hạng (ứng viên đúng đứng đầu danh sách để
+chứng minh evaluator không chọn phần tử đầu), checksum sai, thiếu artifact,
+skipped, PowerShell, exception, bản sao SHA-256 giữa hai run, SHA trùng nhưng
+nhãn xung đột, path traversal và host Linux. Giá trị kỳ vọng được tính tay:
+
+- Tập raw: tool accuracy 2/6, OS 5/7, coverage 3/6.
+- Tập SHA-256 duy nhất: tool accuracy 1/5, OS 4/6.
+
+Ngoài ra có một test chạy pipeline thật trên ZIP dựng bằng `zipfile`. **Đây là
+test phần mềm, không phải bằng chứng thực nghiệm.**
+
+Môi trường kiểm tra: Windows 10.0.19045, Python 3.10.11 (`.venv`):
+`python -m pytest` cho **182 passed, 2 skipped**. Hai test bị skip là test native
+cần 7-Zip, vì máy này không cài 7-Zip; WinRAR có cài. Flake8 trên hai file mới
+đạt. Mốc 161 test trước đó được đo trên một máy khác (Python 3.11.9).
+
+### 3.3 Chạy thử trên mẫu native (preview, không phải nghiệm thu)
+
+Các bytes của `run-xzp9n65j` và `run-49gonnjf` không có trong checkout, nên
+evaluator báo **24 mẫu, 0 included**, `no_data`. Kết quả này đúng như thiết kế:
+evaluator không đánh giá metadata khi thiếu bytes.
+
+Để chạy thử trên ZIP thật, đã sinh một run mới vào thư mục data root tạm (không
+ghi vào `data/metadata.json`):
+`python scripts/generate_ground_truth.py --data-dir <scratch> --tool winrar --tool powershell`.
+Môi trường: Windows 10.0.19045, WinRAR **7.23.0**, PowerShell Archive module
+**1.0.1.0**. Cả hai phiên bản đều khác run ngày 13/11. Kết quả: 6 generated,
+6 SHA-256 duy nhất, 0 bị loại.
+
+| Mẫu | Truth | Ứng viên điểm cao nhất (điểm) | Outcome | OS |
+| --- | --- | --- | --- | --- |
+| winrar/root | Windows/WinRAR | 7-Zip, Bandizip, WinRAR, WinZip (0.5 bằng nhau) | AMBIGUOUS | đúng |
+| winrar/contents | Windows/WinRAR | 7-Zip, Bandizip, WinRAR, WinZip (0.5 bằng nhau) | AMBIGUOUS | đúng |
+| winrar/auxiliary | Windows/WinRAR | 7-Zip 0.806 (WinRAR 0.439) | wrong | đúng |
+| powershell ×3 | PowerShell Compress-Archive (out-of-catalog) | Compressed folder (HIGH) | false_attribution | đúng |
+
+| Chỉ số (tập SHA-256 duy nhất) | Quan sát | Ngưỡng | Trạng thái |
+| --- | --- | --- | --- |
+| OS accuracy | 6/6 = 1.0 | 1.0 | `insufficient_coverage` (không có mẫu macOS/Ubuntu) |
+| Windows tool accuracy | 0/3 = 0.0 | ≥ 0.90 | `not_met` (thiếu 7-Zip, Bandizip, WinZip, Compressed folder) |
+| Candidate coverage | 3/3 | — | nhãn đúng luôn có trong danh sách ứng viên |
+| Out-of-catalog | 3/3 PowerShell bị gán nhầm thành Compressed folder | — | báo riêng, không gán lại nhãn |
+
+Diễn giải thận trọng: với WinRAR 7.23, các luật high-weight không tách được
+WinRAR khỏi 7-Zip/Bandizip/WinZip. Bằng chứng phụ thì nghiêng sai về 7-Zip trên
+biến thể auxiliary. Cấu trúc ZIP của PowerShell khớp duy nhất profile Explorer.
+Đây là quan sát trên **6 mẫu tự sinh, một máy, một run**; không đủ để kết luận
+về độ chính xác tổng quát. Run preview này không được bàn giao như dataset nghiệm
+thu, và classifier/ground truth **không** bị chỉnh sửa theo kết quả.
+
+### 3.4 Blocker trước khi nghiệm thu khoa học
+
+1. Cần artifacts native có thể chia sẻ (đường dẫn tải, manifest, SHA-256) cho
+   7-Zip, WinRAR và PowerShell; thêm Bandizip/WinZip nếu có. Phải chạy lại
+   evaluator trên các artifacts đó và commit `results/benchmarks/reproduction_evaluation.json`.
+2. Audit mẫu của tác giả (#17) để xác định mẫu nào đủ điều kiện, cùng với
+   macOS/Ubuntu để đủ độ phủ OS.
+3. Tích hợp CLI (#18/#21) và chạy đánh giá qua CLI.
+4. Chưa đối chiếu với phân bố PC1/PC2/PC3 ở Hình 9.
 
 ---
 
