@@ -14,7 +14,7 @@ Dự án này tái hiện độc lập công trình nghiên cứu khoa học:
 - **Tác giả:** Minji Um, Jaehyeok Han, Sangjin Lee (*Digital Forensic Research Center / Graduate School of Information Security, Korea University*)
 - **Công bố:** *Forensic Science International: Digital Investigation*, Volume 39, Article 301271 (Tháng 12/2021)
 - **DOI:** [`10.1016/j.fsidi.2021.301271`](https://doi.org/10.1016/j.fsidi.2021.301271)
-- **Kho tham khảo của tác giả:** [`https://github.com/um2inji/PKZIP`](https://github.com/um2inji/PKZIP)
+- **Kho tham khảo của tác giả:** `https://github.com/um2inji/PKZIP`. Từ 23/11/2026 link này trả về 404; bản lưu tại [Software Heritage](https://archive.softwareheritage.org/swh:1:snp:ebaf8f340566cccb0184952eaddf4cc0085ea392) (`swh:1:snp:ebaf8f340566cccb0184952eaddf4cc0085ea392`). Xem [audit PH0-REF-002](docs/research/author-repo-audit.md); tải 17 mẫu đối chứng bằng `python scripts/fetch_author_samples.py`.
 - **Tài liệu toàn văn PDF:** Đã được tích hợp trực tiếp tại thư mục gốc của repository.
 
 ---

@@ -1,0 +1,365 @@
+{
+  "schema": "author-reference-manifest/v1",
+  "task": "PH0-REF-002",
+  "issue": 17,
+  "source": {
+    "origin": "https://github.com/um2inji/PKZIP",
+    "origin_status": "HTTP 404 on 2026-11-23",
+    "archive": "Software Heritage",
+    "archived_at": "2023-08-07T20:28:58Z",
+    "snapshot": "swh:1:snp:ebaf8f340566cccb0184952eaddf4cc0085ea392",
+    "revision": "swh:1:rev:51fe33c5c395fe6c0f8038f15cad41858a051903",
+    "root_directory": "swh:1:dir:3092b1128a94b47c8ecdc1ec54dffdf7009b3077",
+    "license": null
+  },
+  "redistribution": "not permitted: repository has no license; fetch from the archive, do not commit bytes",
+  "label_policy": "Labels are declared by the paper's authors through their own file names (label_basis=author_declared_filename). The team accepts them as verified when they are also consistent with the paper's structural claims checked by experiments/analyze_author_samples.py. This is not independent provenance of the tool invocation; tool versions and workstations remain unknown.",
+  "samples": [
+    {
+      "id": "set1-WIN_7zip",
+      "path": "sample/set1/WIN_7zip.zip",
+      "size": 12768,
+      "sha256": "0999917ba07d04360ecc024ad3f8f602ac7df5d6cc142ff72c3e0a1735621f67",
+      "sha1_git": "58ec67108fda5f15eb4e81f8186917fe47722c1a",
+      "swhid": "swh:1:cnt:58ec67108fda5f15eb4e81f8186917fe47722c1a",
+      "label": {
+        "os": "Windows",
+        "application": "7-Zip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set1-WIN_bandizip",
+      "path": "sample/set1/WIN_bandizip.zip",
+      "size": 12805,
+      "sha256": "026706c1a98b8dc89ff967d001daa9a4f8df14d78aa409b2d8295959e455e377",
+      "sha1_git": "b385cd9939801449e34663986fd059fd6728ab5d",
+      "swhid": "swh:1:cnt:b385cd9939801449e34663986fd059fd6728ab5d",
+      "label": {
+        "os": "Windows",
+        "application": "Bandizip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set1-WIN_compress",
+      "path": "sample/set1/WIN_compress.zip",
+      "size": 12479,
+      "sha256": "ab1f20287d4ee7f09fa369fd8c5b13028bfa4ec3446c5437a98fa3b5d803a916",
+      "sha1_git": "b4b643fc744b7ebef55e6a7ab1ab4bb59cc90c76",
+      "swhid": "swh:1:cnt:b4b643fc744b7ebef55e6a7ab1ab4bb59cc90c76",
+      "label": {
+        "os": "Windows",
+        "application": "Compressed folder"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set1-WIN_winrar",
+      "path": "sample/set1/WIN_winrar.zip",
+      "size": 12856,
+      "sha256": "16186edfedaeade3f4b1bc792240434211d5198332a34390c0fb46ac0791d1b5",
+      "sha1_git": "9af52b007f5d83eb176e925b2936efc889fdd806",
+      "swhid": "swh:1:cnt:9af52b007f5d83eb176e925b2936efc889fdd806",
+      "label": {
+        "os": "Windows",
+        "application": "WinRAR"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set1-WIN_winzip",
+      "path": "sample/set1/WIN_winzip.zip",
+      "size": 12752,
+      "sha256": "1a31dc4a74266860f489d6b021b47d39f4b32622d24316dd47c88708b072d4f9",
+      "sha1_git": "c080c5c9b5e48be2ff0e80d02f2a4e7e348fb649",
+      "swhid": "swh:1:cnt:c080c5c9b5e48be2ff0e80d02f2a4e7e348fb649",
+      "label": {
+        "os": "Windows",
+        "application": "WinZip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set2-WIN_7zip",
+      "path": "sample/set2/WIN_7zip.zip",
+      "size": 13910,
+      "sha256": "0787691073e04a164102c9c0427ad1df91b8fd3181cd55844afb50a514218374",
+      "sha1_git": "e53cdebb07c9da4d74af56f519f47c411c0cd2d7",
+      "swhid": "swh:1:cnt:e53cdebb07c9da4d74af56f519f47c411c0cd2d7",
+      "label": {
+        "os": "Windows",
+        "application": "7-Zip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set2-WIN_bandizip",
+      "path": "sample/set2/WIN_bandizip.zip",
+      "size": 14004,
+      "sha256": "a0dce00a8cfa75dfdd81bb1f9f8141e636447da53ee74cb7f87602189e0a0795",
+      "sha1_git": "a55fd100c8fa0e5cec85de4737ebc35507335519",
+      "swhid": "swh:1:cnt:a55fd100c8fa0e5cec85de4737ebc35507335519",
+      "label": {
+        "os": "Windows",
+        "application": "Bandizip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set2-WIN_compress",
+      "path": "sample/set2/WIN_compress.zip",
+      "size": 13606,
+      "sha256": "e256d6f946473c604486a0eaaff4621a48bec57b2afe4281fd495428fbbba1a4",
+      "sha1_git": "9e79d8775427bb5ae8cd4f334c795d39faff2216",
+      "swhid": "swh:1:cnt:9e79d8775427bb5ae8cd4f334c795d39faff2216",
+      "label": {
+        "os": "Windows",
+        "application": "Compressed folder"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set2-WIN_winrar",
+      "path": "sample/set2/WIN_winrar.zip",
+      "size": 14078,
+      "sha256": "20c3a237c7cd471fad90408bfe847f714ec46829e0758729c39ecbd81f11d680",
+      "sha1_git": "6704dfc06aac4588ddad5f53e66282871d5ec520",
+      "swhid": "swh:1:cnt:6704dfc06aac4588ddad5f53e66282871d5ec520",
+      "label": {
+        "os": "Windows",
+        "application": "WinRAR"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set2-WIN_winzip",
+      "path": "sample/set2/WIN_winzip.zip",
+      "size": 13935,
+      "sha256": "6b9c1330b9056c0d90a9d6b196ad6758744d394463b8349f716ad1db9cbe1bd0",
+      "sha1_git": "454ec72048198577cc24750f7b6e63ef8f43a41f",
+      "swhid": "swh:1:cnt:454ec72048198577cc24750f7b6e63ef8f43a41f",
+      "label": {
+        "os": "Windows",
+        "application": "WinZip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set3-UBUNTU_7zip",
+      "path": "sample/set3/UBUNTU_7zip.zip",
+      "size": 13914,
+      "sha256": "3a9003ed069d86159e058c028cf348de866b72a2601697303dc239bb4e6391cd",
+      "sha1_git": "9c16461bf2b3eea2a89ce3a4c38194baabb161dc",
+      "swhid": "swh:1:cnt:9c16461bf2b3eea2a89ce3a4c38194baabb161dc",
+      "label": {
+        "os": "Ubuntu",
+        "application": "7-Zip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set3-UBUNTU_compress",
+      "path": "sample/set3/UBUNTU_compress.zip",
+      "size": 14264,
+      "sha256": "ea9f399b437528bfe2a3031e4dc829c769982a9fb5c146afc816a664cb2e2b61",
+      "sha1_git": "f263a3cb7cb7ca4bd50255b6533c395d0bbf9f1d",
+      "swhid": "swh:1:cnt:f263a3cb7cb7ca4bd50255b6533c395d0bbf9f1d",
+      "label": {
+        "os": "Ubuntu",
+        "application": "Compress"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set3-UBUNTU_zip",
+      "path": "sample/set3/UBUNTU_zip.zip",
+      "size": 14086,
+      "sha256": "96c92af9c515b9348810fbf48761d122fa74f8f75ce4c48b137ae2bc72135478",
+      "sha1_git": "4cf765aa2fa80d988c909f5863763bab2bc4b37c",
+      "swhid": "swh:1:cnt:4cf765aa2fa80d988c909f5863763bab2bc4b37c",
+      "label": {
+        "os": "Ubuntu",
+        "application": "zip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set4-MAC_bandizip",
+      "path": "sample/set4/MAC_bandizip.zip",
+      "size": 13904,
+      "sha256": "ec4981520fd60a2e987fa42b61bf31c7f18360e5a6e94217ffc3ed506f8c8aa9",
+      "sha1_git": "35b7dfd656528c69d0e479b8d675035f05d37ca5",
+      "swhid": "swh:1:cnt:35b7dfd656528c69d0e479b8d675035f05d37ca5",
+      "label": {
+        "os": "macOS",
+        "application": "Bandizip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set4-MAC_compress",
+      "path": "sample/set4/MAC_compress.zip",
+      "size": 17039,
+      "sha256": "1515d41d810201fbb2928b58208e85cdde9d1f93c33d8f32c9ef64c7c62f6a4f",
+      "sha1_git": "1587bd728850693399909d354f4c2f72b4ef9f04",
+      "swhid": "swh:1:cnt:1587bd728850693399909d354f4c2f72b4ef9f04",
+      "label": {
+        "os": "macOS",
+        "application": "Compress"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set4-MAC_winzip",
+      "path": "sample/set4/MAC_winzip.zip",
+      "size": 13611,
+      "sha256": "cd5e4db3e6583104f197e8158c90bb03ee12236ae10c69cd2741f1b885c1e3f6",
+      "sha1_git": "011b620203fd539be0f7bda7f2110240655dd274",
+      "swhid": "swh:1:cnt:011b620203fd539be0f7bda7f2110240655dd274",
+      "label": {
+        "os": "macOS",
+        "application": "WinZip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    },
+    {
+      "id": "set4-MAC_zip",
+      "path": "sample/set4/MAC_zip.zip",
+      "size": 14094,
+      "sha256": "ccfc51356e6d12d5052e42cac8f99f3e6635bc9c9cdbb82dab7fb529bd04f158",
+      "sha1_git": "b2d2c3bea8d73921ed8d47815b08f2777ec7009d",
+      "swhid": "swh:1:cnt:b2d2c3bea8d73921ed8d47815b08f2777ec7009d",
+      "label": {
+        "os": "macOS",
+        "application": "zip"
+      },
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
+      "unknown": [
+        "tool_version",
+        "os_version",
+        "windows_language",
+        "workstation"
+      ]
+    }
+  ],
+  "label_decision": {
+    "issue": 17,
+    "decided": "2026-11-23",
+    "option": "author-declared filename + structural consistency accepted as verification",
+    "structural_check": "17/17 consistent with 6 paper claims (results/classifications/author_pkzip_analysis.json)"
+  }
+}
