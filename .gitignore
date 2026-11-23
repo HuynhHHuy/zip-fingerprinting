@@ -60,3 +60,6 @@ data/templates/auxiliary/
 !data/**/.gitkeep
 !results/**/.gitkeep
 
+
+# Author reference samples (no license): fetched by scripts/fetch_author_samples.py
+data/reference/author_pkzip/samples/
