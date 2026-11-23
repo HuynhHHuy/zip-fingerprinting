@@ -26,7 +26,7 @@
         "os": "Windows",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 7,
       "features": {
@@ -112,7 +112,7 @@
         "os": "Windows",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 7,
       "features": {
@@ -198,7 +198,7 @@
         "os": "Windows",
         "application": "Compressed folder"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 6,
       "features": {
@@ -278,7 +278,7 @@
         "os": "Windows",
         "application": "WinRAR"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 7,
       "features": {
@@ -364,7 +364,7 @@
         "os": "Windows",
         "application": "WinZip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 7,
       "features": {
@@ -448,7 +448,7 @@
         "os": "Windows",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -532,7 +532,7 @@
         "os": "Windows",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -635,7 +635,7 @@
         "os": "Windows",
         "application": "Compressed folder"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 7,
       "features": {
@@ -715,7 +715,7 @@
         "os": "Windows",
         "application": "WinRAR"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -818,7 +818,7 @@
         "os": "Windows",
         "application": "WinZip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -920,7 +920,7 @@
         "os": "Ubuntu",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -1004,7 +1004,7 @@
         "os": "Ubuntu",
         "application": "Compress"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -1093,7 +1093,7 @@
         "os": "Ubuntu",
         "application": "zip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -1182,7 +1182,7 @@
         "os": "macOS",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -1268,7 +1268,7 @@
         "os": "macOS",
         "application": "Compress"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 16,
       "features": {
@@ -1358,7 +1358,7 @@
         "os": "macOS",
         "application": "WinZip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {
@@ -1438,7 +1438,7 @@
         "os": "macOS",
         "application": "zip"
       },
-      "label_basis": "filename",
+      "label_basis": "author_declared_filename",
       "status": "parsed",
       "entries": 8,
       "features": {

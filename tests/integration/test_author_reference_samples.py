@@ -73,6 +73,8 @@ def _zip_bytes() -> bytes:
 def test_manifest_describes_archive_and_labels_honestly(manifest):
     assert manifest["source"]["snapshot"].startswith("swh:1:snp:")
     assert manifest["source"]["license"] is None
+    # label_verified rests on the recorded team decision, not on the file names alone.
+    assert manifest["label_decision"]["issue"] == 17
     samples = manifest["samples"]
     assert len(samples) == 17
     assert len({s["sha256"] for s in samples}) == 17
@@ -80,8 +82,8 @@ def test_manifest_describes_archive_and_labels_honestly(manifest):
     for s in samples:
         assert s["path"].startswith("sample/") and s["path"].endswith(".zip")
         assert s["swhid"] == f"swh:1:cnt:{s['sha1_git']}"
-        assert s["label_basis"] == "filename"
-        assert s["label_verified"] is False
+        assert s["label_basis"] == "author_declared_filename"
+        assert s["label_verified"] is True
         assert s["label"]["application"] in ALLOWED[s["label"]["os"]]
 
 
