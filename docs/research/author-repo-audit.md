@@ -1,8 +1,8 @@
 # Kiểm toán kho tham khảo của tác giả — PH0-REF-002 / #17
 
-**Trạng thái:** bản nháp audit, gồm bước 1 (thu thập) và bước 2 (kiểm kê). Chưa làm
-manifest nhãn có căn cứ, chưa có test trên mẫu, chưa đối chiếu parser. **DoD của
-#17 chưa đạt.**
+**Trạng thái:** bản nháp audit. Đã làm: thu thập, kiểm kê, manifest, chạy parser của
+dự án trên 17 mẫu và test (mục 3.3–3.4). Chưa xác minh nhãn bằng bằng chứng độc lập
+với tên file, chưa chạy mã của tác giả. **DoD của #17 chưa đạt.**
 **Ngày kiểm tra:** 23/11/2026 (UTC).
 
 ## 1. Hiện trạng nguồn gốc
@@ -140,9 +140,80 @@ Quan sát nhất quán với bài báo (chưa phải xác minh nhãn):
   khác với `set1/` của mẫu Windows. Vậy tên set trong repo không phải là định danh
   cây thư mục nguồn; cần ghi rõ điều này trong manifest.
 
+### 3.3 Chạy parser của dự án trên 17 mẫu
+
+Manifest: [`data/reference/author_pkzip/manifest.json`](../../data/reference/author_pkzip/manifest.json).
+Mọi mẫu có `label_basis: "filename"`, `label_verified: false`, và liệt kê các trường
+chưa biết (phiên bản công cụ, phiên bản OS, ngôn ngữ Windows, máy trạm).
+
+`experiments/analyze_author_samples.py` chạy `ZipBinaryParser → StructuralFeatureExtractor`
+và đối chiếu 6 khẳng định cấu trúc của bài báo **không phụ thuộc classifier**: byte
+host OS, header thư mục gốc, `__MACOSX`, data descriptor, nanosecond của WinZip, và
+thứ tự `0x000A`/`0x7075` theo từng entry trong Central Directory. Kết quả lưu tại
+[`results/classifications/author_pkzip_analysis.json`](../../results/classifications/author_pkzip_analysis.json).
+
+**Kết quả: 17/17 mẫu parse được, cả 17 nhãn theo tên file không mâu thuẫn với khẳng
+định nào của bài báo.** Đây là bằng chứng nhất quán, chưa phải xác minh nhãn: các kiểm
+tra này không phân biệt được mọi cặp công cụ (ví dụ 7-Zip và WinRAR khi không có tên
+Unicode).
+
+Một số giá trị đo được:
+
+| Nhóm | Quan sát |
+| --- | --- |
+| Windows (10 mẫu) | Timezone offset +540 phút (KST) ở mọi mẫu có `0x000A`. Nanosecond `fff0000` chỉ ở WinZip. Compressed folder không có extra field và không có header thư mục gốc |
+| `set2` Windows | Thứ tự CDH của entry tiếng Hàn: `0x000A → 0x7075` (WinRAR, Bandizip), `0x7075 → 0x000A` (WinZip); 7-Zip không ghi `0x7075` |
+| Ubuntu (3 mẫu) | UID/GID 1000/1000 với zip và Compress; offset −420 phút |
+| macOS (4 mẫu) | **UID 502**, GID 20 (bài báo nêu mặc định 501/20); offset −420 phút |
+
+### 3.4 Phát hiện cần chuyển cho #22
+
+Classifier của dự án trên 17 mẫu (chẩn đoán, **không phải** đánh giá #22): ứng viên
+điểm cao nhất duy nhất và đúng nhãn ở **10/17**; nhãn nằm trong nhóm điểm cao nhất ở
+**16/17**.
+
+| Mẫu | Kết quả classifier | Nguyên nhân quan sát được |
+| --- | --- | --- |
+| `set1` WIN 7-Zip, Bandizip, WinRAR | Đồng hạng 3 công cụ (0.8675) | Không có tên Unicode nên không có `0x7075`; các đặc trưng còn lại trùng nhau |
+| `set2` WIN Bandizip, WinRAR | Đồng hạng 2 công cụ (0.9146) | Cùng thứ tự `0x000A → 0x7075` |
+| `set4` MAC Compress | Đồng hạng Ubuntu/macOS Compress (0.57) | `__MACOSX` có mặt nhưng chưa đủ tách; bị trừ điểm vì NFC và UID 502 |
+| `set4` MAC zip | **Sai**: Ubuntu/zip duy nhất (0.71) | macOS/zip (0.57) bị trừ điểm vì NFC và UID 502 ≠ 501 |
+
+Ba điểm cần xem xét khi làm #22:
+
+1. **Tên tiếng Hàn trong 4 mẫu macOS bị lỗi mã hoá từ trước khi nén.** Bytes tên là
+   `c2 ab e2 80 94 c2 b1 e2 82 ac` (UTF-8 của `«—±€`). Giải mã ngược theo MacRoman ra
+   `c7 d1 b1 db`, đúng là `한글` ở CP949. Vậy cây thư mục nguồn trên macOS đã chứa tên
+   bị đọc nhầm CP949 → MacRoman. **Các mẫu này không kiểm được đặc trưng NFD của
+   macOS**; việc classifier trừ điểm vì NFC là hệ quả của dữ liệu, không phải bằng
+   chứng chống lại nhãn.
+2. **UID macOS là 502, không phải 501.** Mã tác giả chỉ chấp nhận UID 501/1000; giá
+   trị khác thành `N/A` và khớp các luật `N/A` của cả `macOS_zip` lẫn `Ubuntu_zip`
+   (`file_list.py`). Theo đọc tĩnh, mã tác giả coi UID lạ là trung tính, còn
+   classifier của dự án trừ điểm. Mã tác giả **chưa được chạy** để xác nhận.
+3. **Đặc trưng `central_extra_field_sequence` chỉ lấy thứ tự của entry đầu tiên có
+   extra field** (luôn là `0x000A` ở Windows), nên không thấy `0x7075 → 0x000A` của
+   WinZip. Thứ tự theo từng entry được ghi riêng trong
+   `central_orders_with_unicode_path`.
+
+Khác biệt khi ghi nhận mã hoá tên: extractor của dự án ghi `filename_encoding:
+UTF-8` khi có cờ EFS **hoặc** có `0x7075`. Trong `set2` Windows, tên gốc là CP949
+không cờ EFS; mã tác giả ghi `CP949` cho trường hợp này. Đây là khác biệt định nghĩa,
+chưa kết luận là lỗi.
+
 ## 4. Cách tải lại và kiểm chứng
 
-Không cần tài khoản. Tải từng file theo sha1_git trong phụ lục:
+```powershell
+python scripts/fetch_author_samples.py          # tải, kiểm size + sha1_git + SHA-256
+python experiments/analyze_author_samples.py    # ghi results/classifications/author_pkzip_analysis.json
+python -m pytest tests/integration/test_author_reference_samples.py
+```
+
+Mẫu được lưu ở `data/reference/author_pkzip/samples/` (đã có trong `.gitignore`).
+Test trên mẫu thật tự skip khi chưa tải; `AUTHOR_PKZIP_SAMPLES=<dir>` chỉ tới thư mục
+khác có cùng cấu trúc.
+
+Tải thủ công từng file theo sha1_git trong phụ lục:
 
 ```bash
 API=https://archive.softwareheritage.org/api/1
@@ -165,12 +236,15 @@ lưu trữ, không cấp quyền phân phối lại. Do đó:
 
 ## 6. Việc còn lại để đạt DoD #17
 
-- [ ] Manifest nhãn: căn cứ nhãn cho từng mẫu (đối chiếu Bảng 6/7 bằng parser của
-      dự án), đánh dấu rõ trường chưa biết (phiên bản, EN/KR, PC).
-- [ ] Chạy `ZipBinaryParser` và extractor trên 17 mẫu; ghi khác biệt với
-      `custom_zipfile.py` / `zip_fingerprint.py` của tác giả.
-- [ ] Test tích hợp tải mẫu theo SWHID (skip khi offline), không commit bytes.
-- [ ] Đối chiếu bảng luật `file_list.py` với `src/zip_fingerprint/rules.py`.
+- [x] Manifest có SWHID, SHA-256, nhãn theo tên file, căn cứ nhãn và trường chưa biết.
+- [x] Chạy parser và extractor trên 17 mẫu; đối chiếu 6 khẳng định cấu trúc (mục 3.3).
+- [x] Test: manifest, kiểm checksum, tải lại, phân tích; test mẫu thật skip khi chưa tải.
+- [ ] Xác minh nhãn bằng bằng chứng ngoài tên file. Nếu không có nguồn nào khác, ghi
+      rõ nhãn dừng ở mức "nhất quán với bài báo".
+- [ ] Chạy mã tác giả trong môi trường cô lập để so kết quả `presume_program()` với
+      classifier của dự án; hiện mới đọc tĩnh.
+- [ ] Đối chiếu đầy đủ bảng luật `file_list.py` với `src/zip_fingerprint/rules.py`
+      (mới so phần UID ở mục 3.4).
 - [ ] Kiểm kê các bộ mẫu bị xoá ngày 15/04/2021 trong lịch sử (tuỳ chọn).
 - [ ] Cập nhật paper mapping và README: URL GitHub đã 404, nguồn thay thế là SWH.
 - [ ] Bàn giao danh sách mẫu đủ điều kiện cho #22.

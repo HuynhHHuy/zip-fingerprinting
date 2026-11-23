@@ -1,0 +1,1524 @@
+{
+  "task": "PH0-REF-002",
+  "source": {
+    "origin": "https://github.com/um2inji/PKZIP",
+    "origin_status": "HTTP 404 on 2026-11-23",
+    "archive": "Software Heritage",
+    "archived_at": "2023-08-07T20:28:58Z",
+    "snapshot": "swh:1:snp:ebaf8f340566cccb0184952eaddf4cc0085ea392",
+    "revision": "swh:1:rev:51fe33c5c395fe6c0f8038f15cad41858a051903",
+    "root_directory": "swh:1:dir:3092b1128a94b47c8ecdc1ec54dffdf7009b3077",
+    "license": null
+  },
+  "summary": {
+    "samples": 17,
+    "parsed": 17,
+    "labels_without_paper_inconsistency": 17,
+    "classifier_unique_top_matches_label": 10,
+    "classifier_label_among_top": 16,
+    "note": "Diagnostic run on 17 filename-labelled samples; not the #22 evaluation."
+  },
+  "samples": [
+    {
+      "id": "set1-WIN_7zip",
+      "path": "sample/set1/WIN_7zip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "7-Zip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 7,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "ASCII",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.8675,
+        "top_candidates": [
+          "Windows/7-Zip",
+          "Windows/Bandizip",
+          "Windows/WinRAR"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set1-WIN_bandizip",
+      "path": "sample/set1/WIN_bandizip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "Bandizip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 7,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "ASCII",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.8675,
+        "top_candidates": [
+          "Windows/7-Zip",
+          "Windows/Bandizip",
+          "Windows/WinRAR"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set1-WIN_compress",
+      "path": "sample/set1/WIN_compress.zip",
+      "label": {
+        "os": "Windows",
+        "application": "Compressed folder"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 6,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [],
+        "central_extra_field_sequence_feature": [],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "ASCII",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": false,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": null
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 1.0,
+        "top_candidates": [
+          "Windows/Compressed folder"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set1-WIN_winrar",
+      "path": "sample/set1/WIN_winrar.zip",
+      "label": {
+        "os": "Windows",
+        "application": "WinRAR"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 7,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "ASCII",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.8675,
+        "top_candidates": [
+          "Windows/7-Zip",
+          "Windows/Bandizip",
+          "Windows/WinRAR"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set1-WIN_winzip",
+      "path": "sample/set1/WIN_winzip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "WinZip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 7,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fff0000",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "ASCII",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fff0000",
+          "observed": "fff0000",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.8675,
+        "top_candidates": [
+          "Windows/WinZip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set2-WIN_7zip",
+      "path": "sample/set2/WIN_7zip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "7-Zip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.914615,
+        "top_candidates": [
+          "Windows/7-Zip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set2-WIN_bandizip",
+      "path": "sample/set2/WIN_bandizip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "Bandizip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x7075"
+        ],
+        "central_extra_field_ids": [
+          "0x000A",
+          "0x7075"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [
+          [
+            "0x000A",
+            "0x7075"
+          ]
+        ],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": [
+            [
+              "0x000A",
+              "0x7075"
+            ]
+          ],
+          "observed": [
+            [
+              "0x000A",
+              "0x7075"
+            ]
+          ],
+          "status": "consistent",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.914615,
+        "top_candidates": [
+          "Windows/Bandizip",
+          "Windows/WinRAR"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set2-WIN_compress",
+      "path": "sample/set2/WIN_compress.zip",
+      "label": {
+        "os": "Windows",
+        "application": "Compressed folder"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 7,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [],
+        "central_extra_field_sequence_feature": [],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": false,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": null
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 1.0,
+        "top_candidates": [
+          "Windows/Compressed folder"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set2-WIN_winrar",
+      "path": "sample/set2/WIN_winrar.zip",
+      "label": {
+        "os": "Windows",
+        "application": "WinRAR"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x7075"
+        ],
+        "central_extra_field_ids": [
+          "0x000A",
+          "0x7075"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [
+          [
+            "0x000A",
+            "0x7075"
+          ]
+        ],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fffffff",
+          "observed": "fffffff",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": [
+            [
+              "0x000A",
+              "0x7075"
+            ]
+          ],
+          "observed": [
+            [
+              "0x000A",
+              "0x7075"
+            ]
+          ],
+          "status": "consistent",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.914615,
+        "top_candidates": [
+          "Windows/Bandizip",
+          "Windows/WinRAR"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set2-WIN_winzip",
+      "path": "sample/set2/WIN_winzip.zip",
+      "label": {
+        "os": "Windows",
+        "application": "WinZip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 0,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x7075"
+        ],
+        "central_extra_field_ids": [
+          "0x000A",
+          "0x7075"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [
+          [
+            "0x7075",
+            "0x000A"
+          ]
+        ],
+        "nanosecond_pattern": "fff0000",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": 540
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 0,
+          "observed": 0,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": "fff0000",
+          "observed": "fff0000",
+          "status": "consistent",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": [
+            [
+              "0x7075",
+              "0x000A"
+            ]
+          ],
+          "observed": [
+            [
+              "0x7075",
+              "0x000A"
+            ]
+          ],
+          "status": "consistent",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.914615,
+        "top_candidates": [
+          "Windows/WinZip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set3-UBUNTU_7zip",
+      "path": "sample/set3/UBUNTU_7zip.zip",
+      "label": {
+        "os": "Ubuntu",
+        "application": "7-Zip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [
+          "0x000A"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x000A"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "fffffff",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "fffffff",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 1.0,
+        "top_candidates": [
+          "Ubuntu/7-Zip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set3-UBUNTU_compress",
+      "path": "sample/set3/UBUNTU_compress.zip",
+      "label": {
+        "os": "Ubuntu",
+        "application": "Compress"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": true,
+        "local_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": 1000,
+        "gid": 1000,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.92,
+        "top_candidates": [
+          "Ubuntu/Compress"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set3-UBUNTU_zip",
+      "path": "sample/set3/UBUNTU_zip.zip",
+      "label": {
+        "os": "Ubuntu",
+        "application": "zip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": 1000,
+        "gid": 1000,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.92,
+        "top_candidates": [
+          "Ubuntu/zip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set4-MAC_bandizip",
+      "path": "sample/set4/MAC_bandizip.zip",
+      "label": {
+        "os": "macOS",
+        "application": "Bandizip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x5855"
+        ],
+        "central_extra_field_ids": [
+          "0x5855"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x5855"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": 502,
+        "gid": 20,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 1.0,
+        "top_candidates": [
+          "macOS/Bandizip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set4-MAC_compress",
+      "path": "sample/set4/MAC_compress.zip",
+      "label": {
+        "os": "macOS",
+        "application": "Compress"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 16,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": true,
+        "local_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": true,
+        "root_folder_header_exists": false,
+        "uid": 502,
+        "gid": 20,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": true,
+          "observed": true,
+          "status": "consistent",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.57,
+        "top_candidates": [
+          "Ubuntu/Compress",
+          "macOS/Compress"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set4-MAC_winzip",
+      "path": "sample/set4/MAC_winzip.zip",
+      "label": {
+        "os": "macOS",
+        "application": "WinZip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [],
+        "central_extra_field_ids": [],
+        "central_extra_field_sequence_feature": [],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "UTF-8",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": null,
+        "gid": null,
+        "timezone_offset_minutes": null
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": null,
+          "observed": false,
+          "status": "not_applicable",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 1.0,
+        "top_candidates": [
+          "macOS/WinZip"
+        ],
+        "unique_top_matches_label": true,
+        "label_among_top": true
+      }
+    },
+    {
+      "id": "set4-MAC_zip",
+      "path": "sample/set4/MAC_zip.zip",
+      "label": {
+        "os": "macOS",
+        "application": "zip"
+      },
+      "label_basis": "filename",
+      "status": "parsed",
+      "entries": 8,
+      "features": {
+        "host_os": 3,
+        "data_descriptor_present": false,
+        "local_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_ids": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_extra_field_sequence_feature": [
+          "0x5455",
+          "0x7875"
+        ],
+        "central_orders_with_unicode_path": [],
+        "nanosecond_pattern": "N/A",
+        "filename_encoding": "DEFAULT",
+        "unicode_normalization": "NFC",
+        "has_macosx_folder": false,
+        "root_folder_header_exists": true,
+        "uid": 502,
+        "gid": 20,
+        "timezone_offset_minutes": -420
+      },
+      "paper_checks": [
+        {
+          "check": "host_os_byte",
+          "expected": 3,
+          "observed": 3,
+          "status": "consistent",
+          "source": "Algorithm 2: version made by 0x00 (Windows) / 0x03 (Unix)"
+        },
+        {
+          "check": "root_folder_header",
+          "expected": null,
+          "observed": true,
+          "status": "not_applicable",
+          "source": "Section 3.2.1: only Compressed folder omits the root folder header"
+        },
+        {
+          "check": "macosx_folder",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.1: __MACOSX only from macOS Compress"
+        },
+        {
+          "check": "data_descriptor",
+          "expected": false,
+          "observed": false,
+          "status": "consistent",
+          "source": "Section 3.3.2: Compress writes data descriptors, zip does not"
+        },
+        {
+          "check": "ntfs_nanoseconds",
+          "expected": null,
+          "observed": "N/A",
+          "status": "not_applicable",
+          "source": "Section 3.1.1 / Table 6: WinZip rounds to fff0000"
+        },
+        {
+          "check": "central_extra_order_with_unicode_path",
+          "expected": null,
+          "observed": [],
+          "status": "not_applicable",
+          "source": "Section 3.1.3 / Table 6: WinRAR & Bandizip 0x000A->0x7075, WinZip 0x7075->0x000A"
+        }
+      ],
+      "paper_inconsistencies": [],
+      "classifier": {
+        "top_confidence": 0.71,
+        "top_candidates": [
+          "Ubuntu/zip"
+        ],
+        "unique_top_matches_label": false,
+        "label_among_top": false
+      }
+    }
+  ]
+}
