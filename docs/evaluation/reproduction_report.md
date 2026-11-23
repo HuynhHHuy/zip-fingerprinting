@@ -156,7 +156,8 @@ CLI `--require-dod` exit 0, `coverage.complete=true`, `coverage.dod_met=true`:
 **đạt DoD đo cục bộ**, tách khỏi bàn giao/review và tái hiện môi trường lịch sử.
 Xem [hướng dẫn tracer](windows-decompression-tracer.md) và
 [manifest SHA-256/link bàn giao](evidence/windows-decompression-run-plhh7oml.json).
-Artifact không commit trực tiếp; chưa tự đóng #20 trước reviewer kiểm chứng.
+Artifact không commit trực tiếp. #20 đã đóng trên GitHub ngày 17/11/2026;
+repo chưa ghi nhận biên bản reviewer kiểm chứng artifact.
 Test tổng hợp/fault injection không tính thành native measurements. Kết quả
 kiểm tra phần mềm cuối ghi trong manifest; test pass không là accuracy.
 
@@ -204,7 +205,8 @@ chưa có media hợp lệ nên chưa dựng/chạy guest. Xem
 `status=generated`. Với mỗi mẫu, script đọc bytes ZIP **một lần**, kiểm tra
 path nằm trong data root, size và SHA-256, rồi phân loại chính bytes đó qua API
 `ZipBinaryParser → StructuralFeatureExtractor → AutomatedClassifier`. CLI
-`identify` vẫn là placeholder, chờ #18/#21. Mẫu bị loại được ghi lại cùng lý do:
+`identify` đã nối với module thực (#18, đóng 17/11/2026) nhưng evaluator chưa
+gọi qua CLI. Mẫu bị loại được ghi lại cùng lý do:
 `status_*`, `missing_artifact`, `checksum_mismatch`, `size_mismatch`,
 `unsafe_path`, `missing_checksum`.
 
@@ -296,7 +298,7 @@ thu, và classifier/ground truth **không** bị chỉnh sửa theo kết quả.
    evaluator trên các artifacts đó và commit `results/benchmarks/reproduction_evaluation.json`.
 2. Audit mẫu của tác giả (#17) để xác định mẫu nào đủ điều kiện, cùng với
    macOS/Ubuntu để đủ độ phủ OS.
-3. Tích hợp CLI (#18/#21) và chạy đánh giá qua CLI.
+3. Chạy đánh giá qua CLI `identify`; phần tích hợp CLI (#18/#21) đã đóng ngày 17/11/2026.
 4. Chưa đối chiếu với phân bố PC1/PC2/PC3 ở Hình 9.
 
 ---
