@@ -351,7 +351,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Hồ sơ đo lường thời gian giải nén thực địa.
 - **Tiêu chí nghiệm thu (DoD):** Ghi nhận được sự khác biệt dấu vết thời gian giữa ít nhất 2 công cụ nén trên Windows.
 - **Trạng thái 17/11/2026:** đã triển khai adapter, phân tích và pipeline; có test tổng hợp/fault injection và đo native Windows build 10.0.26200/NTFS, 7-Zip 26.04 + WinRAR 6.23.0. Run `run-plhh7oml` đủ 2 ZIP × 2 extractor × 3 repeat = 12 phép đo, raw BMAC/payload đều hợp lệ, có 11 cặp khác nhãn nguồn ổn định; `dod_met=true` cho phép đo cục bộ. File NTFS: EEER/RERR; no-extra: cả hai RHRR. Các thư mục chưa có pattern xác định giữ nguyên.
-- **Nghiệm thu khoa học/bàn giao:** không đồng nghĩa tái hiện GUI/năm 2021 hoặc accuracy. Chưa tự đóng #20; cần reviewer kiểm chứng artifact qua [hướng dẫn và evidence manifest](../evaluation/windows-decompression-tracer.md). Repeat không tính là nguồn độc lập; trạng thái/link bàn giao ghi riêng trong manifest.
+- **Nghiệm thu khoa học/bàn giao:** không đồng nghĩa tái hiện GUI/năm 2021 hoặc accuracy. #20 đã được đóng trên GitHub ngày 17/11/2026 (lý do: completed, không gắn PR); repo chưa ghi nhận biên bản reviewer kiểm chứng artifact qua [hướng dẫn và evidence manifest](../evaluation/windows-decompression-tracer.md). Repeat không tính là nguồn độc lập; trạng thái/link bàn giao ghi riêng trong manifest.
 
 ---
 
@@ -462,7 +462,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Tệp tạo/chỉnh sửa:** `experiments/evaluate_classifier.py`, `docs/evaluation/reproduction_report.md`, `results/benchmarks/reproduction_evaluation.json`.
 - **Đầu ra:** Báo cáo khoa học tái hiện hoàn chỉnh, số liệu đo lường minh bạch.
 - **Tiêu chí nghiệm thu (DoD):** Độ chính xác nhận diện HĐH đạt 100%, độ chính xác nhận diện công cụ nén trên Windows đạt ≥ 90% trên tập mẫu chuẩn.
-- **Trạng thái (20/11/2026):** Đã triển khai evaluator (`experiments/evaluate_classifier.py`) và kiểm thử tổng hợp (`tests/integration/test_classifier_evaluation.py`). **Chưa nghiệm thu khoa học.** Chạy thử trên một run native WinRAR/PowerShell tạm thời cho kết quả: OS 6/6 (`insufficient_coverage`), công cụ Windows 0/3 (`not_met`), PowerShell bị gán nhầm thành Compressed folder. Còn chờ artifacts chia sẻ được, #17 và #18/#21. Xem [báo cáo mục 3](../evaluation/reproduction_report.md#3-đánh-giá-ma-trận-nhầm-lẫn-và-độ-chính-xác-confusion-matrix--ph7-eval-002).
+- **Trạng thái (20/11/2026):** Đã triển khai evaluator (`experiments/evaluate_classifier.py`) và kiểm thử tổng hợp (`tests/integration/test_classifier_evaluation.py`). **Chưa nghiệm thu khoa học.** Chạy thử trên một run native WinRAR/PowerShell tạm thời cho kết quả: OS 6/6 (`insufficient_coverage`), công cụ Windows 0/3 (`not_met`), PowerShell bị gán nhầm thành Compressed folder. Theo dõi tại #22. Còn chờ artifacts chia sẻ được và audit mẫu tác giả (#17); CLI (#18/#21) đã hoàn thành và đóng ngày 17/11/2026. Xem [báo cáo mục 3](../evaluation/reproduction_report.md#3-đánh-giá-ma-trận-nhầm-lẫn-và-độ-chính-xác-confusion-matrix--ph7-eval-002).
 
 ---
 
