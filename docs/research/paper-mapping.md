@@ -2,7 +2,7 @@
 
 **Dự án:** File Fingerprinting of the ZIP Format for Identifying and Tracking Provenance  
 **Bài báo gốc:** Minji Um, Jaehyeok Han, Sangjin Lee. *Forensic Science International: Digital Investigation*, Volume 39, Article 301271, Tháng 12/2021.  
-**DOI:** `10.1016/j.fsidi.2021.301271` | **Kho tham khảo chính thức:** `https://github.com/um2inji/PKZIP`  
+**DOI:** `10.1016/j.fsidi.2021.301271` | **Kho tham khảo chính thức:** `https://github.com/um2inji/PKZIP` (GitHub trả 404 từ ngày kiểm tra 23/11/2026; bản lưu Software Heritage `swh:1:snp:ebaf8f340566cccb0184952eaddf4cc0085ea392`, xem [audit PH0-REF-002](author-repo-audit.md))  
 **Cập nhật:** Ngày 25/10/2026 (Khớp nối toàn văn từ bản PDF chính thức của bài báo).
 
 ---
