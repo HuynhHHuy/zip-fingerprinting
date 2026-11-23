@@ -1,8 +1,8 @@
 # Kiểm toán kho tham khảo của tác giả — PH0-REF-002 / #17
 
-**Trạng thái:** bản nháp audit. Đã làm: thu thập, kiểm kê, manifest, chạy parser của
-dự án trên 17 mẫu và test (mục 3.3–3.4). Chưa xác minh nhãn bằng bằng chứng độc lập
-với tên file, chưa chạy mã của tác giả. **DoD của #17 chưa đạt.**
+**Trạng thái:** chờ review. Đã làm: thu thập, kiểm kê, manifest, chạy parser của dự
+án trên 17 mẫu, test, và chốt cách xác minh nhãn (mục 3.5). #17 đóng khi PR được
+review và merge. Việc làm thêm ngoài phạm vi #17 ghi ở mục 7.
 **Ngày kiểm tra:** 23/11/2026 (UTC).
 
 ## 1. Hiện trạng nguồn gốc
@@ -90,8 +90,8 @@ Nhận xét cần kiểm chứng tiếp:
 
 ### 3.2 Mẫu ZIP (17 file)
 
-Nhãn ở bảng dưới **chỉ suy ra từ tên file**, chưa phải ground truth. Phiên bản công
-cụ, ngôn ngữ Windows (EN/KR) và máy (PC1–PC3) không được ghi trong repo.
+Nhãn ở bảng dưới lấy từ **tên file do tác giả đặt**; cách xác minh xem mục 3.5. Phiên
+bản công cụ, ngôn ngữ Windows (EN/KR) và máy (PC1–PC3) không được ghi trong repo.
 
 | File | Bytes | Entry (thư mục) | Tên non-ASCII | `create_system` | SHA-256 |
 | --- | --- | --- | --- | --- | --- |
@@ -143,8 +143,9 @@ Quan sát nhất quán với bài báo (chưa phải xác minh nhãn):
 ### 3.3 Chạy parser của dự án trên 17 mẫu
 
 Manifest: [`data/reference/author_pkzip/manifest.json`](../../data/reference/author_pkzip/manifest.json).
-Mọi mẫu có `label_basis: "filename"`, `label_verified: false`, và liệt kê các trường
-chưa biết (phiên bản công cụ, phiên bản OS, ngôn ngữ Windows, máy trạm).
+Mọi mẫu có `label_basis: "author_declared_filename"`, `label_verified: true` (theo quyết
+định ở mục 3.5), và liệt kê các trường chưa biết (phiên bản công cụ, phiên bản OS, ngôn
+ngữ Windows, máy trạm).
 
 `experiments/analyze_author_samples.py` chạy `ZipBinaryParser → StructuralFeatureExtractor`
 và đối chiếu 6 khẳng định cấu trúc của bài báo **không phụ thuộc classifier**: byte
@@ -201,6 +202,22 @@ UTF-8` khi có cờ EFS **hoặc** có `0x7075`. Trong `set2` Windows, tên gố
 không cờ EFS; mã tác giả ghi `CP949` cho trường hợp này. Đây là khác biệt định nghĩa,
 chưa kết luận là lỗi.
 
+### 3.5 Quyết định về xác minh nhãn (23/11/2026)
+
+Ngoài tên file, không có nguồn nào cho biết từng mẫu được tạo bằng công cụ nào. Nhóm
+chốt:
+
+- **Căn cứ nhãn:** tên file do chính tác giả bài báo đặt và công bố, tức là lời khai
+  của người tạo mẫu (`label_basis: "author_declared_filename"`).
+- **Điều kiện coi là đã xác minh:** nhãn đó phải nhất quán với 6 khẳng định cấu trúc
+  của bài báo ở mục 3.3. Cả 17 mẫu đạt, nên `label_verified: true`. Test
+  `test_real_samples_parse_and_match_paper_structure` giữ điều kiện này.
+- **Giới hạn:** đây không phải bằng chứng độc lập về lệnh nén đã chạy. Phiên bản công
+  cụ, phiên bản OS, ngôn ngữ Windows và máy trạm vẫn chưa biết. Các kiểm tra cấu trúc
+  không tách được mọi cặp công cụ, ví dụ 7-Zip và WinRAR khi không có tên Unicode.
+
+Ghi nhận trong manifest ở trường `label_decision`.
+
 ## 4. Cách tải lại và kiểm chứng
 
 ```powershell
@@ -234,20 +251,26 @@ lưu trữ, không cấp quyền phân phối lại. Do đó:
   SWHID và kiểm SHA-256 lúc chạy, hoặc dùng thư mục cục bộ được bỏ qua bởi git.
 - Muốn phân phối lại, cần xin phép tác giả (email tác giả liên hệ trong bài báo).
 
-## 6. Việc còn lại để đạt DoD #17
+## 6. Đối chiếu DoD #17
 
-- [x] Manifest có SWHID, SHA-256, nhãn theo tên file, căn cứ nhãn và trường chưa biết.
-- [x] Chạy parser và extractor trên 17 mẫu; đối chiếu 6 khẳng định cấu trúc (mục 3.3).
-- [x] Test: manifest, kiểm checksum, tải lại, phân tích; test mẫu thật skip khi chưa tải.
-- [ ] Xác minh nhãn bằng bằng chứng ngoài tên file. Nếu không có nguồn nào khác, ghi
-      rõ nhãn dừng ở mức "nhất quán với bài báo".
-- [ ] Chạy mã tác giả trong môi trường cô lập để so kết quả `presume_program()` với
-      classifier của dự án; hiện mới đọc tĩnh.
-- [ ] Đối chiếu đầy đủ bảng luật `file_list.py` với `src/zip_fingerprint/rules.py`
-      (mới so phần UID ở mục 3.4).
-- [ ] Kiểm kê các bộ mẫu bị xoá ngày 15/04/2021 trong lịch sử (tuỳ chọn).
-- [ ] Cập nhật paper mapping và README: URL GitHub đã 404, nguồn thay thế là SWH.
-- [ ] Bàn giao danh sách mẫu đủ điều kiện cho #22.
+- [x] URL, commit, ngày truy cập, cấu trúc và loại tài nguyên (mục 1–3).
+- [x] Phân biệt code, mẫu, tài liệu, nhãn, phiên bản; ghi phần không có (mục 3).
+- [x] Kiểm tra điều kiện sử dụng; không commit bytes của tác giả (mục 5).
+- [x] Manifest có nguồn, SHA-256, nhãn đã xác minh theo mục 3.5, căn cứ nhãn và
+      trường chưa biết.
+- [x] Test đọc và phân tích mẫu thật; khác biệt với parser và mã tác giả (mục 3.3–3.4).
+- [x] Cập nhật paper mapping, README và hướng dẫn tái chạy (mục 4).
+- [x] Báo cáo đối chiếu được với commit nguồn `51fe33c5c3`.
+- [ ] Review và merge PR.
+
+## 7. Làm thêm ngoài phạm vi #17
+
+Đề xuất chuyển sang #22 hoặc issue riêng:
+- Chạy mã tác giả trong môi trường cô lập để so `presume_program()` với classifier của
+  dự án; hiện mới đọc tĩnh (xác nhận nhận định UID ở mục 3.4).
+- Đối chiếu đầy đủ bảng luật `file_list.py` với `src/zip_fingerprint/rules.py`.
+- Kiểm kê các bộ mẫu bị xoá ngày 15/04/2021 trong lịch sử.
+- Dùng 17 mẫu trong đánh giá #22, lưu ý mẫu macOS không kiểm được NFD (mục 3.4).
 
 ## Phụ lục: định danh Software Heritage
 

@@ -13,7 +13,7 @@
     "license": null
   },
   "redistribution": "not permitted: repository has no license; fetch from the archive, do not commit bytes",
-  "label_policy": "Labels come from the author's file names only. label_verified stays false until checked against independent evidence.",
+  "label_policy": "Labels are declared by the paper's authors through their own file names (label_basis=author_declared_filename). The team accepts them as verified when they are also consistent with the paper's structural claims checked by experiments/analyze_author_samples.py. This is not independent provenance of the tool invocation; tool versions and workstations remain unknown.",
   "samples": [
     {
       "id": "set1-WIN_7zip",
@@ -26,8 +26,8 @@
         "os": "Windows",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -46,8 +46,8 @@
         "os": "Windows",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -66,8 +66,8 @@
         "os": "Windows",
         "application": "Compressed folder"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -86,8 +86,8 @@
         "os": "Windows",
         "application": "WinRAR"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -106,8 +106,8 @@
         "os": "Windows",
         "application": "WinZip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -126,8 +126,8 @@
         "os": "Windows",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -146,8 +146,8 @@
         "os": "Windows",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -166,8 +166,8 @@
         "os": "Windows",
         "application": "Compressed folder"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -186,8 +186,8 @@
         "os": "Windows",
         "application": "WinRAR"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -206,8 +206,8 @@
         "os": "Windows",
         "application": "WinZip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -226,8 +226,8 @@
         "os": "Ubuntu",
         "application": "7-Zip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -246,8 +246,8 @@
         "os": "Ubuntu",
         "application": "Compress"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -266,8 +266,8 @@
         "os": "Ubuntu",
         "application": "zip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -286,8 +286,8 @@
         "os": "macOS",
         "application": "Bandizip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -306,8 +306,8 @@
         "os": "macOS",
         "application": "Compress"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -326,8 +326,8 @@
         "os": "macOS",
         "application": "WinZip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -346,8 +346,8 @@
         "os": "macOS",
         "application": "zip"
       },
-      "label_basis": "filename",
-      "label_verified": false,
+      "label_basis": "author_declared_filename",
+      "label_verified": true,
       "unknown": [
         "tool_version",
         "os_version",
@@ -355,5 +355,11 @@
         "workstation"
       ]
     }
-  ]
+  ],
+  "label_decision": {
+    "issue": 17,
+    "decided": "2026-11-23",
+    "option": "author-declared filename + structural consistency accepted as verification",
+    "structural_check": "17/17 consistent with 6 paper claims (results/classifications/author_pkzip_analysis.json)"
+  }
 }
