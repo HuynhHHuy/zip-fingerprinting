@@ -346,3 +346,181 @@ def test_main_exit_codes(tmp_path):
     assert ev.main(["--data-dir", str(tmp_path), "--output", str(tmp_path / "r.json")]) == 1
     write_catalogue(tmp_path, [])
     assert ev.main(["--data-dir", str(tmp_path), "--output", str(tmp_path / "r.json")]) == 2
+
+
+# --------------------------------------------------------------------------- author reference set
+
+
+def write_author_manifest(data_dir, entries):
+    """entries: (id, rel_path, payload|None, os, app, verified, sha_override)."""
+    root = data_dir / "reference/author_pkzip"
+    samples = []
+    for sample_id, rel, payload, os_name, app, verified, sha in entries:
+        if payload is not None:
+            target = root / "samples" / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(payload)
+        samples.append(
+            {
+                "id": sample_id,
+                "path": rel,
+                "size": len(payload) if payload is not None else 1,
+                "sha256": sha or hashlib.sha256(payload or b"absent").hexdigest(),
+                "label": {"os": os_name, "application": app},
+                "label_basis": "author_declared_filename",
+                "label_verified": verified,
+            }
+        )
+    root.mkdir(parents=True, exist_ok=True)
+    manifest = root / "manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "schema": "author-reference-manifest/v1",
+                "source": {"revision": "swh:1:rev:abc"},
+                "samples": samples,
+            }
+        ),
+        encoding="utf-8",
+    )
+    return manifest
+
+
+@pytest.fixture
+def author_set(tmp_path):
+    manifest = write_author_manifest(
+        tmp_path,
+        [
+            ("set1-WIN_7zip", "sample/set1/WIN_7zip.zip", b"W7", "Windows", "7-Zip", True, None),
+            ("set3-UBUNTU_zip", "sample/set3/UBUNTU_zip.zip", b"UZ", "Ubuntu", "zip", True, None),
+            ("set4-MAC_zip", "sample/set4/MAC_zip.zip", b"MZ", "macOS", "zip", True, None),
+            ("set9-unverified", "sample/set9/x.zip", b"XX", "Windows", "WinRAR", False, None),
+            ("set9-badsum", "sample/set9/y.zip", b"YY", "Windows", "WinRAR", True, "0" * 64),
+            ("set9-missing", "sample/set9/z.zip", None, "Windows", "WinRAR", True, None),
+        ],
+    )
+    predictor = stub(
+        {
+            b"W7": [cand("Windows", "7-Zip", 0.8), cand("Windows", "WinRAR", 0.8)],
+            b"UZ": [cand("Ubuntu", "zip")],
+            b"MZ": [cand("Ubuntu", "zip", 0.7)],
+        }
+    )
+    catalogue = ev.load_author_manifest(manifest)
+    results = ev.evaluate_samples(catalogue, manifest.parent / "samples", predictor)
+    return {r.sample_id: r for r in results}, results, manifest
+
+
+def test_author_truth_comes_from_declared_label(author_set):
+    rows, _, _ = author_set
+    ubuntu = rows["set3-UBUNTU_zip"]
+    assert ubuntu.truth.source == "author_declared_filename"
+    assert (ubuntu.truth.os, ubuntu.truth.application) == ("Ubuntu", "zip")
+    assert ubuntu.truth.in_catalog and ubuntu.outcome == "correct"
+    assert ubuntu.tool_id is None
+
+
+def test_author_set_outcomes_and_os(author_set):
+    rows, _, _ = author_set
+    assert rows["set1-WIN_7zip"].outcome == "AMBIGUOUS"
+    assert rows["set1-WIN_7zip"].os_outcome == "correct"
+    mac = rows["set4-MAC_zip"]
+    assert mac.outcome == "wrong" and mac.os_outcome == "wrong"
+
+
+@pytest.mark.parametrize(
+    "sample_id,reason",
+    [
+        ("set9-unverified", "label_unverified"),
+        ("set9-badsum", "checksum_mismatch"),
+        ("set9-missing", "missing_artifact"),
+    ],
+)
+def test_author_exclusions(author_set, sample_id, reason):
+    rows, _, _ = author_set
+    assert rows[sample_id].included is False
+    assert rows[sample_id].exclusion_reason == reason
+
+
+def test_author_manifest_schema_validation(tmp_path):
+    path = tmp_path / "manifest.json"
+    path.write_text('{"schema": "other/v1", "samples": []}', encoding="utf-8")
+    with pytest.raises(ev.CatalogueError):
+        ev.load_author_manifest(path)
+
+
+def test_main_reports_author_set_separately(tmp_path):
+    record = sample(tmp_path, "run-a", "x", "7zip", b"not a zip")
+    write_catalogue(tmp_path, [run("run-a", [record])])
+    with zipfile.ZipFile(tmp_path / "author.zip", "w") as zf:
+        zf.writestr("set1/a.txt", b"payload")
+    payload = (tmp_path / "author.zip").read_bytes()
+    write_author_manifest(
+        tmp_path,
+        [("set1-WIN_7zip", "sample/set1/WIN_7zip.zip", payload, "Windows", "7-Zip", True, None)],
+    )
+    output = tmp_path / "report.json"
+    assert ev.main(["--data-dir", str(tmp_path), "--output", str(output)]) == 0
+    report = json.loads(output.read_text(encoding="utf-8"))
+    # Generated set stays top-level and is not mixed with author-declared labels.
+    assert report["counts"]["included"] == 1
+    assert all(s["truth"]["source"] == "invocation_provenance" for s in report["samples"])
+    author = report["reference_sets"]["author_pkzip"]
+    assert author["status"] == "evaluated"
+    assert author["label_basis"] == "author_declared_filename"
+    assert author["counts"]["included"] == 1
+    assert author["samples"][0]["truth"]["source"] == "author_declared_filename"
+    assert set(author["thresholds"]) == {"os_accuracy", "windows_tool_accuracy"}
+    assert author["reproduction"]["manifest_sha256"]
+
+
+def test_main_author_set_absent_is_reported(tmp_path):
+    record = sample(tmp_path, "run-a", "x", "7zip", b"A")
+    write_catalogue(tmp_path, [run("run-a", [record])])
+    output = tmp_path / "report.json"
+    assert ev.main(["--data-dir", str(tmp_path), "--output", str(output)]) == 0
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["reference_sets"]["author_pkzip"]["status"] == "not_available"
+
+
+def test_main_author_only_counts_as_data(tmp_path):
+    write_catalogue(tmp_path, [])
+    write_author_manifest(
+        tmp_path,
+        [("set1-WIN_7zip", "sample/set1/WIN_7zip.zip", b"PK", "Windows", "7-Zip", True, None)],
+    )
+    output = tmp_path / "report.json"
+    assert ev.main(["--data-dir", str(tmp_path), "--output", str(output)]) == 0
+
+
+# --------------------------------------------------------------------------- CLI predictor
+
+
+def test_cli_predictor_matches_api(tmp_path):
+    archive = tmp_path / "a.zip"
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("set1/a.txt", b"payload")
+        zf.writestr("set1/sub/", b"")
+    payload = archive.read_bytes()
+    assert ev.cli_predictor(payload) == ev.default_predictor(payload)
+
+
+def test_cli_predictor_surfaces_cli_failure():
+    with pytest.raises(RuntimeError, match="identify exited"):
+        ev.cli_predictor(b"not a zip")
+
+
+def test_main_records_cli_predictor(tmp_path):
+    archive = tmp_path / "ground_truth/run-x/s/sample.zip"
+    archive.parent.mkdir(parents=True)
+    with zipfile.ZipFile(archive, "w") as zf:
+        zf.writestr("set1/a.txt", b"payload")
+    payload = archive.read_bytes()
+    record = sample(tmp_path, "run-x", "s", "7zip", payload)
+    write_catalogue(tmp_path, [run("run-x", [record])])
+    output = tmp_path / "report.json"
+    code = ev.main(["--data-dir", str(tmp_path), "--output", str(output), "--predictor", "cli"])
+    assert code == 0
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["reproduction"]["predictor"].startswith("cli:")
+    assert report["samples"][0]["outcome"] != "ERROR"

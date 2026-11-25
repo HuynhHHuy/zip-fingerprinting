@@ -6,9 +6,15 @@ adapter). Predictions never feed back into labels. Heuristic SUBSIDIARY scores
 are not calibrated probabilities, and a small self-generated corpus is neither
 blind nor statistically representative.
 
+The author reference samples (PH0-REF-002, ``data/reference/author_pkzip``) are
+evaluated as a separate set under ``reference_sets.author_pkzip``. Their labels
+are declared by the paper's authors through file names, not invocation
+provenance, so the two sets are never pooled.
+
 Usage::
 
     python experiments/evaluate_classifier.py
+    python experiments/evaluate_classifier.py --predictor cli
     python experiments/evaluate_classifier.py --data-dir C:/Temp/zip-data --run run-abc
 """
 
@@ -25,6 +31,7 @@ from pathlib import Path, PurePosixPath
 import platform
 import subprocess
 import sys
+import tempfile
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +59,33 @@ TOOL_LABELS = {"7zip": "7-Zip", "winrar": "WinRAR", "bandizip": "Bandizip"}
 THRESHOLDS = {"os_accuracy": 1.0, "windows_tool_accuracy": 0.90}
 
 UNKNOWN, AMBIGUOUS, ERROR = "UNKNOWN", "AMBIGUOUS", "ERROR"
+
+INVOCATION_PROVENANCE = "invocation_provenance"
+AUTHOR_LABEL_BASIS = "author_declared_filename"
+AUTHOR_MANIFEST_SCHEMA = "author-reference-manifest/v1"
+AUTHOR_RUN_ID = "author-pkzip"
+AUTHOR_VERIFIED_STATUS = "verified_label"
+AUTHOR_SET = "author_pkzip"
+CLI_TIMEOUT_SECONDS = 120
+
+AUTHOR_DEFINITIONS = {
+    "ground_truth": (
+        "Label = (os, application) declared by the paper's authors through the sample file "
+        "name, accepted in PH0-REF-002 because it is consistent with the paper's structural "
+        "claims. Not invocation provenance; never derived from classifier output."
+    ),
+    "included": (
+        "Manifest sample with label_verified=true, a safe relative path inside the samples "
+        "directory, an existing artifact whose size and SHA-256 match the manifest."
+    ),
+}
+
+AUTHOR_LIMITATIONS = [
+    "Labels are author-declared file names, not independent provenance of the tool invocation.",
+    "Tool versions, OS versions, Windows language and workstation (PC1-PC3) are unknown.",
+    "The samples were published by the authors; they are not a blind test set.",
+    "macOS samples were fetched from an archive; NFD file-name normalisation is not verifiable.",
+]
 
 DEFINITIONS = {
     "ground_truth": (
@@ -116,7 +150,7 @@ class Truth:
     in_catalog: bool
     host_os_recorded: Optional[str]
     tool_id: Optional[str]
-    source: str = "invocation_provenance"
+    source: str = INVOCATION_PROVENANCE
 
     @property
     def label(self) -> Optional[str]:
@@ -218,11 +252,14 @@ def resolve_artifact(data_dir: Path, relative: Any) -> Path:
 
 
 def verify_artifact(
-    data_dir: Path, sample: Dict[str, Any]
+    data_dir: Path, sample: Dict[str, Any], accepted_status: str = "generated"
 ) -> Tuple[Optional[bytes], Optional[str]]:
     """Return (bytes, None) for a verified artifact or (None, exclusion_reason)."""
-    if sample.get("status") != "generated":
-        return None, f"status_{sample.get('status', 'missing')}"
+    status = sample.get("status")
+    if status != accepted_status:
+        if status == "label_unverified":
+            return None, "label_unverified"
+        return None, f"status_{status or 'missing'}"
     expected_sha = sample.get("sha256")
     if not isinstance(expected_sha, str) or len(expected_sha) != 64:
         return None, "missing_checksum"
@@ -244,7 +281,73 @@ def verify_artifact(
     return data, None
 
 
+def load_author_manifest(path: Path) -> Dict[str, Any]:
+    """Convert the PH0-REF-002 author manifest into a one-run evaluator catalogue.
+
+    Sample paths stay relative to ``<manifest dir>/samples``. Labels come from the
+    manifest's author-declared ``label``; samples whose label was not verified in
+    PH0-REF-002 are kept but excluded as ``label_unverified``.
+    """
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise CatalogueError(f"Cannot read author manifest {path}: {exc}") from exc
+    if (
+        not isinstance(data, dict)
+        or data.get("schema") != AUTHOR_MANIFEST_SCHEMA
+        or not isinstance(data.get("samples"), list)
+    ):
+        raise CatalogueError(f"Unsupported author manifest (expected {AUTHOR_MANIFEST_SCHEMA})")
+    samples = []
+    for entry in data["samples"]:
+        if not isinstance(entry, dict) or not isinstance(entry.get("label"), dict):
+            raise CatalogueError("Malformed sample in author manifest")
+        label = entry["label"]
+        rel = entry.get("path")
+        parts = PurePosixPath(rel).parts if isinstance(rel, str) else ()
+        verified = (
+            entry.get("label_verified") is True and entry.get("label_basis") == AUTHOR_LABEL_BASIS
+        )
+        samples.append(
+            {
+                "sample_id": str(entry.get("id")),
+                "tool_id": None,
+                "variant": parts[-2] if len(parts) >= 2 else None,
+                "status": AUTHOR_VERIFIED_STATUS if verified else "label_unverified",
+                "path": rel,
+                "sha256": entry.get("sha256"),
+                "size_bytes": entry.get("size"),
+                "declared_label": {"os": label.get("os"), "application": label.get("application")},
+                "tool": {"application": label.get("application"), "version": None},
+            }
+        )
+    return {
+        "schema_version": 1,
+        "runs": [
+            {
+                "run_id": AUTHOR_RUN_ID,
+                "label_source": AUTHOR_LABEL_BASIS,
+                "accepted_status": AUTHOR_VERIFIED_STATUS,
+                "environment": {},
+                "source": data.get("source"),
+                "samples": samples,
+            }
+        ],
+    }
+
+
 def ground_truth(run: Dict[str, Any], sample: Dict[str, Any], labels: Iterable[str]) -> Truth:
+    if run.get("label_source") == AUTHOR_LABEL_BASIS:
+        declared = sample.get("declared_label") or {}
+        os_name, application = declared.get("os"), declared.get("application")
+        return Truth(
+            os=os_name,
+            application=application,
+            in_catalog=label_of(os_name, application) in set(labels),
+            host_os_recorded=None,
+            tool_id=None,
+            source=AUTHOR_LABEL_BASIS,
+        )
     host = (run.get("environment") or {}).get("os")
     tool_id = sample.get("tool_id")
     os_name = OS_LABELS.get(host) if isinstance(host, str) else None
@@ -268,7 +371,7 @@ def ground_truth(run: Dict[str, Any], sample: Dict[str, Any], labels: Iterable[s
 
 
 def default_predictor(data: bytes) -> List[Dict[str, Any]]:
-    """Parse -> extract -> classify via the library API (CLI is not yet integrated)."""
+    """Parse -> extract -> classify via the library API."""
     parser = ZipBinaryParser(data)
     try:
         archive = parser.parse()
@@ -276,6 +379,45 @@ def default_predictor(data: bytes) -> List[Dict[str, Any]]:
         parser.close()
     features = StructuralFeatureExtractor(archive).extract()
     return [asdict(candidate) for candidate in AutomatedClassifier().classify(features)]
+
+
+def cli_predictor(data: bytes) -> List[Dict[str, Any]]:
+    """Classify via ``python -m zip_fingerprint identify`` on a private copy of ``data``.
+
+    The verified bytes are written to a fresh temporary file so the CLI sees exactly
+    the bytes that were checksummed; the CLI's reported archive SHA-256 is checked.
+    """
+    expected = _sha256_bytes(data)
+    env = dict(os.environ)
+    extra = [env["PYTHONPATH"]] if env.get("PYTHONPATH") else []
+    env["PYTHONPATH"] = os.pathsep.join([str(ROOT / "src"), *extra])
+    env["PYTHONIOENCODING"] = "utf-8"
+    with tempfile.TemporaryDirectory(prefix="zipfp-eval-") as tmp:
+        target = Path(tmp) / "sample.zip"
+        target.write_bytes(data)
+        completed = subprocess.run(
+            [sys.executable, "-m", "zip_fingerprint", "identify", str(target), "--format", "json"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            env=env,
+            timeout=CLI_TIMEOUT_SECONDS,
+            check=False,
+        )
+    if completed.returncode != 0:
+        detail = (completed.stderr or completed.stdout).strip().splitlines()
+        last = detail[-1] if detail else "no output"
+        raise RuntimeError(f"identify exited {completed.returncode}: {last}")
+    payload = json.loads(completed.stdout)
+    if payload.get("archive_sha256") != expected:
+        raise RuntimeError("identify reported a different archive SHA-256 than the verified bytes")
+    return list(payload["candidates"])
+
+
+PREDICTORS: Dict[str, Tuple[Predictor, str]] = {
+    "api": (default_predictor, "api: zip_fingerprint parser -> extractor -> AutomatedClassifier"),
+    "cli": (cli_predictor, "cli: python -m zip_fingerprint identify --format json"),
+}
 
 
 def top_candidates(candidates: Sequence[Dict[str, Any]]) -> Tuple[Optional[float], List[str]]:
@@ -349,7 +491,7 @@ def _evaluate_one(
         path=sample.get("path"),
         sha256=sample.get("sha256"),
     )
-    data, reason = verify_artifact(data_dir, sample)
+    data, reason = verify_artifact(data_dir, sample, run.get("accepted_status", "generated"))
     if data is None:
         result.exclusion_reason = reason
         return result
@@ -654,6 +796,7 @@ def build_report(
     data_dir: Path,
     argv: Sequence[str],
     run_filter: Optional[Sequence[str]] = None,
+    predictor_description: str = PREDICTORS["api"][1],
 ) -> Dict[str, Any]:
     labels = catalog_labels()
     unique, conflicts = dedupe_by_sha(results)
@@ -680,7 +823,7 @@ def build_report(
                 name: _file_sha(ROOT / "src/zip_fingerprint" / name)
                 for name in ("classifier.py", "rules.py", "extractor.py", "parser.py")
             },
-            "predictor": "zip_fingerprint API (parser -> extractor -> AutomatedClassifier)",
+            "predictor": predictor_description,
         },
         "definitions": DEFINITIONS,
         "counts": counts_report(results, unique),
@@ -697,25 +840,75 @@ def build_report(
     }
 
 
+def build_author_report(
+    manifest_path: Path,
+    samples_dir: Path,
+    predictor: Predictor,
+    argv: Sequence[str],
+    predictor_description: str,
+) -> Dict[str, Any]:
+    """Evaluate the author reference set on its own; never pooled with generated runs."""
+    if not manifest_path.is_file():
+        return {
+            "status": "not_available",
+            "manifest_path": str(manifest_path),
+            "note": "Run scripts/fetch_author_samples.py to fetch the PH0-REF-002 samples.",
+        }
+    try:
+        catalogue = load_author_manifest(manifest_path)
+    except CatalogueError as exc:
+        print(f"warning: {exc}", file=sys.stderr)
+        return {"status": "error", "manifest_path": str(manifest_path), "error": str(exc)}
+    results = evaluate_samples(catalogue, samples_dir, predictor)
+    report = build_report(
+        results, manifest_path, samples_dir, argv, predictor_description=predictor_description
+    )
+    reproduction = report["reproduction"]
+    reproduction["manifest_path"] = reproduction.pop("catalogue_path")
+    reproduction["manifest_sha256"] = reproduction.pop("catalogue_sha256")
+    reproduction["samples_dir"] = reproduction.pop("data_dir")
+    reproduction["source"] = catalogue["runs"][0].get("source")
+    reproduction["fetch_command"] = "python scripts/fetch_author_samples.py"
+    report["counts"]["independence_note"] = (
+        "Author samples come from unknown workstations and tool versions; byte-identical "
+        "archives are counted once in the unique-SHA-256 metrics."
+    )
+    report["definitions"] = {**report["definitions"], **AUTHOR_DEFINITIONS}
+    report["limitations"] = AUTHOR_LIMITATIONS + report["limitations"][:1]
+    return {"status": "evaluated", "label_basis": AUTHOR_LABEL_BASIS, **report}
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data", help="Data root")
     parser.add_argument("--catalogue", type=Path, help="Default: <data-dir>/metadata.json")
     parser.add_argument("--run", action="append", dest="runs", help="Restrict to run_id")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="Report JSON path")
+    parser.add_argument(
+        "--predictor",
+        choices=sorted(PREDICTORS),
+        default="api",
+        help="Classify through the library API or the zip_fingerprint identify CLI",
+    )
+    parser.add_argument(
+        "--author-manifest",
+        type=Path,
+        help="Default: <data-dir>/reference/author_pkzip/manifest.json",
+    )
+    parser.add_argument("--author-samples-dir", type=Path, help="Default: <manifest dir>/samples")
     return parser
 
 
-def _summary_lines(report: Dict[str, Any]) -> List[str]:
+def _summary_lines(report: Dict[str, Any], prefix: str = "") -> List[str]:
     counts = report["counts"]
     lines = [
-        f"samples={counts['catalogue_samples']} included={counts['included']} "
+        f"{prefix}samples={counts['catalogue_samples']} included={counts['included']} "
         f"excluded={counts['excluded']} unique_sha256={counts['unique_sha256']}",
     ]
     for name, item in report["thresholds"].items():
         observed = item["observed"]
         lines.append(
-            f"{name}: {observed['numerator']}/{observed['denominator']} "
+            f"{prefix}{name}: {observed['numerator']}/{observed['denominator']} "
             f"value={observed['value']} target={item['target']} status={item['status']}"
         )
     return lines
@@ -731,10 +924,21 @@ def main(argv: Optional[List[str]] = None) -> int:
     except CatalogueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
-    results = evaluate_samples(catalogue, data_dir, run_ids=args.runs)
+    predictor, predictor_description = PREDICTORS[args.predictor]
+    command = ["experiments/evaluate_classifier.py", *argv]
+    results = evaluate_samples(catalogue, data_dir, predictor, run_ids=args.runs)
     report = build_report(
-        results, catalogue_path, data_dir, ["experiments/evaluate_classifier.py", *argv], args.runs
+        results, catalogue_path, data_dir, command, args.runs, predictor_description
     )
+    manifest_path = Path(
+        os.path.abspath(args.author_manifest or data_dir / "reference/author_pkzip/manifest.json")
+    )
+    samples_dir = Path(os.path.abspath(args.author_samples_dir or manifest_path.parent / "samples"))
+    report["reference_sets"] = {
+        AUTHOR_SET: build_author_report(
+            manifest_path, samples_dir, predictor, command, predictor_description
+        )
+    }
     output = Path(os.path.abspath(args.output))
     try:
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -744,11 +948,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     except OSError as exc:
         print(f"error: cannot write report: {exc}", file=sys.stderr)
         return 1
-    for line in _summary_lines(report):
+    for line in _summary_lines(report, "generated: "):
         print(line)
+    author = report["reference_sets"][AUTHOR_SET]
+    if author["status"] == "evaluated":
+        for line in _summary_lines(author, f"{AUTHOR_SET}: "):
+            print(line)
+    else:
+        print(f"{AUTHOR_SET}: {author['status']}")
     print(f"report: {output}")
     # Unmet thresholds are a scientific result, not a program failure.
-    return 0 if report["counts"]["included"] else 2
+    author_included = author.get("counts", {}).get("included", 0)
+    return 0 if report["counts"]["included"] or author_included else 2
 
 
 if __name__ == "__main__":
