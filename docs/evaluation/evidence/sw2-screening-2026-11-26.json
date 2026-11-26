@@ -178,7 +178,7 @@
   "One host, current tool versions, four small flat files",
   "Confirmation is a deterministic re-run (byte-identical), not an independent variation",
   "Bandizip -> Explorer pair of the paper remains negative; S6 is a different pair",
-  "Tracker reports Case 1, not Case 2, for S6: its Case 2 rule needs LFH/CDH disagreement"
+  "Tracker reports Case 1, not Case 2, for S6: its Case 2 rule needs LFH/CDH disagreement; it also attributes keep.txt (no extra) to Windows Compressed folder as SW1 (tracked in #35)"
  ],
  "files": [
   {
