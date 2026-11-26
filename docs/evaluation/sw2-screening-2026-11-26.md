@@ -108,4 +108,6 @@ Bandizip 7.47.0.1 (xóa)** là mẫu Case 2 native.
 
 Xem [manifest và checksum](evidence/sw2-screening-2026-11-26.json). Bundle
 `sw2-screening-2026-11-26-evidence.zip` (42 635 byte, SHA-256 `17fb4445…894c40`) gồm
-hai run, toàn bộ ZIP trước/sau, source và metadata.
+hai run, toàn bộ ZIP trước/sau, source và metadata. Bundle có trên
+[prerelease riêng](https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-sw2-2026-11-26);
+bản tải công khai đã được kiểm lại: size, SHA-256 và 49 file thành phần đều khớp.

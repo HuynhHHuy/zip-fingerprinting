@@ -157,7 +157,12 @@
  "dod_met": "pending reviewer acceptance",
  "operational_retries": 0,
  "handoff": {
-  "status": "pending_upload"
+  "status": "uploaded_download_verified",
+  "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-sw2-2026-11-26",
+  "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-sw2-2026-11-26/sw2-screening-2026-11-26-evidence.zip",
+  "release_id": 459336063,
+  "tag_target": "0efc246",
+  "verification": "public asset downloaded: size and SHA-256 match; 49 members match file-manifest.json"
  },
  "bundle": {
   "name": "sw2-screening-2026-11-26-evidence.zip",
