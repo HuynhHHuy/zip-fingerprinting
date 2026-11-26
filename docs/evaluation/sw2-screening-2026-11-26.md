@@ -48,14 +48,31 @@ không phải một quan sát có biến thiên độc lập.
 Tracker (`ProvenanceTracker`) chỉ đọc một archive, và quy tắc Case 2 của nó cần LFH
 và CDH của cùng một entry *mâu thuẫn* nhau. Bandizip ghi lại cả LFH lẫn CDH một cách
 nhất quán, nên trong `after.zip` không còn dấu vết mâu thuẫn nào. Thay vào đó, tracker
-báo Case 1: `keep.txt` không có extra, còn hai tên Unicode có `0x7075`, nên tracker
-xếp chúng vào hai nhóm dấu vết khác nhau. Trên ZIP gốc chỉ do Bandizip tạo, tracker
-báo không có Case 1, tức là không báo nhầm trên mẫu sạch.
+báo Case 1 và chia entry thành hai nhóm:
 
-Đây là giới hạn của phát hiện trên một archive đơn lẻ, không phải lỗi được tái hiện độc
-lập. Vì vậy mình không sửa tracker trong đợt này. Đề xuất mở một issue riêng: phát
-hiện Case 2 khi có bản trước để so sánh, hoặc khi mọi entry mang dấu vết của một SW2
-đã biết.
+- `keep.txt` (version 20, không extra) khớp profile Windows "Compressed folder" và bị
+  gán `ORIGINAL_CREATOR_SUSPECT`;
+- hai tên Unicode (chỉ có `0x7075`) không khớp profile nào trong catalog và bị gán
+  `MODIFIER_SUSPECT`.
+
+Thực tế cả ba entry đều do Bandizip ghi, còn SW1 là 7-Zip. Như vậy tracker sai Case,
+sai công cụ SW1 và sai vai trò. Nguyên nhân là header Bandizip ghi khi xóa khác với
+header nó ghi khi tạo archive:
+
+| | Bandizip tạo (`S1/before.zip`) | Bandizip ghi lại khi xóa (`S6/after.zip`) |
+| --- | --- | --- |
+| `keep.txt` | 20/20, extra `0x000A` (32 byte) | 20/20, không extra |
+| Tên Unicode | 20/20, cờ UTF-8, `0x000A` + `0x7075` | 20/20, cờ UTF-8, chỉ `0x7075` |
+| Tracker | không Case 1/2 | Case 1, SW1 bị gán là "Compressed folder" |
+
+Catalog chưa có profile cho bố cục ghi lại này. Trên ZIP do Bandizip tạo, tracker không
+báo Case 1, nghĩa là mẫu sạch không bị báo nhầm.
+
+Đây là giới hạn của phát hiện trên một archive đơn lẻ và của catalog hiện hành, không
+phải lỗi đã được tái hiện độc lập theo phạm vi #19. Vì vậy tracker không được sửa
+trong đợt này. Việc phát hiện Case 2 khi có bản trước để so sánh, cùng lỗi gán nhầm
+SW1, được theo dõi ở
+[#35](https://github.com/HuynhHHuy/zip-fingerprinting/issues/35).
 
 ## Môi trường và công cụ
 

@@ -214,7 +214,8 @@ native:** cả ba survivor bị ghi lại (version 63/10 → 20/20, bỏ `0x000A
 thêm `0x7075`), payload nguyên vẹn; lần xác nhận cho cùng bytes. Bandizip → 7-Zip,
 WinRAR, PowerShell 5.1/7.6 `Compress-Archive -Update` và `zipfldr` `CopyHere` đều
 âm (chỉ offset); các ô thêm file cho Case 1 native mới. Tracker báo Case 1, không
-phải Case 2, cho cặp dương vì LFH/CDH được ghi lại nhất quán. Đề nghị reviewer xem
+phải Case 2, cho cặp dương vì LFH/CDH được ghi lại nhất quán, và gán nhầm SW1 là
+Windows "Compressed folder" (theo dõi ở #35). Đề nghị reviewer xem
 xét nghiệm thu #19; cặp Bandizip → Explorer của bài báo vẫn âm. Xem
 [báo cáo](sw2-screening-2026-11-26.md) và
 [manifest/checksums](evidence/sw2-screening-2026-11-26.json).

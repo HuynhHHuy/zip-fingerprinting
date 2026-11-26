@@ -314,7 +314,8 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Sàng lọc SW2 đăng ký trước 26/11 (#19):** `experiments/sw2_screening.py` chạy
   6 cặp đã chốt. **7-Zip 26.04 → Bandizip 7.47.0.1 (xóa) cho Case 2 native**, xác
   nhận lần hai; 5 cặp khác âm; các ô thêm file cho Case 1 native. Tracker chưa phát
-  hiện Case 2 khi LFH/CDH được ghi lại nhất quán (đề xuất issue riêng). Chờ reviewer
+  hiện Case 2 khi LFH/CDH được ghi lại nhất quán và gán nhầm SW1 là "Compressed
+  folder" (#35). Chờ reviewer
   nghiệm thu #19; chưa đưa mẫu vào corpus/catalogue chung. Xem
   [báo cáo](../evaluation/sw2-screening-2026-11-26.md).
 
