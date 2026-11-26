@@ -1,5 +1,6 @@
 """Bounded ZIP snapshots and deletion deltas, independent of provenance guesses."""
 
+from collections.abc import Iterable
 from copy import copy
 import hashlib
 import io
@@ -156,9 +157,28 @@ def read_evidence(path: Path, encoding: str) -> dict:
 
 
 def compare_delete(before: dict, after: dict, target: str = "target.txt") -> dict:
+    result = compare_survivors(before, after, removed={target})
+    return {
+        "payload_validation": result["payload_validation"],
+        "deleted": target,
+        "entries": result["entries"],
+        "rewrite_scope": result["rewrite_scope"],
+        "global_rewrite": result["global_rewrite"],
+    }
+
+
+def compare_survivors(
+    before: dict,
+    after: dict,
+    removed: Iterable[str] = frozenset(),
+    added: Iterable[str] = frozenset(),
+) -> dict:
+    """Score structural header changes of every entry kept by both archives."""
     old, new = before["entries"], after["entries"]
-    if target not in old or set(new) != set(old) - {target} or not new:
-        raise ValueError("Unexpected deletion inventory")
+    gone, extra = frozenset(removed), frozenset(added)
+    survivors = set(old) - gone
+    if not gone <= set(old) or extra & set(old) or set(new) != survivors | extra or not survivors:
+        raise ValueError("Unexpected modification inventory")
     rows = []
     structural = {
         "version_made_by",
@@ -168,7 +188,7 @@ def compare_delete(before: dict, after: dict, target: str = "target.txt") -> dic
         "raw_name_hex",
         "extra_layout",
     }
-    for name in sorted(new):
+    for name in sorted(survivors):
         if any(
             old[name][field] != new[name][field]
             for field in ("size", "payload_sha256", "directory")
@@ -187,7 +207,8 @@ def compare_delete(before: dict, after: dict, target: str = "target.txt") -> dic
     count = sum(bool(row["qualifying_changes"]) for row in rows)
     return {
         "payload_validation": True,
-        "deleted": target,
+        "removed": sorted(gone),
+        "added": sorted(extra),
         "entries": rows,
         "rewrite_scope": "all" if count == len(rows) else "partial" if count else "none",
         "global_rewrite": count == len(rows),

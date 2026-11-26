@@ -8,7 +8,7 @@ import zlib
 
 import pytest
 
-from experiments.modification_evidence import compare_delete, read_evidence
+from experiments.modification_evidence import compare_delete, compare_survivors, read_evidence
 from tests.integration.test_provenance_tracking import Entry, build_zip, ntfs
 
 
@@ -134,3 +134,57 @@ def test_snapshot_is_bounded_and_rejects_symlink_entry(tmp_path, monkeypatch):
         z.writestr(item, b"target")
     with pytest.raises(ValueError, match="type|link"):
         read_evidence(path, "cp1252")
+
+
+def test_added_entry_is_excluded_and_survivor_rewrite_is_scored(tmp_path):
+    survivors = [Entry(n, local=[ntfs()], central=[ntfs()]) for n in ["keep.txt", "b.txt"]]
+    before = snapshot(tmp_path, "before.zip", survivors)
+    changed = deepcopy(survivors)
+    for entry in changed:
+        entry.central = []
+    after = snapshot(tmp_path, "after.zip", [*changed, Entry("added.txt")])
+    result = compare_survivors(before, after, added={"added.txt"})
+    assert result["added"] == ["added.txt"]
+    assert result["removed"] == []
+    assert [row["path"] for row in result["entries"]] == ["b.txt", "keep.txt"]
+    assert result["rewrite_scope"] == "all"
+    assert result["global_rewrite"] is True
+
+
+def test_added_entry_with_untouched_survivors_is_not_case2(tmp_path):
+    survivors = [Entry(n, local=[ntfs()], central=[ntfs()]) for n in ["keep.txt", "b.txt"]]
+    before = snapshot(tmp_path, "before.zip", survivors)
+    after = snapshot(tmp_path, "after.zip", [*survivors, Entry("added.txt")])
+    result = compare_survivors(before, after, added={"added.txt"})
+    assert result["rewrite_scope"] == "none"
+
+
+@pytest.mark.parametrize(
+    "entries",
+    [
+        [Entry("keep")],
+        [Entry("keep"), Entry("added.txt"), Entry("extra")],
+        [Entry("keep", data=b"corrupt"), Entry("added.txt")],
+        [Entry("added.txt")],
+    ],
+)
+def test_wrong_addition_or_survivor_payload_is_rejected(tmp_path, entries):
+    before = snapshot(tmp_path, "b.zip", [Entry("keep")])
+    after = snapshot(tmp_path, "a.zip", entries)
+    with pytest.raises(ValueError, match="inventory|payload"):
+        compare_survivors(before, after, added={"added.txt"})
+
+
+def test_compare_delete_keeps_its_report_shape(tmp_path):
+    before = snapshot(tmp_path, "b.zip", [Entry("target.txt"), Entry("keep")])
+    after = snapshot(tmp_path, "a.zip", [Entry("keep")])
+    result = compare_delete(before, after)
+    assert set(result) == {
+        "payload_validation",
+        "deleted",
+        "entries",
+        "rewrite_scope",
+        "global_rewrite",
+    }
+    assert result["deleted"] == "target.txt"
+    assert result["entries"] == compare_survivors(before, after, removed={"target.txt"})["entries"]
