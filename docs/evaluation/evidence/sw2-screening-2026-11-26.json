@@ -1,0 +1,430 @@
+{
+ "schema_version": 1,
+ "date": "2026-11-26",
+ "issue": 19,
+ "preregistration_commit": "8c4975de7415ddd524beac189dad5e752da81668",
+ "code_commit": "063530e",
+ "runs": [
+  "run-sw2-_kiollnq",
+  "run-sw2-gtjtd6ue"
+ ],
+ "environment": {
+  "os": "Windows",
+  "build": "10.0.26200",
+  "python": "3.11.9",
+  "system_timezone": [
+   "SE Asia Standard Time",
+   "SE Asia Daylight Time"
+  ],
+  "ansi_code_page": 1252,
+  "legacy_encoding": "cp1252"
+ },
+ "tools": {
+  "7zip": {
+   "path": "C:\\Program Files\\7-Zip\\7z.exe",
+   "sha256": "95fff19b73eff77c87c0d7bd32822e43fb90dd2932459f962eb532d8dfb6ba53",
+   "version": "26.04",
+   "signature": "NotSigned |"
+  },
+  "bandizip": {
+   "path": "C:\\Users\\OMEN\\AppData\\Local\\zip-prov-tools\\bandizip-7.47.0.1\\Bandizip.x64.exe",
+   "sha256": "2d733a26500a8cff7db04291c396b3d48e9d7275753e2a06bf3564c9f9591dc8",
+   "version": "7.47.0.1",
+   "signature": "Valid | CN=Bandisoft International Inc., O=Bandisoft International Inc., S=Seoul, C=KR, OID.2.5.4.15=Private Organization, OID.1.3.6.1.4.1.311.60.2.1.3=KR, SERIALNUMBER=683-88-02252"
+  },
+  "powershell5": {
+   "path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+   "sha256": "d8f182560210d43baaf767d482ad1dc1207372522e91413b9d5e515a875e552d",
+   "version": "10.0.26100.9818",
+   "signature": "Valid | CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+  },
+  "pwsh7": {
+   "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+   "sha256": "e94166ed9f376559c1359bafb08bc49e463a494c330f67644ec1d9f1ffeb5ee5",
+   "version": "7.6.10 SHA: 16ac95d24d87c61a5d8300dae2d0619db06c555c+16ac95d24d87c61a5d8300dae2d0619db06c555c",
+   "signature": "Valid | CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+  },
+  "shell": {
+   "path": "C:\\WINDOWS\\System32\\zipfldr.dll",
+   "sha256": "81aa82ebbd58c48facd237b469dd14311204c18716df6a2621ae1ac29cfad12f",
+   "version": "10.0.26100.8117",
+   "signature": "Valid | CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+  },
+  "winrar": {
+   "path": "C:\\Program Files\\WinRAR\\WinRAR.exe",
+   "sha256": "9e08abde05f3eda5fadb970c03ce647ea4f1514132c9df30d58fc029195685a8",
+   "version": "6.23.0",
+   "signature": "Valid | CN=win.rar GmbH, O=win.rar GmbH, L=Berlin, S=Berlin, C=DE"
+  }
+ },
+ "bandizip_distribution": {
+  "url": "https://www.bandisoft.com/bandizip/dl.php?portable",
+  "final_url": "https://bandisoft.app/bandizip/BANDIZIP-PORTABLE.ZIP",
+  "sha256": "97e575262b2ecb0a403cb9d878c878a540a3fa03b189e1979c16f93b3bda32c9",
+  "size": 8517753
+ },
+ "cells": {
+  "S1": {
+   "sw1": "bandizip",
+   "sw2": "7zip",
+   "operation": "delete",
+   "status": "generated",
+   "rewrite_scope": "none",
+   "tracker_after": {
+    "case1_mixed_fingerprints": false,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "791f0fcd8256538156f64c0643938f8c2b8e1a6bc50d86ffc2828e0ba1f5c266",
+   "after_sha256": "9ad8dd1503212134ae6708a227e255469036e61db6adf92099296e1ca41dd424"
+  },
+  "S2": {
+   "sw1": "bandizip",
+   "sw2": "winrar",
+   "operation": "delete",
+   "status": "generated",
+   "rewrite_scope": "none",
+   "tracker_after": {
+    "case1_mixed_fingerprints": false,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "dd0795ee1154028115470e6c0aa81770865383ef19d81a931f2d106ae70942f2",
+   "after_sha256": "00c7b2174d871a30ecdc51e24760225eea3c3a4cc8182629384ee65e98cebb27"
+  },
+  "S3": {
+   "sw1": "bandizip",
+   "sw2": "powershell5",
+   "operation": "add",
+   "status": "generated",
+   "rewrite_scope": "none",
+   "tracker_after": {
+    "case1_mixed_fingerprints": true,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "e8c5f31677191ad6e26be3195a4986d462e99ad9eee44c846fbd9f8c23993073",
+   "after_sha256": "c528fd11f549aae34eab7d184a417c93f283164a84e77860392cf1ea1b091728"
+  },
+  "S4": {
+   "sw1": "bandizip",
+   "sw2": "pwsh7",
+   "operation": "add",
+   "status": "generated",
+   "rewrite_scope": "none",
+   "tracker_after": {
+    "case1_mixed_fingerprints": true,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "bb3ec031ee037ea849a25f32626cb7bfa1667c75aeeaeb616a1826c09d187b5c",
+   "after_sha256": "4e13d9642ca9d62c1a2864c571a20ceea08eee444c6fb6bca6f26d69e4dda5da"
+  },
+  "S5": {
+   "sw1": "bandizip",
+   "sw2": "shell",
+   "operation": "add",
+   "status": "generated",
+   "rewrite_scope": "none",
+   "tracker_after": {
+    "case1_mixed_fingerprints": true,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "224219875b00d75e144feb877c9aa6c04677e36a7151c78c861d6f338b0839ae",
+   "after_sha256": "95beb1d05d24cbe4a72d34540a5723625263ec0f376cfc047d00721247f3c890"
+  },
+  "S6": {
+   "sw1": "7zip",
+   "sw2": "bandizip",
+   "operation": "delete",
+   "status": "generated",
+   "rewrite_scope": "all",
+   "tracker_after": {
+    "case1_mixed_fingerprints": true,
+    "case2_cascade_rewrite": false
+   },
+   "before_sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc",
+   "after_sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113"
+  }
+ },
+ "confirmation": {
+  "run": "run-sw2-gtjtd6ue",
+  "cell": "S6",
+  "rewrite_scope": "all",
+  "before_sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc",
+  "after_sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113",
+  "byte_identical_to_first_run": true
+ },
+ "native_case2": true,
+ "native_case2_pair": "7-Zip 26.04 -> Bandizip 7.47.0.1 delete",
+ "tracker_agrees_on_case2": false,
+ "dod_met": "pending reviewer acceptance",
+ "operational_retries": 0,
+ "handoff": {
+  "status": "uploaded_download_verified",
+  "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-sw2-2026-11-26",
+  "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-sw2-2026-11-26/sw2-screening-2026-11-26-evidence.zip",
+  "release_id": 459336063,
+  "tag_target": "0efc246",
+  "verification": "public asset downloaded: size and SHA-256 match; 49 members match file-manifest.json"
+ },
+ "bundle": {
+  "name": "sw2-screening-2026-11-26-evidence.zip",
+  "size": 42635,
+  "sha256": "17fb444578f4447f04377500977e32b4e32da9e202109547b89750c772894c40"
+ },
+ "verification": {
+  "host_recompute": "read_evidence + compare_survivors from ZIP bytes equals stored comparison for all 7 cells; ZIP CRC passed",
+  "suite": "430 passed, 5 skipped (worktree, PYTHONPATH=src)",
+  "static": "mypy src + changed experiments clean; Black/Flake8 clean on changed files"
+ },
+ "limits": [
+  "One host, current tool versions, four small flat files",
+  "Confirmation is a deterministic re-run (byte-identical), not an independent variation",
+  "Bandizip -> Explorer pair of the paper remains negative; S6 is a different pair",
+  "Tracker reports Case 1, not Case 2, for S6: its Case 2 rule needs LFH/CDH disagreement"
+ ],
+ "files": [
+  {
+   "path": "run-sw2-_kiollnq/metadata.json",
+   "size": 315126,
+   "sha256": "4a0865e5851c837a104870535474e86abeebd8608a06a0ca1678b763d5e2e687"
+  },
+  {
+   "path": "run-sw2-_kiollnq/report.md",
+   "size": 1548,
+   "sha256": "122057b3f7dddadccdc5ece4fdd5f19ea16b5302d9e033c3959976a65969aceb"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/after.zip",
+   "size": 594,
+   "sha256": "9ad8dd1503212134ae6708a227e255469036e61db6adf92099296e1ca41dd424"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/before.zip",
+   "size": 745,
+   "sha256": "791f0fcd8256538156f64c0643938f8c2b8e1a6bc50d86ffc2828e0ba1f5c266"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S1/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/after.zip",
+   "size": 594,
+   "sha256": "00c7b2174d871a30ecdc51e24760225eea3c3a4cc8182629384ee65e98cebb27"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/before.zip",
+   "size": 745,
+   "sha256": "dd0795ee1154028115470e6c0aa81770865383ef19d81a931f2d106ae70942f2"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S2/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/addition/added.txt",
+   "size": 14,
+   "sha256": "22ccbc3d324e0f45cddbb0fba720745cfa1585c1f0c8b50af73947cbd8743ff1"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/after.zip",
+   "size": 855,
+   "sha256": "c528fd11f549aae34eab7d184a417c93f283164a84e77860392cf1ea1b091728"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/before.zip",
+   "size": 745,
+   "sha256": "e8c5f31677191ad6e26be3195a4986d462e99ad9eee44c846fbd9f8c23993073"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S3/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/addition/added.txt",
+   "size": 14,
+   "sha256": "22ccbc3d324e0f45cddbb0fba720745cfa1585c1f0c8b50af73947cbd8743ff1"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/after.zip",
+   "size": 855,
+   "sha256": "4e13d9642ca9d62c1a2864c571a20ceea08eee444c6fb6bca6f26d69e4dda5da"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/before.zip",
+   "size": 745,
+   "sha256": "bb3ec031ee037ea849a25f32626cb7bfa1667c75aeeaeb616a1826c09d187b5c"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S4/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/addition/added.txt",
+   "size": 14,
+   "sha256": "22ccbc3d324e0f45cddbb0fba720745cfa1585c1f0c8b50af73947cbd8743ff1"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/after.zip",
+   "size": 853,
+   "sha256": "95beb1d05d24cbe4a72d34540a5723625263ec0f376cfc047d00721247f3c890"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/before.zip",
+   "size": 745,
+   "sha256": "224219875b00d75e144feb877c9aa6c04677e36a7151c78c861d6f338b0839ae"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S5/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/after.zip",
+   "size": 480,
+   "sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/before.zip",
+   "size": 639,
+   "sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-_kiollnq/S6/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/metadata.json",
+   "size": 53326,
+   "sha256": "2bb485fea4f729ab66d1b43651a417b85dad19ee331146e35e1bee9238126d10"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/report.md",
+   "size": 792,
+   "sha256": "6c0ba1910f85c3ddc705b02ebf38db322a4209b4fd4d83a07a65153e257d9140"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/after.zip",
+   "size": 480,
+   "sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/before.zip",
+   "size": 639,
+   "sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-sw2-gtjtd6ue/S6/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  }
+ ]
+}

@@ -206,6 +206,19 @@ Home, bỏ liên kết .zip của Bandizip trước Delete. Xem
 [báo cáo](native-case2-win10-2004-2026-11-26.md) và
 [manifest/checksums](evidence/native-case2-win10-2004-2026-11-26.json).
 
+### 2.10 Sàng lọc SW2 có đăng ký trước — PH4-PROV-002 (26/11/2026)
+
+Sáu cặp được chốt trước khi đo ([đăng ký](../research/sw2-screening-preregistration.md),
+commit `8c4975d`). **7-Zip 26.04 → Bandizip 7.47.0.1 xóa `target.txt` cho Case 2
+native:** cả ba survivor bị ghi lại (version 63/10 → 20/20, bỏ `0x000A` của 7-Zip,
+thêm `0x7075`), payload nguyên vẹn; lần xác nhận cho cùng bytes. Bandizip → 7-Zip,
+WinRAR, PowerShell 5.1/7.6 `Compress-Archive -Update` và `zipfldr` `CopyHere` đều
+âm (chỉ offset); các ô thêm file cho Case 1 native mới. Tracker báo Case 1, không
+phải Case 2, cho cặp dương vì LFH/CDH được ghi lại nhất quán. Đề nghị reviewer xem
+xét nghiệm thu #19; cặp Bandizip → Explorer của bài báo vẫn âm. Xem
+[báo cáo](sw2-screening-2026-11-26.md) và
+[manifest/checksums](evidence/sw2-screening-2026-11-26.json).
+
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix) — PH7-EVAL-002
 
 > **Trạng thái (25/11/2026): đã triển khai evaluator, đã kiểm thử tổng hợp, đã chạy

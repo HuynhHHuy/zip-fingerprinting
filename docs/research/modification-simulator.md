@@ -183,6 +183,16 @@ run-case2-dlq9ulnc scope none, kết quả âm. Script guest nằm ở
 [scripts/case2_guest](../../scripts/case2_guest/README.md); xem
 [báo cáo](../evaluation/native-case2-win10-2004-2026-11-26.md).
 
+## Sàng lọc SW2 (đăng ký trước)
+
+`python -m experiments.sw2_screening run --bandizip PATH\Bandizip.x64.exe` chạy đúng
+6 ô trong [bản đăng ký](sw2-screening-preregistration.md); `confirm --cell Sx` chạy
+lần xác nhận ở run mới. SW1 tạo `before.zip`, SW2 sửa bản sao `after.zip`;
+`compare_survivors` chấm mọi entry được giữ lại, tracker chạy riêng. Exit 0 khi hoàn
+tất, 1 khi có ô lỗi, 2 khi không ô nào chạy được hoặc `--require-case2` mà không có
+`all`. Đợt 26/11: 7-Zip → Bandizip xóa cho Case 2 native; xem
+[báo cáo](../evaluation/sw2-screening-2026-11-26.md).
+
 ## Tài liệu công cụ
 
 - [Bandizip command line](https://www.bandisoft.com/bandizip/help/parameter/)
