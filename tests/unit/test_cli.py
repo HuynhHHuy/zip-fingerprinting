@@ -909,3 +909,87 @@ def test_cli_subprocess_invocation(tmp_path: Path, minimal_zip_bytes: bytes) -> 
     assert res_comp.returncode == 0
     data_comp = json.loads(res_comp.stdout)
     assert data_comp["structural_match"] is True
+
+
+# --------------------------------------------------------------------------- PH4-PROV-003 (#35)
+def _baseline_pair(tmp_path: Path) -> tuple:
+    from tests.integration.test_provenance_tracking import Entry, ntfs, unicode_path
+
+    names = ["keep.txt", "target.txt", "tieng-viet-\u1ec7.txt"]
+    before = [Entry(n, made_by=63, extract=10, central=[ntfs()]) for n in names]
+    after = [
+        Entry(
+            n,
+            local=[] if n.isascii() else [unicode_path(n)],
+            central=[] if n.isascii() else [unicode_path(n)],
+        )
+        for n in names
+        if n != "target.txt"
+    ]
+    before_path, after_path = tmp_path / "before.zip", tmp_path / "after.zip"
+    before_path.write_bytes(build_zip(before))
+    after_path.write_bytes(build_zip(after))
+    return before_path, after_path
+
+
+def test_cli_provenance_default_output_has_no_new_keys(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _, after = _baseline_pair(tmp_path)
+    assert main(["provenance", str(after)]) == 0
+    data = json.loads(capsys.readouterr().out)
+    assert "baseline_comparison" not in data
+    assert "catalogs_used" not in data
+
+
+def test_cli_provenance_baseline_reports_scope(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    before, after = _baseline_pair(tmp_path)
+    assert main(["provenance", str(after), "--baseline", str(before)]) == 0
+    data = json.loads(capsys.readouterr().out)
+    assert data["baseline_comparison"]["rewrite_scope"] == "all"
+    assert data["baseline_comparison"]["case2_detected"] is True
+    assert data["cases"]["case2_cascade_rewrite"] is False
+
+
+def test_cli_provenance_observed_profiles_flag(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _, after = _baseline_pair(tmp_path)
+    assert main(["provenance", str(after), "--observed-profiles"]) == 0
+    data = json.loads(capsys.readouterr().out)
+    assert data["catalogs_used"] == ["paper", "observed"]
+    assert data["cases"]["case1_mixed_fingerprints"] is False
+
+
+def test_cli_provenance_text_shows_baseline(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    before, after = _baseline_pair(tmp_path)
+    assert main(["provenance", str(after), "--baseline", str(before), "--format", "text"]) == 0
+    out = capsys.readouterr().out
+    assert "Baseline Rewrite Scope:     all" in out
+    assert "Case 2 (Baseline):          True" in out
+
+
+def test_cli_provenance_missing_baseline_is_error(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _, after = _baseline_pair(tmp_path)
+    assert main(["provenance", str(after), "--baseline", str(tmp_path / "nope.zip")]) == 1
+    assert "Baseline ZIP file does not exist" in capsys.readouterr().err
+    junk = tmp_path / "junk.zip"
+    junk.write_bytes(b"not a zip")
+    assert main(["provenance", str(after), "--baseline", str(junk)]) == 1
+    assert capsys.readouterr().err
+
+
+def test_cli_provenance_duplicate_names_in_baseline_is_error(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _, after = _baseline_pair(tmp_path)
+    duplicate = tmp_path / "dup.zip"
+    duplicate.write_bytes(build_zip([win_7zip("keep.txt"), win_7zip("keep.txt")]))
+    assert main(["provenance", str(after), "--baseline", str(duplicate)]) == 1
+    assert "Duplicate entry names" in capsys.readouterr().err

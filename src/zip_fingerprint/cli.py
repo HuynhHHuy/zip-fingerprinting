@@ -8,13 +8,16 @@ from pathlib import Path
 import sys
 from typing import List, Optional, Sequence, Union
 
+from zip_fingerprint.baseline import BaselineComparison, compare_archives
 from zip_fingerprint.classifier import AutomatedClassifier
 from zip_fingerprint.decompression import DecompressionAnalyzer
 from zip_fingerprint.exceptions import ZipFingerprintError
 from zip_fingerprint.extractor import StructuralFeatureExtractor
 from zip_fingerprint.hasher import build_canonical_fingerprint
 from zip_fingerprint.parser import ZipBinaryParser
+from zip_fingerprint.observed_rules import get_observed_rules
 from zip_fingerprint.provenance import ProvenanceTracker
+from zip_fingerprint.rules import get_all_rules
 
 
 def compute_file_sha256(path: Path) -> str:
@@ -181,17 +184,38 @@ def handle_provenance(args: argparse.Namespace) -> int:
     if not zip_path.is_file():
         sys.stderr.write(f"Error: Target path is not a regular file: '{args.zip_path}'\n")
         return 1
+    baseline_arg = getattr(args, "baseline", None)
+    baseline_path = Path(baseline_arg) if baseline_arg else None
+    if baseline_path is not None:
+        if not baseline_path.exists():
+            sys.stderr.write(f"Error: Baseline ZIP file does not exist: '{baseline_arg}'\n")
+            return 1
+        if not baseline_path.is_file():
+            sys.stderr.write(f"Error: Baseline path is not a regular file: '{baseline_arg}'\n")
+            return 1
 
+    comparison: Optional[BaselineComparison] = None
     try:
         with ZipBinaryParser(zip_path) as parser:
             archive = parser.parse()
-        tracker = ProvenanceTracker(archive)
+        rules = None
+        if getattr(args, "observed_profiles", False):
+            rules = get_all_rules() + get_observed_rules()
+        tracker = ProvenanceTracker(archive, rules=rules)
         report = tracker.analyze()
         report_data = {
             "file_path": str(zip_path),
             **report.to_dict(),
         }
-    except (ZipFingerprintError, OSError) as e:
+        if baseline_path is not None:
+            with ZipBinaryParser(baseline_path) as parser:
+                baseline = parser.parse()
+            comparison = compare_archives(baseline, archive)
+            report_data["baseline_comparison"] = {
+                "baseline_path": str(baseline_path),
+                **comparison.to_dict(),
+            }
+    except (ZipFingerprintError, OSError, ValueError) as e:
         sys.stderr.write(f"Error analyzing ZIP file: {e}\n")
         return 1
     except Exception as e:
@@ -210,6 +234,18 @@ def handle_provenance(args: argparse.Namespace) -> int:
             f"Total Indicators:           {len(report.indicators)}",
             f"Total Suspected Apps:       {len(report.suspected_applications)}",
         ]
+        if report.catalogs_used is not None:
+            lines.append(f"Catalogs Used:              {', '.join(report.catalogs_used)}")
+        if comparison is not None:
+            lines.append(f"Baseline:                   {baseline_arg}")
+            lines.append(f"Baseline Rewrite Scope:     {comparison.rewrite_scope}")
+            lines.append(f"Case 2 (Baseline):          {comparison.case2_detected}")
+            for row in comparison.entries:
+                if row["qualifying_changes"]:
+                    lines.append(f"  - {row['path']}: {', '.join(row['qualifying_changes'])}")
+            if comparison.content_changed:
+                changed = ", ".join(comparison.content_changed)
+                lines.append(f"Content Changed:            {changed}")
         if report.suspected_applications:
             lines.append("Suspected Applications:")
             for s in report.suspected_applications:
@@ -226,7 +262,8 @@ def handle_provenance(args: argparse.Namespace) -> int:
     else:
         rendered_output = json.dumps(report_data, indent=2, ensure_ascii=True) + "\n"
 
-    return _write_output(zip_path, getattr(args, "output", None), rendered_output)
+    sources = [zip_path] if baseline_path is None else [zip_path, baseline_path]
+    return _write_output(sources, getattr(args, "output", None), rendered_output)
 
 
 def handle_decompress_check(args: argparse.Namespace) -> int:
@@ -415,6 +452,16 @@ def build_parser() -> argparse.ArgumentParser:
         choices=["json", "text"],
         default="json",
         help="Output format (default: json)",
+    )
+    prov_parser.add_argument(
+        "--baseline",
+        type=str,
+        help="Earlier ZIP to compare survivor headers against (header-only Case 2 evidence)",
+    )
+    prov_parser.add_argument(
+        "--observed-profiles",
+        action="store_true",
+        help="Also use profiles observed in this project's experiments (not from the paper)",
     )
     prov_parser.add_argument("--output", "-o", type=str, help="Path to write output")
 
