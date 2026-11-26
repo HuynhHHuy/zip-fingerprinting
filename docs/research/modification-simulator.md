@@ -175,8 +175,13 @@ Operator-only creation có thể seal để phân tích, nhưng không đạt na
 Đợt GUI18/11: run-case2-hz8kgcll scope none; không retry; source/baseline và
 payload survivor nguyên vẹn. Case1 control mới run-16gz65r7 hợp lệ. Xem
 [báo cáo GUI](../evaluation/native-case2-gui-2026-11-18.md) và
-[hướng dẫn VM đang chờ media](case2-windows10-vm.md). Không chạy thêm cấu hình
+[hướng dẫn VM](case2-windows10-vm.md). Không chạy thêm cấu hình
 host hoặc tự dùng Ubuntu/Wine để thay Windows Explorer.
+
+Đợt VM 26/11: Windows 10 v2004 + Bandizip 6.29 GUI → Explorer Delete,
+run-case2-dlq9ulnc scope none, kết quả âm. Script guest nằm ở
+[scripts/case2_guest](../../scripts/case2_guest/README.md); xem
+[báo cáo](../evaluation/native-case2-win10-2004-2026-11-26.md).
 
 ## Tài liệu công cụ
 

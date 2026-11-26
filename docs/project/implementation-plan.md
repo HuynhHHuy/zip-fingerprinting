@@ -305,6 +305,12 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   Không thử thêm cấu hình host. Chỉ bàn giao hướng dẫn VM Windows10v2004 vì
   chưa có media Windows hợp lệ; chưa chạy guest/Bandizip6.29. **#19 vẫn mở,
   DoD Case2 false.** Xem [kết quả GUI](../evaluation/native-case2-gui-2026-11-18.md).
+- **Đối chứng Windows 10 v2004 26/11 (#19):** guest VMware cô lập, Windows 10
+  Home 2004 build 19041.264, Bandizip 6.29 GUI → Explorer Delete. Run
+  `run-case2-dlq9ulnc` âm, scope none, payload nguyên vẹn; host kiểm lại checksum
+  và comparison. **#19 vẫn mở, DoD Case2 false**; muốn thử cặp công cụ khác hoặc
+  guest tiếng Hàn cần duyệt thí nghiệm mới. Xem
+  [báo cáo](../evaluation/native-case2-win10-2004-2026-11-26.md).
 
 ---
 
