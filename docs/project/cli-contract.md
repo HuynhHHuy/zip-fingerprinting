@@ -146,7 +146,9 @@ Phân tích lịch sử can thiệp tệp, phát hiện đa nguồn gốc (Case 
     đo (`src/zip_fingerprint/observed_rules.py`). Các profile này **không phải** dữ liệu
     của Um et al. (2021). Khi bật, JSON có `catalogs_used: ["paper", "observed"]`, và
     mỗi ứng viên trong `groups` và `suspected_applications` có khóa `catalog`. Khi không
-    bật, output giữ nguyên như trước.
+    bật, output giữ nguyên như trước. Archive do Explorer tạo với tên ASCII không có extra
+    field, giống hệt bố cục Bandizip khi ghi lại. Vì vậy khi bật cờ, archive đó có cả hai
+    ứng viên với điểm bằng nhau, và profile bài báo được xếp trước.
   - `--format {json, text}` *(tùy chọn, mặc định `json`)*: Định dạng xuất kết quả.
   - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả (từ chối nếu trùng input hoặc baseline).
 * **Định dạng JSON (`--format json`):**

@@ -88,3 +88,14 @@ def test_observed_profiles_keep_real_case1():
 
 def test_classifier_default_rules_unchanged():
     assert AutomatedClassifier()._rules == get_all_rules()
+
+
+def test_observed_profiles_leave_explorer_ascii_archives_ambiguous():
+    # An Explorer-created ASCII archive has no extra fields, exactly like a Bandizip rewrite:
+    # both stay candidates, labelled by catalog, and neither is reported as Case 1.
+    entries = [win_compressed_folder("a.txt"), win_compressed_folder("b.txt")]
+    report = ProvenanceTracker(parse(entries), rules=with_observed()).analyze()
+    assert report.case1_detected is False
+    assert report.groups[0].candidates == [("Windows", "Compressed folder"), REWRITE]
+    catalogs = {s["application"]: s["catalog"] for s in report.to_dict()["suspected_applications"]}
+    assert catalogs == {"Compressed folder": "paper", REWRITE[1]: "observed"}

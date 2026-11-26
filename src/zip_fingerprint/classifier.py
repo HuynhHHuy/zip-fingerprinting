@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from zip_fingerprint.constants import EXTRA_HEADER_EXTENDED_TS
 from zip_fingerprint.models import CandidateEnvironment
+from zip_fingerprint.observed_rules import CATALOG_OBSERVED, catalog_of
 from zip_fingerprint.rules import FingerprintRule, get_all_rules
 
 
@@ -130,7 +131,16 @@ class AutomatedClassifier:
                     notes=notes,
                 )
             )
-        results.sort(key=lambda item: (-item.confidence, item.target_os, item.application))
+        # On equal scores a paper profile ranks before an observed one; paper-only
+        # rule sets keep their previous order.
+        results.sort(
+            key=lambda item: (
+                -item.confidence,
+                catalog_of((item.target_os, item.application)) == CATALOG_OBSERVED,
+                item.target_os,
+                item.application,
+            )
+        )
         if len(results) > 1 and results[0].confidence == results[1].confidence:
             for candidate in results:
                 if candidate.confidence == results[0].confidence:
