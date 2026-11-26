@@ -70,6 +70,9 @@ class Entry:
     central: List[Extra] = field(default_factory=list)
     descriptor: bool = False
     data: bytes = b"forensic sample"
+    made_by: int = 20
+    extract: int = 20
+    method: int = 0
 
 
 def _extras(blocks: List[Extra]) -> bytes:
@@ -95,9 +98,9 @@ def build_zip(entries: List[Entry]) -> bytes:
             struct.pack(
                 "<IHHHHHIIIHH",
                 SIG_LOCAL_FILE_HEADER,
-                20,
+                entry.extract,
                 flag,
-                0,
+                entry.method,
                 0x5B9F,
                 0x522B,
                 header_crc,
@@ -121,10 +124,10 @@ def build_zip(entries: List[Entry]) -> bytes:
             struct.pack(
                 "<IHHHHHHIIIHHHHHII",
                 SIG_CENTRAL_DIRECTORY_HEADER,
-                (entry.host << 8) | 20,
-                20,
+                (entry.host << 8) | entry.made_by,
+                entry.extract,
                 flag,
-                0,
+                entry.method,
                 0x5B9F,
                 0x522B,
                 zlib.crc32(entry.data),
