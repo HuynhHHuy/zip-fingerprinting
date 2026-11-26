@@ -24,7 +24,7 @@ single provenance: SW2 may rewrite every header, and some catalog profiles overl
 """
 
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, FrozenSet, Iterator, List, Optional, Set, Tuple
+from typing import Any, Dict, FrozenSet, Iterator, List, Optional, Sequence, Set, Tuple
 
 from zip_fingerprint.classifier import AutomatedClassifier
 from zip_fingerprint.constants import (
@@ -40,6 +40,7 @@ from zip_fingerprint.models import (
     LocalFileHeaderRecord,
     ZipArchiveRecord,
 )
+from zip_fingerprint.observed_rules import CATALOG_OBSERVED, CATALOG_PAPER, catalog_of
 from zip_fingerprint.rules import FingerprintRule, get_all_rules
 
 Environment = Tuple[str, str]  # (target_os, application)
@@ -162,9 +163,24 @@ class ProvenanceReport:
     inference_history: List[str]
     entries: List[EntryFingerprint]
     limitations: List[str] = field(default_factory=lambda: list(DEFAULT_LIMITATIONS))
+    # Set only when observed (non-paper) rules were used; None keeps the default output.
+    catalogs_used: Optional[List[str]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Return a JSON-serializable representation."""
+        data = self._base_dict()
+        if self.catalogs_used is not None:
+            data["catalogs_used"] = list(self.catalogs_used)
+            for group in data["groups"]:
+                for candidate in group["candidates"]:
+                    candidate["catalog"] = catalog_of(
+                        (candidate["target_os"], candidate["application"])
+                    )
+            for suspect in data["suspected_applications"]:
+                suspect["catalog"] = catalog_of((suspect["target_os"], suspect["application"]))
+        return data
+
+    def _base_dict(self) -> Dict[str, Any]:
         return {
             "is_multi_provenance": self.is_multi_provenance,
             "requires_further_analysis": self.requires_further_analysis,
@@ -184,9 +200,19 @@ class ProvenanceReport:
 class ProvenanceTracker:
     """Detects multi-system coexistence, header tampering, and modification history."""
 
-    def __init__(self, archive: ZipArchiveRecord):
+    def __init__(
+        self, archive: ZipArchiveRecord, rules: Optional[Sequence[FingerprintRule]] = None
+    ):
         self.archive = archive
-        self._classifier = AutomatedClassifier()
+        # None keeps the paper catalog; observed rules are opt-in (observed_rules.py).
+        self._rules: List[FingerprintRule] = list(rules) if rules is not None else get_all_rules()
+        self._classifier = AutomatedClassifier(self._rules)
+        observed = any(
+            catalog_of((r.target_os, r.application)) == CATALOG_OBSERVED for r in self._rules
+        )
+        self._catalogs: Optional[List[str]] = (
+            [CATALOG_PAPER, CATALOG_OBSERVED] if observed else None
+        )
 
     def analyze_modifications(self) -> Dict[str, Any]:
         """Detect Case 1 (local alterations) and Case 2 (global cascade alterations)."""
@@ -201,7 +227,9 @@ class ProvenanceTracker:
         ]
         if not entries:
             history.append("Archive has no entries; no provenance evidence is available.")
-            return ProvenanceReport(False, False, False, False, [], [], [], history, [])
+            return ProvenanceReport(
+                False, False, False, False, [], [], [], history, [], catalogs_used=self._catalogs
+            )
 
         history.append(
             f"Fingerprinted {len(entries)} entries independently from CDH/LFH pairs "
@@ -256,6 +284,7 @@ class ProvenanceTracker:
             suspected_applications=suspects,
             inference_history=history,
             entries=entries,
+            catalogs_used=self._catalogs,
         )
 
     # ------------------------------------------------------------------ entry fingerprints
@@ -296,7 +325,7 @@ class ProvenanceTracker:
         local_side: List[Environment] = []
         central_side: List[Environment] = []
         pair_match = False
-        for rule in get_all_rules():
+        for rule in self._rules:
             env = (rule.target_os, rule.application)
             for variant_local, variant_central in self._variants(rule):
                 local_ok = (
