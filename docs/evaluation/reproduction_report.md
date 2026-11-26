@@ -193,6 +193,19 @@ chưa có media hợp lệ nên chưa dựng/chạy guest. Xem
 [kết quả/giới hạn](native-case2-gui-2026-11-18.md) và
 [manifest/checksums](evidence/native-case2-gui-2026-11-18.json).
 
+### 2.9 Windows 10 v2004 + Bandizip 6.29 → Explorer Delete — PH4-PROV-002 (26/11/2026)
+
+Run `run-case2-dlq9ulnc` trên guest VMware Windows 10 Home 2004 (19041.264,
+en-US, ACP 1252), cô lập mạng. Bandizip 6.29 GUI tạo ZIP/Normal với UTF-8 filename
+off, Unicode Path on, NTFS time on; Explorer Compressed Folder xóa `target.txt`.
+Cả hai thao tác có log `ui_observed`. Payload ba survivor nguyên vẹn; chỉ offset
+đổi; scope `none`; tracker Case 2 false. Host đọc lại ổ evidence (25/25 checksum
+khớp) và tính lại comparison trùng với guest. **Kết quả âm lần thứ ba của cặp
+Bandizip → Explorer; #19 chưa đạt DoD Case 2.** Lệch runbook: RAM 2 GiB, edition
+Home, bỏ liên kết .zip của Bandizip trước Delete. Xem
+[báo cáo](native-case2-win10-2004-2026-11-26.md) và
+[manifest/checksums](evidence/native-case2-win10-2004-2026-11-26.json).
+
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix) — PH7-EVAL-002
 
 > **Trạng thái (25/11/2026): đã triển khai evaluator, đã kiểm thử tổng hợp, đã chạy

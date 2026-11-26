@@ -1,0 +1,245 @@
+{
+ "schema_version": 1,
+ "date": "2026-11-26",
+ "issue": 19,
+ "measurement_tree": "a482fcff0852d8578cebaf185c80dc1d3645923d",
+ "measurement_note": "Guest checkout was git archive of e093952 (pre-rewrite SHA); its tree equals main 71e86ae. experiments/explorer_delete.py unchanged by this PR.",
+ "runs": [
+  "run-case2-dlq9ulnc"
+ ],
+ "status": "finalized_negative",
+ "native_case2": false,
+ "dod_met": false,
+ "case2_scope": "none",
+ "tracker_agrees": true,
+ "creation_mode": "gui",
+ "configuration": "unicode-path",
+ "operational_retries": 0,
+ "environment": {
+  "hypervisor": "VMware Workstation 17.5.2 build-23775571",
+  "guest": "Windows 10 Home 2004 build 19041.264 English x64, not activated",
+  "guest_resources": "2 vCPU, 2 GiB RAM (plan: 4 GiB), 64 GiB growable disk, UEFI",
+  "isolation": "network disconnected; no VMware Tools, shared folders, clipboard or drag-and-drop",
+  "locale": "en-US, ACP 1252, OEMCP 437, Pacific Standard Time",
+  "zipfldr_dll": "10.0.19041.1",
+  "explorer_exe": "10.0.19041.1",
+  "python": "3.11.9",
+  "tool": {
+   "name": "Bandizip",
+   "version": "6.29.0.1",
+   "sha256": "6c3bbc6d94d42fa4398b6185e9641afed89c11c4857e52e057624eccbf859693",
+   "installer_sha256": "37d68f273d0479adec08db3a75bd229c6fad121894ae9bd456fedd8b5f2d2ede",
+   "installer_source": "https://www.bandisoft.com/bandizip/dl.php?old",
+   "signature": "Authenticode Valid, Bandisoft"
+  },
+  "windows_iso_sha256": "a9efd2329ed805a6a58e0e0101f9b22ad4031e80e2c663c571cd004db26d2f31",
+  "windows_iso_source": "archive.org mirror; hash matches the published value for Win10 2004 English x64"
+ },
+ "settings_evidence": {
+  "registry": "HKCU\\Software\\Bandizip before creation: useUtf8FileName=0, useUtf8ExtraField=1, bSaveNtfsTime2Zip=1, compressionLevel=6; after creation only window size and newArchiveLastPath changed",
+  "ui_tree": "creation-settings.json captured no window (Settings was not open at that pause)",
+  "screenshot": "screenshots/05-bandizip-compression-settings.png"
+ },
+ "guest_changes": [
+  "Hibernation disabled by RUN-01",
+  "Bandizip installer ticked ZIP and other associations; ZIP association unticked in Bandizip before the Delete phase so Explorer Compressed Folder opened after.zip"
+ ],
+ "handoff": {
+  "status": "pending_upload"
+ },
+ "bundle": {
+  "name": "native-case2-win10-2004-2026-11-26-evidence.zip",
+  "size": 717122,
+  "sha256": "3b2acef16ee1153ecebf3dec7de63fc1a4140059628e64b22dc84a3ca4f46889"
+ },
+ "verification": {
+  "evidence_disk": "25/25 files match the guest SHA256SUMS after host extraction",
+  "host_recompute": "read_evidence + compare_delete on the host equals guest metadata comparison",
+  "tracker": "case1/case2 false on before.zip and observed-after.zip",
+  "guest_suite": "pytest exit 0 in guest; skips only for native tools absent in guest"
+ },
+ "limits": [
+  "One guest, one tool version, one configuration, four flat small files",
+  "English guest with ACP 1252; not the Korean (CP949) environment of the paper",
+  "Operator GUI observations are not authenticated telemetry",
+  "Screenshots were sent by the operator after capture and hashed only when bundled",
+  "Same-ID/length internal extra layout not classified; no extra bytes changed"
+ ],
+ "files": [
+  {
+   "path": "guest-logs/01-verify-and-record-20261126-094747.log",
+   "size": 1293,
+   "sha256": "5a2544087776491010b7c55f87fe0a4db3e3344ae5d3097f226e52b43f964cd8"
+  },
+  {
+   "path": "guest-logs/02-install-python-and-test-20261126-094950.log",
+   "size": 6390,
+   "sha256": "8e839728e85f3f86f7fd85f27b3c9f9cb411a5c11ce3b99a9fca8a0c0e7c4f72"
+  },
+  {
+   "path": "guest-logs/03-install-bandizip-20261126-095220.log",
+   "size": 1280,
+   "sha256": "bacfe7b6fb15564ba004a75db3f1853661ca834d6bd8b94cd3dfb269ce7e244e"
+  },
+  {
+   "path": "guest-logs/04-case2-experiment-20261126-100629.log",
+   "size": 4278,
+   "sha256": "7d53c102b50093ede59ef19814a0c00ac70aa6bea2e52d4919e2a05f7b4e413c"
+  },
+  {
+   "path": "guest-logs/05-export-evidence-20261126-105638.log",
+   "size": 688,
+   "sha256": "4616ba4cc9f8c168ed7eb4fbb9063f6035776ef399ea0687f7c728ac24a6476a"
+  },
+  {
+   "path": "guest-logs/environment.txt",
+   "size": 582,
+   "sha256": "386851156050647f55655d7cc8a0bdb0bceacf8f03cdc20e875b7523b99b43b6"
+  },
+  {
+   "path": "guest-logs/evidence-disk-SHA256SUMS.txt",
+   "size": 2667,
+   "sha256": "d862722e0b975faebc0e099990feae00493c822646be9c69b1ecb37eb79ecbc6"
+  },
+  {
+   "path": "guest-logs/last-run.txt",
+   "size": 70,
+   "sha256": "7e63deff79a0749311d8e812aaf6a3099482f7c4ff17a7e87c7592a033cba80f"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/after.zip",
+   "size": 594,
+   "sha256": "e69c64959c367eb943620c4abad70768e220501e47fdf0ff38db77fd448270c7"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/bandizip-settings-after.reg",
+   "size": 15702,
+   "sha256": "30ab2ebbf89b46916b4f8d55cca8bda82d5fff52f7534bfeaba21cd112a8e09d"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/bandizip-settings-before.reg",
+   "size": 15552,
+   "sha256": "0ae246fa1d4cac46db841d55e3d221291463abcaf4505bd6f946b2e450a7a43a"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/before.zip",
+   "size": 745,
+   "sha256": "33b7e407c673714393f5e12080af0536290e80b4d5af5887b9ac6a2ad895d673"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/creation-after.json",
+   "size": 109055,
+   "sha256": "6cae4754460dba7a2bf24f2bba4dfb7a74e6d60e75fd615a828aaf1ff30d53a4"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/creation-before.json",
+   "size": 122726,
+   "sha256": "cf2e83657ba033dd619d5bfba66c3c319b49669906d90f28b42692c5029a44b7"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/creation-log.json",
+   "size": 1411,
+   "sha256": "7609bd3b2aab69418aabe99751b6825c764ed208b9b8237e29ebb7b819748b53"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/creation-settings.json",
+   "size": 168,
+   "sha256": "d0724505dbbc55f8dd20b0d76fdb40c9b96aa3aa88e358f8749d98ac29b00f0d"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/delete-after.json",
+   "size": 105906,
+   "sha256": "14913b616da29794f06c9fbc8fb3ae2f6dfe3dc65b41ae1c8063c3244d26d336"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/delete-before.json",
+   "size": 121968,
+   "sha256": "e72d720f3123d6a78b64c770059d08b7a7011d43bb274ec2cd78e601921d510e"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/delete-log.json",
+   "size": 1019,
+   "sha256": "ed5a3e8ea64443dd44abbaeb91c310f7aca9108878131073fd8ac1723ce6d3e8"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/metadata.json",
+   "size": 52047,
+   "sha256": "7d4d7bd1d154a39bc05096a670a2d8b275822f1df3a93517beff83708f814c18"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/observed-after.zip",
+   "size": 594,
+   "sha256": "e69c64959c367eb943620c4abad70768e220501e47fdf0ff38db77fd448270c7"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/report.md",
+   "size": 859,
+   "sha256": "c5411bb7a986e6fe30caa80dfd9e8f49893bff593aeebaa8824d9db85e5a313f"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/source/keep.txt",
+   "size": 18,
+   "sha256": "1c5bc35501b1cc0ad666f3312e26b0a10210ed0cc113f2dd5ac860893e67a075"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/source/target.txt",
+   "size": 17,
+   "sha256": "b3090ea8c58632fb10423baf7827446378fd0653b976050cc04eb70fa6053ef3"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/source/tieng-viet-ệ.txt",
+   "size": 20,
+   "sha256": "29cd003ea2d2e974827e688659341dc8de2458cd77634ac05df776f91323d488"
+  },
+  {
+   "path": "run-case2-dlq9ulnc/source/가나다.txt",
+   "size": 16,
+   "sha256": "2a63310c421d04977ac4280f31f39b709edde5bcaa26fa0a49a150403e0f45c3"
+  },
+  {
+   "path": "screenshots/01-run01-verify-environment.png",
+   "size": 110778,
+   "sha256": "abf66ae81da8e5f17fab2fe6d80aefdef4b81cd10fcfddb964e83265fddde42d"
+  },
+  {
+   "path": "screenshots/02-run02-pytest.png",
+   "size": 124694,
+   "sha256": "1b76ee1b789572a7c4495eaa86455d7cacb770c547248cb1e053648bac3bc234"
+  },
+  {
+   "path": "screenshots/03-run03-bandizip-installed.png",
+   "size": 110145,
+   "sha256": "bbcbb9166e4a806c610955be0e9dc840fe92f9e9c33d270dc771caa4338356ba"
+  },
+  {
+   "path": "screenshots/04-creation-empty-selection-retry.png",
+   "size": 87322,
+   "sha256": "10e3fa695b572ce65407bbda081f37d4ac5d907ce331e852ca669b8601c7a9f9"
+  },
+  {
+   "path": "screenshots/05-bandizip-compression-settings.png",
+   "size": 71345,
+   "sha256": "4883544115804b9a063cf5cfcbdbea55d92688e32c54927f422426e09217e2ef"
+  },
+  {
+   "path": "screenshots/06-new-archive-dialog.png",
+   "size": 59037,
+   "sha256": "d41de7c87f76b879cb43a6659fae74777cc951bfb95ce2fff15bda33f364e29c"
+  },
+  {
+   "path": "screenshots/07-archiving-completed.png",
+   "size": 52047,
+   "sha256": "5b7890ffc32610afa6bc6e37dcbd9a93d0a69555a90fdba845da0278f7aee3fc"
+  },
+  {
+   "path": "screenshots/08-creation-recorded-and-sealed.png",
+   "size": 50181,
+   "sha256": "b894ed9204f1930d871f97ef551a59e4988306c931ea5d38e6642d90c4890766"
+  },
+  {
+   "path": "screenshots/09-delete-finalize-result.png",
+   "size": 55041,
+   "sha256": "bb66c7a94e9414f7729420d671d0858c3520be7cfcf4a6a78a8f6b67d3c0d89f"
+  }
+ ]
+}

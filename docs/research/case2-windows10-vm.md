@@ -1,9 +1,15 @@
 # Case 2: bàn giao thí nghiệm Windows 10 v2004
 
-**Trạng thái 18/11/2026: chờ media Windows hợp lệ; chưa tạo guest, chưa chạy
-Bandizip 6.29.** Máy có VMware Workstation và các guest Linux; Ubuntu/Wine
-không thay bằng chứng native Explorer. Không dùng guest Linux đang có làm nền
-để kết luận hành vi Windows.
+**Trạng thái 26/11/2026: đã chạy, kết quả âm.** Guest Windows 10 Home 2004
+(build 19041.264) chạy Bandizip 6.29 GUI → Explorer Delete, run
+`run-case2-dlq9ulnc`, rewrite scope `none`. Xem
+[báo cáo](../evaluation/native-case2-win10-2004-2026-11-26.md). Có hai điểm lệch
+so với cấu hình dưới đây, đã ghi trong báo cáo: RAM 2 GiB thay vì 4 GiB, và bỏ liên
+kết .zip của Bandizip trước bước Delete. Guest không có clipboard nên các bước
+được tự động hóa bằng [script guest](../../scripts/case2_guest/README.md).
+
+Trạng thái 18/11/2026 (lịch sử): chờ media Windows hợp lệ; chưa tạo guest, chưa
+chạy Bandizip 6.29. Ubuntu/Wine không thay bằng chứng native Explorer.
 
 Hai quan sát host đều âm: Bandizip 7.47.0.1 CLI và GUI tạo ZIP, sau đó Explorer
 Delete trên Windows 10.0.26200 đều chỉ đổi offset. Xem
