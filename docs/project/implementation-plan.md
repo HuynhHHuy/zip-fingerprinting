@@ -319,6 +319,29 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   nghiệm thu #19; chưa đưa mẫu vào corpus/catalogue chung. Xem
   [báo cáo](../evaluation/sw2-screening-2026-11-26.md).
 
+#### `PH4-PROV-003`: Phát hiện Case 2 khi có bản trước và catalog profile tự đo [ĐÃ TRIỂN KHAI — CHỜ REVIEW]
+- **Mức độ ưu tiên:** P2 · **Issue:** #35
+- **Phụ thuộc:** `PH4-PROV-001`, `PH4-PROV-002` (sàng lọc SW2)
+- **Mục tiêu:** Nhận ra Case 2 khi SW2 ghi lại nhất quán cả LFH và CDH, và sửa lỗi gán
+  nhầm SW1 trên mẫu S6, trong khi vẫn giữ catalog bài báo nguyên văn.
+- **Tệp tạo/chỉnh sửa:**
+  - `src/zip_fingerprint/baseline.py`;
+  - `src/zip_fingerprint/observed_rules.py`;
+  - tham số `rules` của `AutomatedClassifier` và `ProvenanceTracker`;
+  - CLI `provenance --baseline` và `--observed-profiles`.
+- **Kết quả kiểm chứng 27/11/2026:**
+  - Mặc định chỉ dùng Table 6/7; evaluator PH7-EVAL (`api` và `cli`) cho output giống
+    `main`, ngoài metadata của lần chạy.
+  - Trên mẫu native:
+    - S6 và lần xác nhận: baseline `all`;
+    - S1–S5 và Explorer Delete `run-case2-dlq9ulnc`: baseline `none`, trùng
+      `compare_survivors`;
+    - S6 khi bật `--observed-profiles`: không còn bị báo Case 1;
+    - các mẫu Case 1 đã ghi nhận: vẫn được báo Case 1;
+    - ZIP sạch: không bị báo nhầm.
+- **Giới hạn:** khi chỉ có một archive và SW2 đã ghi lại nhất quán, vẫn không phát hiện
+  được Case 2. Profile tự đo đến từ một host, một phiên bản công cụ và bốn file nhỏ.
+
 ---
 
 ### Giai đoạn 5: Phân tích Dấu vết Thời gian Giải nén & Nghịch đảo Thời gian (Decompression Artifacts)

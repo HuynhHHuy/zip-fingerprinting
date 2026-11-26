@@ -128,12 +128,27 @@ Phân tích lịch sử can thiệp tệp, phát hiện đa nguồn gốc (Case 
 
 * **Cú pháp:**
   ```bash
-  zip-fingerprint provenance <zip_path> [--format {json,text}] [--output <file_path>]
+  zip-fingerprint provenance <zip_path> [--baseline <before.zip>] [--observed-profiles] [--format {json,text}] [--output <file_path>]
   ```
 * **Tham số:**
   - `<zip_path>` *(bắt buộc)*: Đường dẫn đến tệp ZIP cần phân tích.
+  - `--baseline <before.zip>` *(tùy chọn, PH4-PROV-003)*: bản ZIP trước khi sửa. JSON có
+    thêm khóa `baseline_comparison`:
+    - `survivors`, `removed`, `added`, `content_changed`;
+    - `entries`, trong đó mỗi entry có `changes` và `qualifying_changes`;
+    - `rewrite_scope`: `all`, `partial`, `none` hoặc `not_applicable`;
+    - `case2_detected`, đúng khi scope là `all` và không survivor nào đổi nội dung.
+
+    So sánh chỉ đọc header, không giải nén. Khóa `cases.case2_cascade_rewrite` vẫn là
+    kết luận khi chỉ có một archive và không đổi theo cờ này. Mã thoát `1` khi baseline
+    không tồn tại, không phải ZIP, hoặc có tên entry trùng.
+  - `--observed-profiles` *(tùy chọn, PH4-PROV-003)*: dùng thêm các profile do dự án tự
+    đo (`src/zip_fingerprint/observed_rules.py`). Các profile này **không phải** dữ liệu
+    của Um et al. (2021). Khi bật, JSON có `catalogs_used: ["paper", "observed"]`, và
+    mỗi ứng viên trong `groups` và `suspected_applications` có khóa `catalog`. Khi không
+    bật, output giữ nguyên như trước.
   - `--format {json, text}` *(tùy chọn, mặc định `json`)*: Định dạng xuất kết quả.
-  - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả (từ chối nếu trùng input).
+  - `-o, --output <file_path>` *(tùy chọn)*: Đường dẫn tệp ghi kết quả (từ chối nếu trùng input hoặc baseline).
 * **Định dạng JSON (`--format json`):**
   ```json
   {

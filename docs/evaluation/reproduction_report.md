@@ -220,6 +220,22 @@ xét nghiệm thu #19; cặp Bandizip → Explorer của bài báo vẫn âm. Xe
 [báo cáo](sw2-screening-2026-11-26.md) và
 [manifest/checksums](evidence/sw2-screening-2026-11-26.json).
 
+### 2.11 Case 2 khi có bản trước và profile tự đo — PH4-PROV-003 (27/11/2026)
+
+`provenance --baseline before.zip` so header các entry còn lại, không giải nén, và cho
+scope `all`/`partial`/`none`. Trên mẫu native, S6 và lần xác nhận cho `all`; S1–S5 và
+Explorer Delete `run-case2-dlq9ulnc` cho `none`. Các scope này trùng với
+`compare_survivors` đã đăng ký.
+
+`--observed-profiles` bật thêm profile "Bandizip 7.47 (rewrite, observed)" đo từ S6. Đây
+**không phải** dữ liệu bài báo và mặc định tắt. Khi bật:
+- S6 không còn bị báo Case 1 hay bị gán SW1 là Explorer;
+- các mẫu Case 1 native đã ghi nhận vẫn được báo Case 1;
+- ZIP sạch không bị báo nhầm.
+
+Output mặc định và kết quả PH7-EVAL không đổi. Khi chỉ có một archive bị ghi lại nhất
+quán, Case 2 vẫn không phát hiện được. Theo dõi ở #35.
+
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix) — PH7-EVAL-002
 
 > **Trạng thái (25/11/2026): đã triển khai evaluator, đã kiểm thử tổng hợp, đã chạy
