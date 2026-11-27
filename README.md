@@ -256,6 +256,10 @@ zip-fingerprint identify <archive.zip> [--format json|text] [--output <file.json
 
 # Phân tích đa nguồn gốc và lịch sử can thiệp tệp (Case 1 vs Case 2)
 zip-fingerprint provenance <archive.zip> [--format json|text] [--output <file.json>]
+# Có bản trước: so header các entry còn lại để thấy Case 2 (chỉ đọc header)
+zip-fingerprint provenance <after.zip> --baseline <before.zip>
+# Thêm profile tự đo của dự án (không phải dữ liệu bài báo; mặc định tắt)
+zip-fingerprint provenance <archive.zip> --observed-profiles
 
 # Đối chiếu dấu vết mốc thời gian giải nén NTFS với Bảng 8
 zip-fingerprint decompress-check --bmac <pattern> [--entry-type <type>] [--extra-field <field>] [--format json|text] [--output <file.json>]

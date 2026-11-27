@@ -193,6 +193,17 @@ tất, 1 khi có ô lỗi, 2 khi không ô nào chạy được hoặc `--requir
 `all`. Đợt 26/11: 7-Zip → Bandizip xóa cho Case 2 native; xem
 [báo cáo](../evaluation/sw2-screening-2026-11-26.md).
 
+## Kiểm tra lại cặp trước/sau bằng CLI
+
+`zip-fingerprint provenance after.zip --baseline before.zip` cho `rewrite_scope` từ header
+các entry còn lại, không giải nén. Khác với `compare_survivors`, CLI không băm payload:
+nội dung được coi là giữ nguyên khi CRC và size không đổi. Thêm `--observed-profiles`
+để dùng profile tự đo (không phải dữ liệu bài báo).
+
+Để chạy test trên mẫu thật: đặt `ZIP_PROV_NATIVE_SAMPLES` trỏ tới thư mục chứa các run,
+rồi chạy `python -m pytest tests/integration/test_native_baseline_samples.py`. CI không
+có mẫu nên các test này bị skip.
+
 ## Tài liệu công cụ
 
 - [Bandizip command line](https://www.bandisoft.com/bandizip/help/parameter/)
