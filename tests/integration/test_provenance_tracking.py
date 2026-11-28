@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 import io
 import json
 import struct
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 import zlib
 
 import pytest
