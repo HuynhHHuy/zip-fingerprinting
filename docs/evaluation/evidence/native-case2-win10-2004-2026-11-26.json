@@ -45,7 +45,12 @@
   "Bandizip installer ticked ZIP and other associations; ZIP association unticked in Bandizip before the Delete phase so Explorer Compressed Folder opened after.zip"
  ],
  "handoff": {
-  "status": "pending_upload"
+  "status": "uploaded_download_verified",
+  "release_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/tag/evidence-ph4-prov-002-win10-2004-2026-11-26",
+  "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-win10-2004-2026-11-26/native-case2-win10-2004-2026-11-26-evidence.zip",
+  "release_id": 459266760,
+  "tag_target": "8d8159170c01353178c2ed101888e0162597b71e",
+  "verification": "public asset downloaded: size and SHA-256 match; 35 members match file-manifest.json"
  },
  "bundle": {
   "name": "native-case2-win10-2004-2026-11-26-evidence.zip",
