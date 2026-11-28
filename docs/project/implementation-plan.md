@@ -269,7 +269,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
 - **Đầu ra:** Báo cáo kiểm định đa nguồn gốc và tính toàn vẹn của archive.
 - **Tiêu chí nghiệm thu (DoD):** Phát hiện chính xác kho lưu trữ nhân tạo có chứa 2 entry mang 2 vân tay khác nhau (Case 1).
 
-#### `PH4-PROV-002`: Xây dựng Kịch bản Mô phỏng Can thiệp Tệp Tự động [ĐÃ TRIỂN KHAI — CHƯA ĐẠT ĐỦ DoD]
+#### `PH4-PROV-002`: Xây dựng Kịch bản Mô phỏng Can thiệp Tệp Tự động [HOÀN THÀNH — NGHIỆM THU 28/11/2026, #19 ĐÃ ĐÓNG]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH4-PROV-001`
 - **Mục tiêu:** Tự động tạo ra các mẫu ZIP bị can thiệp theo đúng kịch bản thí nghiệm Hình 10 để kiểm chứng bộ truy vết.
@@ -322,9 +322,10 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   - Mỗi mẫu có nhãn kèm căn cứ, công cụ và phiên bản, SHA-256, và kết quả kỳ vọng.
   - CI đối chiếu checksum với manifest evidence. Test trên bundle tải từ prerelease tái
     lập được mọi kết quả kỳ vọng (cách chạy trong `data/README.md`).
-  - Mọi mục nghiệm thu của #19 đã có bằng chứng. Còn chờ reviewer nghiệm thu.
+  - #19 được nghiệm thu và đóng ngày 28/11/2026. Cặp Bandizip → Explorer của bài báo vẫn
+    âm; mẫu Case 2 native đến từ cặp 7-Zip → Bandizip.
 
-#### `PH4-PROV-003`: Phát hiện Case 2 khi có bản trước và catalog profile tự đo [ĐÃ TRIỂN KHAI — CHỜ REVIEW]
+#### `PH4-PROV-003`: Phát hiện Case 2 khi có bản trước và catalog profile tự đo [HOÀN THÀNH — #35 ĐÃ ĐÓNG 28/11/2026]
 - **Mức độ ưu tiên:** P2 · **Issue:** #35
 - **Phụ thuộc:** `PH4-PROV-001`, `PH4-PROV-002` (sàng lọc SW2)
 - **Mục tiêu:** Nhận ra Case 2 khi SW2 ghi lại nhất quán cả LFH và CDH, và sửa lỗi gán
@@ -486,7 +487,7 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   - **Phần A (`PH7-CLI-001/A` — HOÀN THÀNH):** Nối `fingerprint` và `identify` với module thực (`parser`, `extractor`, `hasher`, `classifier`); chuẩn hóa exit codes (`0`, `1`, `2`), streams (`stdout`/`stderr`), hỗ trợ file Unicode/spaces, `--output`, bảo toàn ứng viên đồng hạng; ban hành tài liệu quy ước [`docs/project/cli-contract.md`](cli-contract.md).
   - **Phần B (`PH7-CLI-001/B` — HOÀN THÀNH):** Nối `provenance` (báo cáo tracker thực, cases, groups, indicators, suspected apps, inference history, limitations), `decompress-check` (nhận `--bmac`, `--entry-type`, `--extra-field`, bảo toàn đồng hạng, xử lý sai ngữ cảnh), và `compare` (so sánh structural hash, phát hiện tương đồng cấu trúc bỏ qua `file_path`, báo cáo khác biệt chi tiết). Kế thừa hoàn toàn quy ước I/O contract, exit codes và an toàn file từ Phần A. Toàn bộ 204 unit & integration tests pass (85% coverage trên `cli.py`).
 
-#### `PH7-EVAL-002`: Thí nghiệm Đánh giá Phân loại, Ma trận Nhầm lẫn & Báo cáo Khoa học Hoàn chỉnh
+#### `PH7-EVAL-002`: Thí nghiệm Đánh giá Phân loại, Ma trận Nhầm lẫn & Báo cáo Khoa học Hoàn chỉnh [ĐÃ TRIỂN KHAI — CHƯA ĐẠT NGƯỠNG, #22 MỞ]
 - **Mức độ ưu tiên:** P1
 - **Phụ thuộc:** `PH7-CLI-001`, `PH6-DATA-002`
 - **Mục tiêu:** Tái hiện kết quả thực nghiệm phân loại (tương tự Hình 9 trên 3 máy trạm), tính toán các chỉ số định lượng và hoàn thiện báo cáo khoa học.

@@ -215,8 +215,9 @@ thêm `0x7075`), payload nguyên vẹn; lần xác nhận cho cùng bytes. Bandi
 WinRAR, PowerShell 5.1/7.6 `Compress-Archive -Update` và `zipfldr` `CopyHere` đều
 âm (chỉ offset); các ô thêm file cho Case 1 native mới. Tracker báo Case 1, không
 phải Case 2, cho cặp dương vì LFH/CDH được ghi lại nhất quán, và gán nhầm SW1 là
-Windows "Compressed folder" (theo dõi ở #35). Đề nghị reviewer xem
-xét nghiệm thu #19; cặp Bandizip → Explorer của bài báo vẫn âm. Xem
+Windows "Compressed folder" (theo dõi ở #35, đã xử lý ở §2.11). Cặp Bandizip → Explorer
+của bài báo vẫn âm. Bộ mẫu dùng chung nằm ở `data/modified_samples/catalogue.json`, và
+**#19 đã được nghiệm thu và đóng ngày 28/11/2026**. Xem
 [báo cáo](sw2-screening-2026-11-26.md) và
 [manifest/checksums](evidence/sw2-screening-2026-11-26.json).
 
@@ -234,7 +235,8 @@ Explorer Delete `run-case2-dlq9ulnc` cho `none`. Các scope này trùng với
 - ZIP sạch không bị báo nhầm.
 
 Output mặc định và kết quả PH7-EVAL không đổi. Khi chỉ có một archive bị ghi lại nhất
-quán, Case 2 vẫn không phát hiện được. Theo dõi ở #35.
+quán, Case 2 vẫn không phát hiện được. #35 đã đóng ngày 28/11/2026; mục cảnh báo cho
+trường hợp chỉ có một archive (tùy chọn) chưa làm.
 
 ## 3. Đánh giá Ma trận Nhầm lẫn và Độ chính xác (Confusion Matrix) — PH7-EVAL-002
 

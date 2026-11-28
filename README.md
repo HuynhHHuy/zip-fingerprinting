@@ -162,7 +162,9 @@ có lỗi, 2 khi không có mẫu hoặc không đạt điều kiện `--require
 Case 1 qua biến thể tắt lưu timestamp của 7-Zip; chưa tái hiện Case 2. Bandizip và
 WinZip CLI chưa có ở mốc đo cũ. Ngày 18/11/2026 đã đối chứng thêm Bandizip
 7.47 portable → **Explorer Delete thực tế**: xóa đúng entry, CRC/payload giữ
-nguyên, chỉ offset đổi; **chưa có Case 2, chưa đạt DoD PH4-PROV-002**.
+nguyên, chỉ offset đổi; Case 2 âm. Ngày 26/11/2026, đợt sàng lọc SW2 đăng ký trước
+tìm được **Case 2 native ở cặp 7-Zip → Bandizip (xóa)**. PH4-PROV-002 được nghiệm thu
+ngày 28/11/2026 (#19); bộ mẫu dùng chung nằm ở `data/modified_samples/catalogue.json`.
 Workflow mới: `python -m experiments.explorer_delete prepare --bandizip PATH`
 và `finalize RUN --gui-log PATH`; xem hướng dẫn thí nghiệm để lưu bằng chứng GUI.
 Đợt bổ sung tạo ZIP bằng **GUI** cũng âm: đã quan sát tạo ZIP/Normal và
@@ -277,8 +279,8 @@ Tiến độ được theo dõi chi tiết tại [`docs/project/implementation-p
 - **Giai đoạn 1:** Triển khai Bộ phân tích nhị phân cốt lõi (Parser & Extra fields) `[HOÀN THÀNH]`
 - **Giai đoạn 2:** Trích xuất đặc trưng & Băm cấu trúc xác định `[HOÀN THÀNH]`
 - **Giai đoạn 3:** Động cơ phân loại tự động 2 tầng (Algorithm 1, 2, 3) `[HOÀN THÀNH — kiểm thử lý thuyết; chưa đánh giá corpus thực]`
-- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 đã triển khai script và sinh mẫu thật — chưa đạt DoD Case 2]`
+- **Giai đoạn 4:** Phân tích đa nguồn gốc & Lịch sử can thiệp tệp (Mục 4.2) `[PH4-PROV-001 HOÀN THÀNH; PH4-PROV-002 HOÀN THÀNH — nghiệm thu 28/11/2026; PH4-PROV-003 HOÀN THÀNH]`
 - **Giai đoạn 5:** Thẩm định dấu vết giải nén & Nghịch đảo thời gian `[PH5-DEC-001 đối chiếu Bảng 8; PH5-DEC-002 đạt DoD đo cục bộ 2 công cụ/12 phép đo — bàn giao/review theo evidence manifest, chưa tái hiện đầy đủ lịch sử]`
 - **Giai đoạn 6:** Pipeline sinh mẫu thực nghiệm (Hình 5) `[PH6-DATA-001/002 hoàn thành — nghiệm thu cục bộ Windows/Python 3.11; chưa đối chứng GUI/macOS/Linux]`
-- **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học
+- **Giai đoạn 7:** Hoàn thiện CLI & Báo cáo đánh giá khoa học `[PH7-CLI-001 HOÀN THÀNH; PH7-EVAL-002 đã triển khai — chưa đạt ngưỡng, #22 mở]`
 - **Giai đoạn 8:** Mở rộng Nghiên cứu: Dấu vân tay Tài liệu Văn phòng OOXML & Java Archive ([Tài liệu đề xuất](docs/research/ooxml-provenance-extension.md)) [ĐÃ ĐỀ XUẤT]
