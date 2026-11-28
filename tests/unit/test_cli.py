@@ -444,6 +444,28 @@ def test_cli_provenance_stdout_and_model(
     assert len(data["groups"]) == len(direct_report.groups)
 
 
+def test_cli_provenance_warns_single_archive_cannot_exclude_consistent_rewrite(
+    tmp_path: Path, minimal_zip_bytes: bytes, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A single-archive report must say Case 2 false cannot rule out a consistent rewrite (#35)."""
+    zip_file = tmp_path / "single.zip"
+    zip_file.write_bytes(minimal_zip_bytes)
+
+    assert main(["provenance", str(zip_file)]) == 0
+    data = json.loads(capsys.readouterr().out)
+
+    assert data["cases"]["case2_cascade_rewrite"] is False
+    warnings = [
+        item
+        for item in data["limitations"]
+        if "single archive" in item and "consistent" in item and "--baseline" in item
+    ]
+    assert len(warnings) == 1
+
+    assert main(["provenance", str(zip_file), "--format", "text"]) == 0
+    assert warnings[0] in capsys.readouterr().out
+
+
 def test_cli_provenance_case1_mixed(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     """Verify 'provenance' detects Case 1 mixed fingerprints from multiple tools."""
     # Build a mixed archive: entry 1 from 7-Zip (Windows), entry 2 from macOS Archive Utility

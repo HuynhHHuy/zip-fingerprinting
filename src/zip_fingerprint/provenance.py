@@ -141,6 +141,9 @@ class SuspectedApplication:
 DEFAULT_LIMITATIONS: List[str] = [
     "Absence of heterogeneity does not prove single provenance: "
     "SW2 may rewrite every header, or SW1/SW2 profiles may overlap.",
+    "Case 2 false on a single archive cannot exclude a consistent rewrite of both LFH and CDH "
+    "(observed natively for 7-Zip -> Bandizip delete); compare against an earlier copy of the "
+    "archive (CLI: --baseline).",
     "Subsidiary signals (e.g. nanosecond timestamp patterns) require further analysis "
     "and do not establish multi-provenance alone.",
     "Role assignment (ORIGINAL_CREATOR vs MODIFIER) is heuristic based on header offsets "
