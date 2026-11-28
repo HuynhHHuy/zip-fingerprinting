@@ -4,7 +4,45 @@ Thư mục này quản lý dữ liệu kiểm nghiệm và mẫu nén ZIP phục
 - `templates/`: Cây thư mục nguồn tiêu chuẩn (dựa trên Hình 5 trong bài báo của Minji Um et al.).
 - `ground_truth/`: Chứa các tệp ZIP được nén bằng các phần mềm khác nhau trên Windows, Linux, macOS.
 - `modified_samples/`: Chứa các mẫu ZIP được can thiệp (thêm/xóa/sửa đổi tệp) để kiểm tra tính năng truy vết đa nguồn gốc (Provenance tracking - Mục 4.2).
+- `modified_samples/catalogue.json`: bộ mẫu provenance dùng chung, gồm Case 1, Case 2 và đối chứng âm (xem mục dưới).
 - `metadata.json`: Bản ghi thông tin nguồn gốc, môi trường tạo, checksum SHA-256 của từng mẫu.
+
+## Bộ mẫu provenance dùng chung — PH4-PROV-002
+
+`modified_samples/catalogue.json` (schema `provenance-sample-catalogue/v1`) liệt kê các
+cặp ZIP trước/sau native. Với mỗi mẫu, catalogue ghi:
+- nhãn (`case1`, `case2` hoặc `none`) và căn cứ của nhãn;
+- công cụ SW1 và SW2, kèm phiên bản và thao tác;
+- size và SHA-256 của hai bản ZIP;
+- kết quả kỳ vọng của `--baseline`, của tracker mặc định và của tracker khi bật
+  `--observed-profiles`.
+
+Nhãn lấy từ lệnh công cụ đã ghi log và từ so sánh byte/header độc lập. Nhãn **không**
+lấy từ output của tracker. Các lần tracker báo sai cũng được ghi lại như quan sát; ví dụ
+S6 là Case 2 nhưng tracker mặc định báo Case 1.
+
+Hiện có 7 mẫu từ đợt sàng lọc SW2 ngày 26/11:
+- **Case 2:** 1 mẫu, là S6 (7-Zip → Bandizip xóa), cùng lần xác nhận có bytes trùng
+  hoàn toàn;
+- **Case 1:** 3 mẫu, S3–S5 (Bandizip → PowerShell 5.1 / 7, hoặc `zipfldr` thêm file);
+- **đối chứng âm:** 2 mẫu, S1 và S2.
+
+Catalogue tách riêng khỏi `metadata.json`, vì evaluator PH7-EVAL đọc file đó làm
+ground truth của thao tác tạo archive.
+
+Bytes không được commit. Để tái chạy, tải bundle trên prerelease, giải nén, rồi chạy
+test:
+
+```powershell
+gh release download evidence-ph4-prov-002-sw2-2026-11-26 -p sw2-screening-2026-11-26-evidence.zip -D $env:TEMP\sw2
+Expand-Archive $env:TEMP\sw2\sw2-screening-2026-11-26-evidence.zip $env:TEMP\sw2\x
+$env:ZIP_PROV_NATIVE_SAMPLES = "$env:TEMP\sw2\x"
+python -m pytest tests/integration/test_provenance_sample_catalogue.py
+```
+
+SHA-256 của bundle là `17fb4445…894c40`, đã ghi trong catalogue. CI luôn kiểm tra cấu
+trúc catalogue và đối chiếu từng SHA-256 với manifest evidence đã commit. Khi không có
+bytes, CI bỏ qua phần kiểm tra bytes và kết quả.
 
 ## Corpus chuẩn — PH6-DATA-001
 

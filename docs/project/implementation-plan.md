@@ -315,9 +315,14 @@ Từ bản PDF chính thức, kế hoạch triển khai đã được nâng cấ
   6 cặp đã chốt. **7-Zip 26.04 → Bandizip 7.47.0.1 (xóa) cho Case 2 native**, xác
   nhận lần hai; 5 cặp khác âm; các ô thêm file cho Case 1 native. Tracker chưa phát
   hiện Case 2 khi LFH/CDH được ghi lại nhất quán và gán nhầm SW1 là "Compressed
-  folder" (#35). Chờ reviewer
-  nghiệm thu #19; chưa đưa mẫu vào corpus/catalogue chung. Xem
-  [báo cáo](../evaluation/sw2-screening-2026-11-26.md).
+  folder" (#35). Xem [báo cáo](../evaluation/sw2-screening-2026-11-26.md).
+- **Bộ mẫu dùng chung 27/11 (#19):** [`data/modified_samples/catalogue.json`](../../data/modified_samples/catalogue.json)
+  liệt kê 7 mẫu native, gồm Case 2 (S6 và lần xác nhận trùng byte), 3 mẫu Case 1 (S3–S5)
+  và 2 đối chứng âm (S1, S2).
+  - Mỗi mẫu có nhãn kèm căn cứ, công cụ và phiên bản, SHA-256, và kết quả kỳ vọng.
+  - CI đối chiếu checksum với manifest evidence. Test trên bundle tải từ prerelease tái
+    lập được mọi kết quả kỳ vọng (cách chạy trong `data/README.md`).
+  - Mọi mục nghiệm thu của #19 đã có bằng chứng. Còn chờ reviewer nghiệm thu.
 
 #### `PH4-PROV-003`: Phát hiện Case 2 khi có bản trước và catalog profile tự đo [ĐÃ TRIỂN KHAI — CHỜ REVIEW]
 - **Mức độ ưu tiên:** P2 · **Issue:** #35

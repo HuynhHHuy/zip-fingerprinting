@@ -1,0 +1,288 @@
+{
+  "schema": "provenance-sample-catalogue/v1",
+  "task": "PH4-PROV-002",
+  "issue": 19,
+  "purpose": "Shared native samples for provenance tracking (Section 4.2): Case 1, Case 2 and negative controls, with tool provenance and checksums. Kept apart from data/metadata.json, which is the creation ground truth read by the PH7-EVAL evaluator.",
+  "label_policy": "Labels come from the tools actually invoked (logged commands) and from independent byte/header comparison of before/after archives, never from tracker output. Expected tracker results are recorded as observations, including known misses.",
+  "redistribution": "Bytes are not committed; download the bundle from the evidence prerelease.",
+  "bundles": {
+    "sw2-screening-2026-11-26": {
+      "name": "sw2-screening-2026-11-26-evidence.zip",
+      "size": 42635,
+      "sha256": "17fb444578f4447f04377500977e32b4e32da9e202109547b89750c772894c40",
+      "download_url": "https://github.com/HuynhHHuy/zip-fingerprinting/releases/download/evidence-ph4-prov-002-sw2-2026-11-26/sw2-screening-2026-11-26-evidence.zip",
+      "manifest": "docs/evaluation/evidence/sw2-screening-2026-11-26.json",
+      "report": "docs/evaluation/sw2-screening-2026-11-26.md"
+    }
+  },
+  "samples": [
+    {
+      "id": "sw2-2026-11-26-S1",
+      "label": "none",
+      "label_basis": "Byte/header comparison: survivors copied unchanged except offsets (scope none); negative control, not multi-provenance by construction.",
+      "sw1": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "sw2": {
+        "tool": "7-Zip",
+        "version": "26.04"
+      },
+      "operation": "delete",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S1",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S1/before.zip",
+        "size": 745,
+        "sha256": "791f0fcd8256538156f64c0643938f8c2b8e1a6bc50d86ffc2828e0ba1f5c266"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S1/after.zip",
+        "size": 594,
+        "sha256": "9ad8dd1503212134ae6708a227e255469036e61db6adf92099296e1ca41dd424"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "none",
+        "tracker_default": {
+          "case1": false,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": false,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S2",
+      "label": "none",
+      "label_basis": "Byte/header comparison: survivors copied unchanged except offsets (scope none); negative control, not multi-provenance by construction.",
+      "sw1": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "sw2": {
+        "tool": "WinRAR",
+        "version": "6.23.0"
+      },
+      "operation": "delete",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S2",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S2/before.zip",
+        "size": 745,
+        "sha256": "dd0795ee1154028115470e6c0aa81770865383ef19d81a931f2d106ae70942f2"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S2/after.zip",
+        "size": 594,
+        "sha256": "00c7b2174d871a30ecdc51e24760225eea3c3a4cc8182629384ee65e98cebb27"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "none",
+        "tracker_default": {
+          "case1": false,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": false,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S3",
+      "label": "case1",
+      "label_basis": "Logged SW2 command added added.txt; its headers carry the SW2 structure while SW1 entries are copied unchanged (compare_survivors scope none).",
+      "sw1": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "sw2": {
+        "tool": "Windows PowerShell Compress-Archive -Update",
+        "version": "10.0.26100.9818"
+      },
+      "operation": "add",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S3",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S3/before.zip",
+        "size": 745,
+        "sha256": "e8c5f31677191ad6e26be3195a4986d462e99ad9eee44c846fbd9f8c23993073"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S3/after.zip",
+        "size": 855,
+        "sha256": "c528fd11f549aae34eab7d184a417c93f283164a84e77860392cf1ea1b091728"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "none",
+        "tracker_default": {
+          "case1": true,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": true,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S4",
+      "label": "case1",
+      "label_basis": "Logged SW2 command added added.txt; its headers carry the SW2 structure while SW1 entries are copied unchanged (compare_survivors scope none).",
+      "sw1": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "sw2": {
+        "tool": "PowerShell 7 Compress-Archive -Update",
+        "version": "7.6.10 SHA: 16ac95d24d87c61a5d8300dae2d0619db06c555c+16ac95d24d87c61a5d8300dae2d0619db06c555c"
+      },
+      "operation": "add",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S4",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S4/before.zip",
+        "size": 745,
+        "sha256": "bb3ec031ee037ea849a25f32626cb7bfa1667c75aeeaeb616a1826c09d187b5c"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S4/after.zip",
+        "size": 855,
+        "sha256": "4e13d9642ca9d62c1a2864c571a20ceea08eee444c6fb6bca6f26d69e4dda5da"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "none",
+        "tracker_default": {
+          "case1": true,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": true,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S5",
+      "label": "case1",
+      "label_basis": "Logged SW2 command added added.txt; its headers carry the SW2 structure while SW1 entries are copied unchanged (compare_survivors scope none).",
+      "sw1": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "sw2": {
+        "tool": "Windows compressed folder (zipfldr CopyHere)",
+        "version": "10.0.26100.8117"
+      },
+      "operation": "add",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S5",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S5/before.zip",
+        "size": 745,
+        "sha256": "224219875b00d75e144feb877c9aa6c04677e36a7151c78c861d6f338b0839ae"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S5/after.zip",
+        "size": 853,
+        "sha256": "95beb1d05d24cbe4a72d34540a5723625263ec0f376cfc047d00721247f3c890"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "none",
+        "tracker_default": {
+          "case1": true,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": true,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S6",
+      "label": "case2",
+      "label_basis": "Byte/header comparison (pre-registered compare_survivors): every survivor changed version_made_by/extract_version and extra layout, payload SHA-256 unchanged.",
+      "sw1": {
+        "tool": "7-Zip",
+        "version": "26.04"
+      },
+      "sw2": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "operation": "delete",
+      "run": "run-sw2-_kiollnq",
+      "cell": "S6",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-_kiollnq/S6/before.zip",
+        "size": 639,
+        "sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc"
+      },
+      "after": {
+        "path": "run-sw2-_kiollnq/S6/after.zip",
+        "size": 480,
+        "sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "all",
+        "tracker_default": {
+          "case1": true,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": false,
+          "case2": false
+        }
+      }
+    },
+    {
+      "id": "sw2-2026-11-26-S6-confirmation",
+      "label": "case2",
+      "label_basis": "Byte/header comparison (pre-registered compare_survivors): every survivor changed version_made_by/extract_version and extra layout, payload SHA-256 unchanged.",
+      "sw1": {
+        "tool": "7-Zip",
+        "version": "26.04"
+      },
+      "sw2": {
+        "tool": "Bandizip (portable)",
+        "version": "7.47.0.1"
+      },
+      "operation": "delete",
+      "run": "run-sw2-gtjtd6ue",
+      "cell": "S6",
+      "bundle": "sw2-screening-2026-11-26",
+      "before": {
+        "path": "run-sw2-gtjtd6ue/S6/before.zip",
+        "size": 639,
+        "sha256": "b2e0c52857b3d1611feaff6f70314a95bf630adc3a7324efdf5ea7f3091b49bc"
+      },
+      "after": {
+        "path": "run-sw2-gtjtd6ue/S6/after.zip",
+        "size": 480,
+        "sha256": "fefce78ded371e07ba2d5e9b6e01349a6a5a57f00199edf788a098ee8a55e113"
+      },
+      "expected": {
+        "baseline_rewrite_scope": "all",
+        "tracker_default": {
+          "case1": true,
+          "case2": false
+        },
+        "tracker_observed_profiles": {
+          "case1": false,
+          "case2": false
+        }
+      },
+      "duplicate_of": "sw2-2026-11-26-S6",
+      "notes": "Deterministic confirmation run; bytes identical to the first run."
+    }
+  ]
+}
